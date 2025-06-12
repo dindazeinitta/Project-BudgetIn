@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+     <style>
+        /* Overlay styles */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            z-index: 50; /* On top of other content */
+        }
+
+        /* Pop-up styles */
+        #popup {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 300px;
+            transform: scale(0);
+            animation: pop 0.4s forwards; /* Animation for pop-up */
+        }
+
+        @keyframes pop {
+            to {
+                transform: scale(1);
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-6 w-96">
+        <h2 class="text-xl font-semibold mb-4">Add Transaction</h2>
+        <div id="overlay" class="flex"></div>
+        <div class="flex mb-4">
+            <button id="incomeBtn" class="flex-1 py-2 mx-1 text-white bg-blue-500 rounded-lg focus:outline-none">Income</button>
+            <button id="expenseBtn" class="flex-1 py-2 mx-1 text-gray-700 bg-gray-200 rounded-lg focus:outline-none">Expense</button>
+        </div>
+
+
+        <form id="transactionForm">
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Name Transaction</label>
+                <input type="text" class="block w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Amount</label>
+                <input type="number" class="block w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Date</label>
+                <input type="date" class="block w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Category</label>
+                <select class="block w-full border border-gray-300 rounded-lg p-2" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="food">Food</option>
+                    <option value="transport">Transport</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Note (Optional)</label>
+                <input type="text" class="block w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <button type="submit" class="w-full py-2 text-white bg-blue-600 rounded-lg">Save</button>
+        </form>
+    </div>
+
+    <script>
+        const transactionForm = document.getElementById('transactionForm');
+
+        transactionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Transaction saved!');
+        });
+
+        document.getElementById('incomeBtn').addEventListener('click', function() {
+            this.classList.add('bg-blue-500');
+            this.classList.remove('bg-gray-200', 'text-gray-700');
+            document.getElementById('expenseBtn').classList.add('bg-gray-200', 'text-gray-700');
+            document.getElementById('expenseBtn').classList.remove('bg-blue-500');
+        });
+
+        document.getElementById('expenseBtn').addEventListener('click', function() {
+            this.classList.add('bg-blue-500');
+            this.classList.remove('bg-gray-200', 'text-gray-700');
+            document.getElementById('incomeBtn').classList.add('bg-gray-200', 'text-gray-700');
+            document.getElementById('incomeBtn').classList.remove('bg-blue-500');
+        });
+    </script>
+</body>
+
+</html>

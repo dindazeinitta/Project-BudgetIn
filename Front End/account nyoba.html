@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BudgetIn - Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .profile-circle {
+            background: linear-gradient(135deg, #4e6af3 0%, #3c56c0 100%);
+            box-shadow: 0 8px 32px rgba(78, 106, 243, 0.3);
+        }
+        
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, #e8edff 0%, #ffffff 100%);
+        }
+        
+        .upload-btn {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-custom min-h-screen">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg min-h-screen relative">
+            <!-- Logo -->
+            <!-- Logo WOI GEDEINNYA MASA EROR SIH PADDINGNYA ANEH-->
+
+
+<div class="py-0 flex items-center justify-center border-b border-gray-200">
+  <img src="BUDGETIN LOGO.png" alt="Logo Budgetin" class="w-28 h-auto" />
+</div>
+
+
+
+
+            <!-- Navigation Menu -->
+            <nav class="mt-8">
+                <ul class="space-y-2 px-4">
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Transactions nyoba.html" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                            </svg>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 text-white bg-[#4e6af3] px-4 py-3 rounded-lg shadow-md">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <span>Account</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Bottom Menu -->
+                <div class="absolute bottom-0 w-64 p-4 space-y-2">
+                    <a href="#" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        </svg>
+                        <span>Switch account</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Log out</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 min-h-screen relative">
+            <!-- Background with gradient -->
+            <div class="absolute inset-0 bg-gradient-to-br from-[#e8edff] via-white to-[#f8faff]"></div>
+            
+            <div class="relative z-10 p-8">
+                <div class="max-w-2xl mx-auto">
+                    <!-- Profile Image Section -->
+                    <div class="flex items-center justify-center mb-8">
+                        <div class="flex items-center space-x-6">
+                            <!-- Profile Picture -->
+                            <div class="relative">
+                                <div class="w-32 h-32 rounded-full flex items-center justify-center bg-[#4e6af3] shadow-lg overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" 
+                                    alt="Profile" class="w-full h-full object-cover rounded-full">
+</div>
+                            </div>
+                            
+                            <!-- Upload Button -->
+                            <button class="border-2 border-[#4e6af3] text-[#4e6af3] px-6 py-2 rounded-full text-sm font-medium hover:bg-[#4e6af3] hover:text-white transition-all duration-300">
+                                upload a picture
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Form Section -->
+                    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+                        <form class="space-y-6">
+                            <!-- Name Field -->
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Your name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="name" 
+                                    name="name" 
+                                    placeholder=""
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:border-transparent outline-none transition-all duration-300"
+                                >
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="relative">
+    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+        Password
+    </label>
+    <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        placeholder=""
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:border-transparent outline-none transition-all duration-300"
+    >
+    <button type="button" class="absolute right-0 -bottom-6 text-[#4e6af3] text-sm font-medium hover:text-[#3c56c0] transition-colors">
+        Change
+    </button>
+</div>
+
+                            <!-- Email Field -->
+                            <!-- Di bawah field email -->
+<div class="relative">
+    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+        Email Address
+    </label>
+    <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        placeholder=""
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:border-transparent outline-none transition-all duration-300"
+    >
+    <button type="button" class="absolute right-0 -bottom-6 text-[#4e6af3] text-sm font-medium hover:text-[#3c56c0] transition-colors">
+        Change
+    </button>
+</div>
+
+                            <!-- Action Buttons -->
+                            <div class="flex space-x-4 pt-6">
+                                <button 
+                                    type="submit" 
+                                    class="bg-[#4e6af3] text-white px-8 py-3 rounded-lg hover:bg-[#3c56c0] transition-all duration-300 font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+                                >
+                                    Update
+                                </button>
+                                <button 
+                                    type="button" 
+                                    class="bg-gray-400 text-white px-8 py-3 rounded-lg hover:bg-gray-500 transition-all duration-300 font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interactivity for change buttons
+        document.querySelectorAll('button[type="button"]').forEach(button => {
+            if (button.textContent.trim() === 'Change') {
+                button.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    if (input) {
+                        input.focus();
+                        input.select();
+                    }
+                });
+            }
+        });
+
+        // Profile picture upload simulation
+        document.querySelector('button[class*="border-2"]').addEventListener('click', function() {
+            alert('Feature upload gambar akan segera tersedia!');
+        });
+    </script>
+</body>
+</html>
