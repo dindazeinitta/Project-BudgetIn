@@ -1,6 +1,7 @@
 package com.budgetin.controller;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,9 +62,36 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/user")
+    public ResponseEntity<?> getUserByEmail(@RequestBody UserRequest userRequest) {
+        try {
+            Optional<com.budgetin.model.User> userOptional = userService.findByEmail(userRequest.email());
+            if (userOptional.isPresent()) {
+                com.budgetin.model.User user = userOptional.get();
+                return ResponseEntity.ok().body(
+                    new UserResponse(true, "User found", user.getFullName(), user.getEmail())
+                );
+            } else {
+                return ResponseEntity.badRequest().body(
+                    new ApiResponse(false, "User not found")
+                );
+            }
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body(
+                new ApiResponse(false, "Error fetching user data")
+            );
+        }
+    }
+
     // Helper class untuk response standar
     record ApiResponse(boolean success, String message) {}
 
     // Helper class untuk login request
     record LoginRequest(String email, String password) {}
+
+    // Helper class untuk user request
+    record UserRequest(String email) {}
+
+    // Helper class untuk user response
+    record UserResponse(boolean success, String message, String fullName, String email) {}
 }
