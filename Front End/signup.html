@@ -206,10 +206,11 @@
         </div>
 
         <!-- Form -->
-        <form class="space-y-6">
+        <form class="space-y-6" id="registerForm">
           <div class="slide-up" style="animation-delay: 1s; animation-fill-mode: both;">
             <input 
               type="text" 
+              id="fullName"
               placeholder="Full Name" 
               class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
               required
@@ -219,6 +220,7 @@
           <div class="slide-up" style="animation-delay: 1.2s; animation-fill-mode: both;">
             <input 
               type="email" 
+              id="email"
               placeholder="Email Address" 
               class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
               required
@@ -228,6 +230,7 @@
           <div class="slide-up" style="animation-delay: 1.4s; animation-fill-mode: both;">
             <input 
               type="password" 
+              id="password"
               placeholder="Password" 
               class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
               required
@@ -254,5 +257,31 @@
       </div>
     </div>
   </div>
+
+  <script>
+  document.getElementById('registerForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim().toLowerCase();
+    const password = document.getElementById('password').value;
+
+    console.log("Full Name:", fullName);
+    console.log("Email:", email);
+    console.log("Password:", password);
+
+    if (!fullName || !email || !password) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    if (fullName === 'Dinda Zeinitta' && email === 'dinda.z.q.p@gmail.com' && password === '01234') {
+      alert('Welcome Admin!');
+      window.location.href = 'dashboard.html';
+    } else {
+      alert('Invalid credentials. Try again.');
+    }
+  });
+  </script>
 </body>
 </html>

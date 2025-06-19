@@ -175,6 +175,7 @@
           <div class="slide-up" style="animation-delay: 1s;">
             <input 
               type="email" 
+              id="signinEmail"
               placeholder="Email Address" 
               class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
               required 
@@ -184,6 +185,7 @@
           <div class="slide-up" style="animation-delay: 1.2s;">
             <input 
               type="password" 
+              id="signinPassword"
               placeholder="Password" 
               class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
               required 
@@ -210,5 +212,42 @@
     </div>
 
   </div>
+
+
+
+<script>
+  // Simulasi akun yang ada
+  const users = [
+    {
+      email: 'dinda.z.q.p@gmail.com',
+      password: '01234'
+    }
+  ];
+
+  // Form Sign In
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('signinEmail').value.trim().toLowerCase();
+    const password = document.getElementById('signinPassword').value;
+
+    // Debugging check
+    console.log('Email:', email);
+    console.log('Password:', password);
+
+    // Cek apakah akun ditemukan
+    const user = users.find(u => u.email === email && u.password === password);
+
+    if (user) {
+      alert('Welcome back!');
+      window.location.href = 'dashboard.html';
+    } else {
+      alert('Account not found, please sign up.');
+    }
+  });
+</script>
+
+
+
 </body>
 </html>
