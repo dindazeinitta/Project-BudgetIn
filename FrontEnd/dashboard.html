@@ -123,35 +123,13 @@
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-blue-600">7 Days bank statement</span>
                                 <select class="text-sm border rounded px-2 py-1">
-                                <option>JANUARI</option>
-                                <option>FEBRUARI</option>
-                                <option>MARET</option>
-                                <option>APRIL</option>
-                                <option>MEI</option>
-                                <option>JUNI</option>
-                                <option>JULI</option>
-                                <option>AGUSTUS</option>
-                                <option>SEPTEMBER</option>
-                                <option>OKTOBER</option>
-                                <option>NOVEMBER</option>
-                                <option>DESEMBER</option>
-                            </select>
-
+                                    <option>JANUARI</option>
+                                </select>
                             </div>
                         </div>
                         
                         <!-- Chart Bars -->
                         <div class="flex items-end justify-between h-40 space-x-2">
-<<<<<<< HEAD:Front End/dashboard.html
-                            <div class="flex flex-col h-40 pr-2 text-xs text-gray-400 font-medium justify-between">
-                                <span>400k</span>
-                                <span>300k</span>
-                                <span>200k</span>
-                                <span>100k</span>
-                                <span>0</span>
-                            </div>
-
-=======
                             <div class="flex flex-col justify-between h-40 pr-2 text-xs text-gray-400 font-medium">
                                 <span>400k</span>
                                 <span>350k</span>
@@ -163,7 +141,6 @@
                                 <span>50k</span>
                                 <span>0</span>
                             </div>
->>>>>>> 216455a (ubah lokal saya):FrontEnd/dashboard.html
                             <div class="flex flex-col items-center">
                                 <div class="w-8 bg-indigo-500 rounded-t" style="height: 60px;"></div>
                                 <span class="text-xs text-gray-500 mt-2">01/01</span>
@@ -281,13 +258,14 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Right Column -->
                 <div class="space-y-6">
                     <!-- Notes Card -->
                     <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="text-lg font-semibold">Notes</h3>
-                            <button onclick="openNoteModal()" class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30">
+                            <button class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
                                 </svg>
@@ -321,16 +299,16 @@
                     <!-- Calendar Card -->
                     <div class="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl p-6 text-white text-center">
                         <div class="mb-4">
-                            <div id="calendar-month" class="text-sm opacity-80 mb-1">JUNE</div>
-                            <div id="calendar-year" class="text-sm opacity-80">2025</div>
+                            <div class="text-sm opacity-80 mb-1">JUNE</div>
+                            <div class="text-sm opacity-80">2025</div>
                         </div>
-                        <div id="calendar-date" class="text-6xl font-bold mb-2">06</div>
-                        <div id="calendar-day" class="text-lg">Friday</div>
+                        <div class="text-6xl font-bold mb-2">06</div>
+                        <div class="text-lg">Friday</div>
                     </div>
 
                     <!-- Quote Card -->
                     <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
-                        <div class="text-lg font-semibold leading-relaxed text-center">
+                        <div class="text-lg font-semibold leading-relaxed">
                             "Track Smart, <br>
                             Spend Wisely, <br>
                             Budget It!"
@@ -359,70 +337,19 @@
         </div>
     </div>
         
-        <!-- Add Note Modal -->
-        <div id="noteModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
-        <div class="bg-white rounded-lg w-full max-w-md shadow-lg">
-            <div class="flex justify-between items-center px-5 py-4 border-b">
-            <h2 class="text-lg font-semibold text-gray-800">Add Note</h2>
-            <button onclick="closeNoteModal()" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
-            </div>
-            <div class="px-5 py-4">
-            <textarea id="noteInput" rows="4" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Write your note here..."></textarea>
-            </div>
-            <div class="flex justify-end px-5 py-4 border-t gap-2">
-            <button onclick="closeNoteModal()" class="px-4 py-2 text-gray-700 border rounded hover:bg-gray-100">Cancel</button>
-            <button onclick="saveNote()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Done</button>
-            </div>
-        </div>
-        </div>
-
-
-
-
-
     <script>
-        // logout
         function openLogoutModal() {
             document.getElementById("logoutModal").classList.remove("hidden");
         }
+
         function closeLogoutModal() {
             document.getElementById("logoutModal").classList.add("hidden");
         }
+
         function confirmLogout() {
             window.location.href = "signin.html";
         }
-
-        //note
-        function openNoteModal() {
-        document.getElementById("noteModal").classList.remove("hidden");
-        }
-        function closeNoteModal() {
-        document.getElementById("noteModal").classList.add("hidden");
-        }
-        function saveNote() {
-        const note = document.getElementById("noteInput").value;
-        console.log("Saved Note:", note); // Bisa ganti dengan simpan ke backend/localstorage
-        closeNoteModal();
-        }
-
-        //tanggal
-        window.onload = function () {
-        console.log("Script jalan");
-
-        const now = new Date();
-
-        const months = [
-            "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
-            "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
-        ];
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-        document.getElementById("calendar-month").textContent = months[now.getMonth()];
-        document.getElementById("calendar-year").textContent = now.getFullYear();
-        document.getElementById("calendar-date").textContent = String(now.getDate()).padStart(2, '0');
-        document.getElementById("calendar-day").textContent = days[now.getDay()];
-        };
-
     </script>
+
 </body>
 </html>
