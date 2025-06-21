@@ -41,6 +41,18 @@
         .profile-avatar {
             background: linear-gradient(135deg, #4e6af3 0%, #3c56c0 100%);
         }
+
+        /* Custom grid template untuk tabel yang lebih proporsional */
+        .transaction-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.2fr 1fr 0.8fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .transaction-name-cell {
+            min-width: 0; /* Allows flex items to shrink below their content width */
+        }
     </style>
 </head>
 <body class="bg-gradient-custom min-h-screen">
@@ -146,332 +158,524 @@
                 <!-- Transactions Table -->
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
                     <!-- Table Header -->
-                    <div class="grid grid-cols-4 gap-6 px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-medium text-gray-600 uppercase tracking-wider">
+                    <div class="transaction-grid px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-medium text-gray-600 uppercase tracking-wider">
                         <div>NAME</div>
                         <div>CATEGORY</div>
                         <div>AMOUNT</div>
+                        <div>DATE</div>
                         <div class="text-center">ACTION</div>
                     </div>
 
                     <!-- Transaction Rows -->
                     <div class="divide-y divide-gray-100">
-                        <!-- iPhone Transaction -->
-                        <div class="grid grid-cols-4 gap-6 px-6 py-4 transaction-row items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-900">Iphone 13 Pro MAX</div>
-                                    <div class="text-sm text-gray-500">Apple, Inc</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-600">Mobile</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="font-medium amount-negative">-Rp. 13.000.000</span>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                    View
-                                </button>
-                            </div>
-                        </div>
+                        <!-- Freelance Design Payment -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="BNI Mobile"
+     data-time="14:20"
+     data-notes="Pembayaran dari klien desain logo">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">F</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Freelance Design</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Freelance</span>
+    </div>
+    <div>
+        <span class="font-medium amount-positive">+Rp. 150.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">20 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
+
+                        
+
+                       <!-- Donation Masjid -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="Gopay"
+     data-time="10:15"
+     data-notes="Sedekah Jumat di masjid dekat kampus">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">D</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Masjid Donation</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Donation</span>
+    </div>
+    <div>
+        <span class="font-medium amount-negative">-Rp. 50.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">20 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
+
+                       <!-- GrabCar to Campus -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="OVO"
+     data-time="07:50"
+     data-notes="Pergi ke kampus pagi-pagi pakai GrabCar">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">G</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">GrabCar to Campus</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Transportation</span>
+    </div>
+    <div>
+        <span class="font-medium amount-negative">-Rp. 27.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">19 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
+
+<!-- Shopee Refund -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="ShopeePay"
+     data-time="16:45"
+     data-notes="Pengembalian dana karena barang tidak sesuai">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">R</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Shopee Refund</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Refund</span>
+    </div>
+    <div>
+        <span class="font-medium amount-positive">+Rp. 60.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">19 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
+
+<!-- Cinema Ticket -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="OVO"
+     data-time="19:30"
+     data-notes="Nonton bareng teman di CGV Mall">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">C</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Cinema Ticket</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Entertainment</span>
+    </div>
+    <div>
+        <span class="font-medium amount-negative">-Rp. 50.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">18 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
 
 
+<!-- Web Dev Course -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="BNI Mobile"
+     data-time="22:00"
+     data-notes="Kursus online Web Development di Udemy">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">W</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Web Dev Course</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Education</span>
+    </div>
+    <div>
+        <span class="font-medium amount-negative">-Rp. 250.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">17 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
 
 
-                        <!-- Netflix Transaction -->
-                        <div class="grid grid-cols-5 gap-6 px-6 py-4 transaction-row items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
-                                    <span class="text-white font-bold text-lg">N</span>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-900">Netflix Subscription</div>
-                                    <div class="text-sm text-gray-500">Netflix</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-600">Entertainment</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="font-medium amount-negative">-Rp. 500.000</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div>
-                                    <div class="text-gray-900">05 Apr 2022</div>
-                                    <div class="text-sm text-gray-500">at 7:00 PM</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                    View
-                                </button>
-                            </div>
-                        </div>
+<!-- Monthly Allowance -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="BNI Mobile"
+     data-time="08:00"
+     data-notes="Uang bulanan dari orang tua">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">A</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Monthly Allowance</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Allowance</span>
+    </div>
+    <div>
+        <span class="font-medium amount-positive">+Rp. 500.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">17 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
 
-                        <!-- Figma Transaction -->
-                        <div class="grid grid-cols-5 gap-6 px-6 py-4 transaction-row items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #ff7262, #9d4edd, #0ea5e9, #10b981);">
-                                    <span class="text-white font-bold">F</span>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-900">Figma Subscription</div>
-                                    <div class="text-sm text-gray-500">Figma, Inc</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-600">Software</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="font-medium amount-negative">-Rp. 100.000</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div>
-                                    <div class="text-gray-900">02 Apr 2022</div>
-                                    <div class="text-sm text-gray-500">at 10:00 PM</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                    View
-                                </button>
-                            </div>
-                        </div>
+<!-- Birthday Gift Aisyah -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="OVO"
+     data-time="18:00"
+     data-notes="Kado ulang tahun untuk Aisyah">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-pink-400 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">B</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Gift for Aisyah</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Gift</span>
+    </div>
+    <div>
+        <span class="font-medium amount-negative">-Rp. 120.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">17 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
 
-                        <!-- Bitcoin Transaction -->
-                        <div class="grid grid-cols-5 gap-6 px-6 py-4 transaction-row items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-                                    <span class="text-white font-bold">₿</span>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-900">Bitcoin Transaction</div>
-                                    <div class="text-sm text-gray-500">Coinbase</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-600">Technology</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="font-medium amount-negative">-Rp. 50.000</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div>
-                                    <div class="text-gray-900">02 Apr 2022</div>
-                                    <div class="text-sm text-gray-500">at 6:00 AM</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                    View
-                                </button>
-                            </div>
-                        </div>
+<!-- Scholarship UIN -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="Transfer UIN"
+     data-time="09:00"
+     data-notes="Pencairan beasiswa semester genap">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">S</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Scholarship UIN</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Scholarship</span>
+    </div>
+    <div>
+        <span class="font-medium amount-positive">+Rp. 1.200.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">15 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
 
-                        <!-- Sajib Rahman Transaction -->
-                        <div class="grid grid-cols-5 gap-6 px-6 py-4 transaction-row items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-lg overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Sajib Rahman" class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-900">Sajib Rahman</div>
-                                    <div class="text-sm text-gray-500">Appsumo</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-600">Withdraw</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="font-medium amount-positive">+Rp. 100.000</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div>
-                                    <div class="text-gray-900">30 Mar 2022</div>
-                                    <div class="text-sm text-gray-500">at 9:00 PM</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                    View
-                                </button>
-                            </div>
-                        </div>
+<!-- PLN Electricity -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="BNI Mobile"
+     data-time="11:30"
+     data-notes="Pembayaran listrik bulanan rumah">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">P</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">PLN Electricity</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Bills</span>
+    </div>
+    <div>
+        <span class="font-medium amount-negative">-Rp. 180.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">15 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
 
-                        <!-- Instagram Ads Transaction -->
-                        <div class="grid grid-cols-5 gap-6 px-6 py-4 transaction-row items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);">
-                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-900">Instagram Ads</div>
-                                    <div class="text-sm text-gray-500">Meta</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-600">Entertainment</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="font-medium amount-negative">-Rp. 50.000</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div>
-                                    <div class="text-gray-900">20 Mar 2022</div>
-                                    <div class="text-sm text-gray-500">at 9:00 PM</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                    View
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- UIHUT Subscription Transaction -->
-                        <div class="grid grid-cols-5 gap-6 px-6 py-4 transaction-row items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                                    <span class="text-white font-bold">U</span>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-900">UIHUT Subscription</div>
-                                    <div class="text-sm text-gray-500">UIHUT</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-600">Payment</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="font-medium amount-negative">-Rp. 20.000</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div>
-                                    <div class="text-gray-900">24 Mar 2022</div>
-                                    <div class="text-sm text-gray-500">at 8:00 PM</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                    View
-                                </button>
-                            </div>
-                        </div>
+<!-- Scarlett Serum -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="ShopeePay"
+     data-time="12:45"
+     data-notes="Beli serum wajah Scarlett di Shopee">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-rose-400 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">S</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Scarlett Serum</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Skincare</span>
+    </div>
+    <div>
+        <span class="font-medium amount-negative">-Rp. 75.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">14 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
 
-                        <!-- Citi Bank Transaction -->
-                        <div class="grid grid-cols-5 gap-6 px-6 py-4 transaction-row items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-red-700 rounded-lg flex items-center justify-center">
-                                    <span class="text-white font-bold text-xs">citi</span>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-900">Citi Bank Ltd.</div>
-                                    <div class="text-sm text-gray-500">City Bank</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-600">Withdraw</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="font-medium amount-positive">+Rp. 3.000.000</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div>
-                                    <div class="text-gray-900">10 Mar 2022</div>
-                                    <div class="text-sm text-gray-500">at 7:00 AM</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                    View
-                                </button>
-                            </div>
-                        </div>
+<!-- Salary Payment -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="Gopay"
+     data-time="09:30"
+     data-notes="Gaji bulan April dari kantor remote">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">S</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Salary April</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Salary</span>
+    </div>
+    <div>
+        <span class="font-medium amount-positive">+Rp. 2.500.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">13 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
+
+
+                        <!-- Totebag Kanvas -->
+<div class="transaction-grid px-6 py-4 transaction-row"
+     data-payment="ShopeePay"
+     data-time="15:10"
+     data-notes="Beli totebag buat kuliah dari toko Shopee">
+    <div class="flex items-center space-x-3 transaction-name-cell">
+        <div class="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">T</span>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="font-medium text-gray-900 truncate">Totebag Kanvas</div>
+        </div>
+    </div>
+    <div>
+        <span class="text-gray-600">Shopping</span>
+    </div>
+    <div>
+        <span class="font-medium amount-negative">-Rp. 79.000</span>
+    </div>
+    <div>
+        <div class="text-gray-900">12 June 2024</div>
+    </div>
+    <div class="text-center">
+        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            View
+        </button>
+    </div>
+</div>
+
+                        
+
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center hidden">
+        <!-- Modal Box -->
+        <div class="relative bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-6">
+        <!-- Close Button -->
+        <button id="closeModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+        <h2 class="text-xl font-semibold mb-4">Add Transaction</h2>
 
-                        <!-- More Transactions... -->
-                        <!-- Duplicate the transaction-row div for other transactions. -->
-                    </div>
-                </div>
+        <!-- Toggle Income/Expense -->
+        <div class="flex mb-4">
+            <button id="incomeBtn" class="flex-1 py-2 mx-1 text-white bg-blue-500 rounded-lg focus:outline-none">Income</button>
+            <button id="expenseBtn" class="flex-1 py-2 mx-1 text-gray-700 bg-gray-200 rounded-lg focus:outline-none">Expense</button>
+        </div>
+
+        <!-- Form -->
+        <form id="transactionForm">
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Name Transaction</label>
+                <input type="text" class="block w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Amount</label>
+                <input type="number" class="block w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+
+            <div class="mb-4">
+    <label class="block text-sm font-medium mb-1">Payment Method</label>
+    <input 
+        type="text" 
+        id="paymentMethodInput" 
+        class="block w-full border border-gray-300 rounded-lg p-2" 
+        placeholder="e.g. OVO, BNI Mobile" 
+        required
+    >
+</div>
+
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Date</label>
+                <input type="date" class="block w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Category</label>
+                <select id="categorySelect" class="block w-full border border-gray-300 rounded-lg p-2" required>
+                    <!-- Options will be filled via JavaScript -->
+            </select>
+            </div>
+                <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Note (Optional)</label>
+                <input type="text" class="block w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <button type="submit" class="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">Save</button>
+        </form>
+        </div>
+    </div>
+
+    <!-- logout -->
+    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-96 max-w-md mx-4">
+            <div class="text-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirm Logout</h3>
+                <p class="text-gray-600">Are you sure you want to log out?</p>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="closeLogoutModal()" class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
+                    Cancel
+                </button>
+                <button onclick="confirmLogout()" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                    Yes, Log out
+                </button>
             </div>
         </div>
     </div>
 
-        <!-- Modal Overlay -->
-        <div id="modalOverlay" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center hidden">
-            <!-- Modal Box -->
-            <div class="relative bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-6">
-            <!-- Close Button -->
-            <button id="closeModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
-            <h2 class="text-xl font-semibold mb-4">Add Transaction</h2>
-
-            <!-- Toggle Income/Expense -->
-            <div class="flex mb-4">
-                <button id="incomeBtn" class="flex-1 py-2 mx-1 text-white bg-blue-500 rounded-lg focus:outline-none">Income</button>
-                <button id="expenseBtn" class="flex-1 py-2 mx-1 text-gray-700 bg-gray-200 rounded-lg focus:outline-none">Expense</button>
-            </div>
-
-            <!-- Form -->
-            <form id="transactionForm">
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Name Transaction</label>
-                    <input type="text" class="block w-full border border-gray-300 rounded-lg p-2" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Amount</label>
-                    <input type="number" class="block w-full border border-gray-300 rounded-lg p-2" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Date</label>
-                    <input type="date" class="block w-full border border-gray-300 rounded-lg p-2" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Category</label>
-                    <select id="categorySelect" class="block w-full border border-gray-300 rounded-lg p-2" required>
-                        <!-- Options will be filled via JavaScript -->
-                </select>
-                </div>
-                    <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Note (Optional)</label>
-                    <input type="text" class="block w-full border border-gray-300 rounded-lg p-2">
-                </div>
-                <button type="submit" class="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">Save</button>
-            </form>
-            </div>
-        </div>
-
-        <!-- logout -->
-        <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-            <div class="bg-white rounded-lg shadow-xl p-6 w-96 max-w-md mx-4">
-                <div class="text-center mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirm Logout</h3>
-                    <p class="text-gray-600">Are you sure you want to log out?</p>
-                </div>
-                <div class="flex space-x-3">
-                    <button onclick="closeLogoutModal()" class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                        Cancel
-                    </button>
-                    <button onclick="confirmLogout()" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                        Yes, Log out
-                    </button>
-                </div>
-            </div>
-        </div>
-
+    <!-- Tambahkan ini di dalam body, sebelum script tag -->
+<!-- Redesain Modal Detail Transaksi -->
+<div id="transactionDetailModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center hidden">
+  <div class="relative bg-white rounded-2xl shadow-2xl w-[90%] max-w-md p-6 border border-blue-200">
+    <button id="closeDetailModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-semibold text-[#4e6af3]">Transaction Detail</h2>
+      <p class="text-sm text-gray-500">Detailed information of your transaction</p>
     </div>
+    <div class="space-y-4">
+      <div class="flex justify-between border-b pb-2">
+        <span class="text-gray-500 font-medium">Name</span>
+        <span id="detailName" class="text-gray-800 font-semibold"></span>
+      </div>
+      <div class="flex justify-between border-b pb-2">
+        <span class="text-gray-500 font-medium">Category</span>
+        <span id="detailCategory" class="text-gray-800 font-semibold"></span>
+      </div>
+      <div class="flex justify-between border-b pb-2">
+        <span class="text-gray-500 font-medium">Payment Method</span>
+        <span id="detailPayment" class="text-gray-800 font-semibold"></span>
+      </div>
+      <div class="flex justify-between border-b pb-2">
+        <span class="text-gray-500 font-medium">Amount</span>
+        <span id="detailAmount" class="text-gray-800 font-semibold"></span>
+      </div>
+      <div class="flex justify-between border-b pb-2">
+        <span class="text-gray-500 font-medium">Date</span>
+        <span id="detailDate" class="text-gray-800 font-semibold"></span>
+      </div>
+      <div class="flex justify-between border-b pb-2">
+        <span class="text-gray-500 font-medium">Time</span>
+        <span id="detailTime" class="text-gray-800 font-semibold"></span>
+      </div>
+      <div class="pt-2">
+        <span class="block text-gray-500 font-medium mb-1">Notes</span>
+        <p id="detailNotes" class="text-gray-700 text-sm bg-gray-100 rounded-lg p-3"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <script>
         // Search functionality
@@ -498,7 +702,7 @@
             if (button.textContent.trim() === 'View') {
                 button.addEventListener('click', function() {
                     const transactionName = this.closest('.transaction-row').querySelector('.font-medium').textContent;
-                    alert(`Viewing details for: ${transactionName}`);
+                    
                 });
             }
         });
@@ -514,8 +718,8 @@
         // Default state
         let isIncome = true;
 
-        const incomeCategories = ['Job', 'Freelance', 'Other'];
-        const expenseCategories = ['Food', 'Transport', 'Entertainment', 'Other'];
+        const incomeCategories = ['Salary', 'Freelance', 'Gift','Allowance','Scholarship','Refund','Others'];
+        const expenseCategories = ['Food', 'Transport', 'Entertainment', 'Shopping','Bills','Education','Health','Donation','Skincare','Others'];
 
         function populateCategories(categories) {
             categorySelect.innerHTML = '<option value="" disabled selected>Select Category</option>';
@@ -561,10 +765,15 @@
         const transactionForm = document.getElementById('transactionForm');
         transactionForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const paymentMethod = document.getElementById('paymentMethodInput').value;
+            console.log("Metode pembayaran:", paymentMethod);
+
             alert('Transaction saved!');
             modal.classList.add('hidden');
             transactionForm.reset();
             populateCategories(isIncome ? incomeCategories : expenseCategories);
+
+            
         });
 
         //logout
@@ -579,6 +788,66 @@
         function confirmLogout() {
             window.location.href = "signin.html";
         }
+
+
+
+
+
+
+
+
+        // Perbarui script view agar baca dari data-* attributes
+const detailModal = document.getElementById('transactionDetailModal');
+const closeDetailBtn = document.getElementById('closeDetailModal');
+
+closeDetailBtn.addEventListener('click', () => detailModal.classList.add('hidden'));
+
+// Ganti event listener View agar akses data-payment, data-time, data-notes
+const allViewButtons = document.querySelectorAll('button');
+allViewButtons.forEach(button => {
+  if (button.textContent.trim() === 'View') {
+    button.addEventListener('click', function () {
+      const row = this.closest('.transaction-row');
+      const name = row.querySelector('.transaction-name-cell .font-medium').textContent;
+      const category = row.querySelectorAll('span.text-gray-600')[0].textContent;
+      const amount = row.querySelector('.font-medium.amount-positive, .font-medium.amount-negative').textContent;
+      const allTextGray900 = row.querySelectorAll('div.text-gray-900');
+const date = allTextGray900[allTextGray900.length - 1].textContent;
+
+      // Ambil data tersembunyi dari atribut
+      const payment = row.dataset.payment || '-';
+      const time = row.dataset.time || '-';
+      const notes = row.dataset.notes || '-';
+
+      document.getElementById('detailName').textContent = name;
+      document.getElementById('detailCategory').textContent = category;
+      document.getElementById('detailPayment').textContent = payment;
+      document.getElementById('detailAmount').textContent = amount;
+      const amountElement = document.getElementById('detailAmount');
+amountElement.textContent = amount;
+
+if (amount.trim().startsWith('+')) {
+  amountElement.classList.add('text-green-500');
+  amountElement.classList.remove('text-red-500');
+} else if (amount.trim().startsWith('-')) {
+  amountElement.classList.add('text-red-500');
+  amountElement.classList.remove('text-green-500');
+} else {
+  amountElement.classList.remove('text-green-500', 'text-red-500');
+}
+
+      document.getElementById('detailDate').textContent = date;
+      document.getElementById('detailTime').textContent = time;
+      document.getElementById('detailNotes').textContent = notes;
+
+      detailModal.classList.remove('hidden');
+    });
+  }
+});
+
+
+
+
     </script>
 </body>
 </html>

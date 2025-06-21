@@ -16,17 +16,32 @@
         background: linear-gradient(135deg, #e8edff 0%, #ffffff 100%);
     }
 
+    /* Styling untuk grid lines */
+    .chart-grid {
+        position: relative;
+    }
+    
+    .grid-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: repeating-linear-gradient(
+            to right,
+            #d1d5db 0px,
+            #d1d5db 4px,
+            transparent 4px,
+            transparent 8px
+        );
+    }
 </style>
 <body class="bg-gradient-custom min-h-screen">
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
         <div class="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0 z-20">
-            <!-- Logo -->
             <div class="py-5 flex items-center justify-center border-b border-gray-200">
                 <img src="BUDGETIN LOGO.svg" alt="Logo Budgetin" class="w-[65%]">
             </div>
 
-            <!-- Navigation Menu -->
             <nav class="mt-8">
                 <ul class="space-y-2 px-4">
                     <li>
@@ -55,7 +70,6 @@
                     </li>
                 </ul>
 
-                <!-- Bottom Menu -->
                 <div class="absolute bottom-0 w-64 p-4 space-y-2">
                     <a href="#" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,19 +87,15 @@
             </nav>
         </div>
 
-        <div class="ml-64 p-6">
-            <!-- Header -->
+        <div class="ml-64 p-6 flex-1">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-800 mb-2">Good Morning, Dinda!</h1>
                 <p class="text-gray-600">Get your summary of your monthly transaction here.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Left Column -->
                 <div class="lg:col-span-2 space-y-6">
-                    <!-- Balance Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Total Balance Card -->
                         <div class="bg-gradient-to-r from-indigo-500 to-blue-600 rounded-2xl p-6 text-white">
                             <div class="flex items-center mb-4">
                                 <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
@@ -99,7 +109,6 @@
                             <div class="text-2xl font-bold">Rp. 5.000.000</div>
                         </div>
 
-                        <!-- Total Income Card -->
                         <div class="bg-white rounded-2xl p-6 shadow-sm border">
                             <div class="flex items-center mb-4">
                                 <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
@@ -113,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- Chart Section -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border">
                         <div class="flex justify-between items-center mb-6">
                             <div>
@@ -123,167 +131,156 @@
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-blue-600">7 Days bank statement</span>
                                 <select class="text-sm border rounded px-2 py-1">
-                                <option>JANUARI</option>
-                                <option>FEBRUARI</option>
-                                <option>MARET</option>
-                                <option>APRIL</option>
-                                <option>MEI</option>
-                                <option>JUNI</option>
-                                <option>JULI</option>
-                                <option>AGUSTUS</option>
-                                <option>SEPTEMBER</option>
-                                <option>OKTOBER</option>
-                                <option>NOVEMBER</option>
-                                <option>DESEMBER</option>
-                            </select>
-
+                                    <option>JANUARI</option>
+                                    <option>FEBRUARI</option>
+                                    <option>MARET</option>
+                                    <option>APRIL</option>
+                                    <option>MEI</option>
+                                    <option>JUNI</option>
+                                    <option>JULI</option>
+                                    <option>AGUSTUS</option>
+                                    <option>SEPTEMBER</option>
+                                    <option>OKTOBER</option>
+                                    <option>NOVEMBER</option>
+                                    <option>DESEMBER</option>
+                                </select>
                             </div>
                         </div>
                         
-                        <!-- Chart Bars -->
-                        <div class="flex items-end justify-between h-40 space-x-2">
-<<<<<<< HEAD:Front End/dashboard.html
-                            <div class="flex flex-col h-40 pr-2 text-xs text-gray-400 font-medium justify-between">
-                                <span>400k</span>
-                                <span>300k</span>
-                                <span>200k</span>
-                                <span>100k</span>
-                                <span>0</span>
+                        <div class="relative w-full overflow-hidden">
+                            <div class="absolute inset-y-0 left-[50px] right-0 flex flex-col justify-between z-0">
+                                <div class="border-t border-dashed border-gray-300 w-full"></div>
+                                <div class="border-t border-dashed border-gray-300 w-full"></div>
+                                <div class="border-t border-dashed border-gray-300 w-full"></div>
+                                <div class="border-t border-dashed border-gray-300 w-full"></div>
+                                <div class="border-t border-dashed border-gray-300 w-full"></div>
                             </div>
 
-=======
-                            <div class="flex flex-col justify-between h-40 pr-2 text-xs text-gray-400 font-medium">
-                                <span>400k</span>
-                                <span>350k</span>
-                                <span>300k</span>
-                                <span>250k</span>
-                                <span>200k</span>
-                                <span>150k</span>
-                                <span>100k</span>
-                                <span>50k</span>
-                                <span>0</span>
-                            </div>
->>>>>>> 216455a (ubah lokal saya):FrontEnd/dashboard.html
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 60px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/01</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 80px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/02</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 120px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/03</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 40px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/04</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 65px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/05</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-700 rounded-t" style="height: 90px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/06</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 100px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/07</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-600 rounded-t" style="height: 110px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/08</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 75px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/09</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 95px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/10</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-400 rounded-t" style="height: 25px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/11</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-8 bg-indigo-500 rounded-t" style="height: 130px;"></div>
-                                <span class="text-xs text-gray-500 mt-2">01/12</span>
+                            <div class="flex">
+                                <div class="flex flex-col justify-between h-40 pr-2 text-xs text-gray-400 font-medium">
+                                    <span>400k</span>
+                                    <span>300k</span>
+                                    <span>200k</span>
+                                    <span>100k</span>
+                                    <span>0</span>
+                                </div>
+
+                                <div class="flex-1 grid grid-cols-12 gap-3 h-40 items-end px-2">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 60px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">01</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 80px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">02</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 120px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">03</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 40px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">04</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 65px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">05</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-700 rounded-t" style="height: 90px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">06</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 100px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">07</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-600 rounded-t" style="height: 110px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">08</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 75px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">09</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 95px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">10</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-400 rounded-t" style="height: 30px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">11</span>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 130px;"></div>
+                                        <span class="text-xs text-gray-500 mt-1">12</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Recent Transactions -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border">
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-lg font-semibold text-gray-800">Recent Transaction</h3>
                             <a href="Transactions.html" class="text-blue-600 text-sm hover:underline">View All</a>
                         </div>
-                        
+
                         <div class="space-y-4">
-                            <!-- Transaction Item 1 -->
-                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg"
+                                data-payment="BNI Mobile" data-time="14:20" data-notes="Pembayaran dari klien desain logo">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                                        <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-                                        </svg>
+                                    <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-white font-bold">F</span>
                                     </div>
                                     <div>
-                                        <h4 class="font-medium text-gray-800">iPhone 13 Pro MAX</h4>
-                                        <p class="text-sm text-gray-500">Shopee</p>
+                                        <h4 class="font-medium text-gray-800">Freelance Design</h4>
+                                        <p class="text-sm text-gray-500">Freelance</p>
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <div class="font-semibold text-red-600">-Rp. 13.000.000</div>
-
-                                    <div class="text-sm text-gray-500">16 Apr 2022</div>
+                                    <div class="font-semibold text-green-600">+Rp. 150.000</div>
+                                    <div class="text-sm text-gray-500">20 June 2024</div>
                                 </div>
                             </div>
 
-                            <!-- Transaction Item 2 -->
-                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg"
+                                data-payment="Gopay" data-time="10:15" data-notes="Sedekah Jumat di masjid dekat kampus">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
-                                        <span class="text-red-600 font-bold text-sm">N</span>
+                                    <div class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-white font-bold">D</span>
                                     </div>
                                     <div>
-                                        <h4 class="font-medium text-gray-800">Netflix Subscription</h4>
-                                        <p class="text-sm text-gray-500">Entertainment</p>
+                                        <h4 class="font-medium text-gray-800">Masjid Donation</h4>
+                                        <p class="text-sm text-gray-500">Donation</p>
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <div class="font-semibold text-red-600">-Rp. 500.000</div>
-
-                                    <div class="text-sm text-gray-500">05 Apr 2022</div>
+                                    <div class="font-semibold text-red-600">-Rp. 50.000</div>
+                                    <div class="text-sm text-gray-500">20 June 2024</div>
                                 </div>
                             </div>
 
-                            <!-- Transaction Item 3 -->
-                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg"
+                                data-payment="OVO" data-time="07:50" data-notes="Pergi ke kampus pagi-pagi pakai GrabCar">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                        <span class="text-blue-600 font-bold text-sm">F</span>
+                                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-white font-bold">G</span>
                                     </div>
                                     <div>
-                                        <h4 class="font-medium text-gray-800">Figma Subscription</h4>
-                                        <p class="text-sm text-gray-500">Software</p>
+                                        <h4 class="font-medium text-gray-800">GrabCar to Campus</h4>
+                                        <p class="text-sm text-gray-500">Transportation</p>
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <div class="font-semibold text-red-600">-Rp. 100.000</div>
-
-                                    <div class="text-sm text-gray-500">03 Apr 2022</div>
+                                    <div class="font-semibold text-red-600">-Rp. 27.000</div>
+                                    <div class="text-sm text-gray-500">19 June 2024</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Right Column -->
-                <div class="space-y-6">
-                    <!-- Notes Card -->
+
+                <div class="lg:col-span-1 space-y-6">
                     <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="text-lg font-semibold">Notes</h3>
@@ -311,37 +308,46 @@
                                 <span class="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></span>
                                 <span class="opacity-90">This is template that is very long text</span>
                             </div>
-                            <div class="flex items-start">
-                                <span class="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                <span class="opacity-90">This is template list</span>
-                            </div>
+                            
                         </div>
                     </div>
 
-                    <!-- Calendar Card -->
-                    <div class="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl p-6 text-white text-center">
-                        <div class="mb-4">
-                            <div id="calendar-month" class="text-sm opacity-80 mb-1">JUNE</div>
-                            <div id="calendar-year" class="text-sm opacity-80">2025</div>
-                        </div>
-                        <div id="calendar-date" class="text-6xl font-bold mb-2">06</div>
-                        <div id="calendar-day" class="text-lg">Friday</div>
-                    </div>
 
-                    <!-- Quote Card -->
-                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
-                        <div class="text-lg font-semibold leading-relaxed text-center">
-                            "Track Smart, <br>
-                            Spend Wisely, <br>
-                            Budget It!"
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+                   <!-- Improved Styled Calendar Section -->
+<div class="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl p-6 text-white min-h-[360px] max-h-[400px] flex flex-col justify-between shadow-xl">
+    <div class="flex justify-between items-center mb-4">
+        <button id="prevMonth" class="text-white hover:text-gray-200 text-xl font-bold transition-transform transform hover:scale-110">&lt;</button>
+        <div class="text-center">
+            <div id="calendarMonth" class="text-sm uppercase opacity-90 tracking-wider">Month</div>
+            <div id="calendarYear" class="text-2xl font-bold tracking-wide">Year</div>
         </div>
+        <button id="nextMonth" class="text-white hover:text-gray-200 text-xl font-bold transition-transform transform hover:scale-110">&gt;</button>
     </div>
 
-    <!-- logout -->
+    <div class="grid grid-cols-7 gap-2 text-xs text-center opacity-80 mb-2">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
+
+    <div id="calendarDays" class="grid grid-cols-7 gap-2 text-center h-[220px] overflow-hidden">
+        <!-- Populated by JS -->
+    </div>
+</div>
+
+
+
+
+
+                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl px-6 py-6 text-white shadow-md">
+  <div class="text-center leading-snug font-poppins">
+    <p class="text-base font-semibold tracking-wide">
+      <span class="block">Track smart & spend wisely,</span>
+      <span class="block italic text-white/80">Make it count with <span class="font-bold text-white">BudgetIn!</span></span>
+    </p>
+  </div>
+</div>
+
+
     <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-lg shadow-xl p-6 w-96 max-w-md mx-4">
             <div class="text-center mb-6">
@@ -359,26 +365,21 @@
         </div>
     </div>
         
-        <!-- Add Note Modal -->
-        <div id="noteModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
-        <div class="bg-white rounded-lg w-full max-w-md shadow-lg">
-            <div class="flex justify-between items-center px-5 py-4 border-b">
-            <h2 class="text-lg font-semibold text-gray-800">Add Note</h2>
-            <button onclick="closeNoteModal()" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
-            </div>
-            <div class="px-5 py-4">
-            <textarea id="noteInput" rows="4" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Write your note here..."></textarea>
-            </div>
-            <div class="flex justify-end px-5 py-4 border-t gap-2">
-            <button onclick="closeNoteModal()" class="px-4 py-2 text-gray-700 border rounded hover:bg-gray-100">Cancel</button>
-            <button onclick="saveNote()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Done</button>
-            </div>
+    <div id="noteModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg w-full max-w-md shadow-lg">
+        <div class="flex justify-between items-center px-5 py-4 border-b">
+        <h2 class="text-lg font-semibold text-gray-800">Add Note</h2>
+        <button onclick="closeNoteModal()" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
         </div>
+        <div class="px-5 py-4">
+        <textarea id="noteInput" rows="4" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Write your note here..."></textarea>
         </div>
-
-
-
-
+        <div class="flex justify-end px-5 py-4 border-t gap-2">
+        <button onclick="closeNoteModal()" class="px-4 py-2 text-gray-700 border rounded hover:bg-gray-100">Cancel</button>
+        <button onclick="saveNote()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Done</button>
+        </div>
+    </div>
+    </div>
 
     <script>
         // logout
@@ -406,22 +407,63 @@
         }
 
         //tanggal
-        window.onload = function () {
-        console.log("Script jalan");
+        const calendarMonth = document.getElementById('calendarMonth');
+  const calendarYear = document.getElementById('calendarYear');
+  const calendarDays = document.getElementById('calendarDays');
+  const prevMonthBtn = document.getElementById('prevMonth');
+  const nextMonthBtn = document.getElementById('nextMonth');
 
-        const now = new Date();
+  let currentDate = new Date();
 
-        const months = [
-            "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
-            "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
-        ];
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  function renderCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
 
-        document.getElementById("calendar-month").textContent = months[now.getMonth()];
-        document.getElementById("calendar-year").textContent = now.getFullYear();
-        document.getElementById("calendar-date").textContent = String(now.getDate()).padStart(2, '0');
-        document.getElementById("calendar-day").textContent = days[now.getDay()];
-        };
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"];
+
+    calendarMonth.textContent = monthNames[month];
+    calendarYear.textContent = year;
+
+    calendarDays.innerHTML = "";
+
+    for (let i = 0; i < firstDay; i++) {
+      const empty = document.createElement('div');
+      calendarDays.appendChild(empty);
+    }
+
+    for (let i = 1; i <= lastDate; i++) {
+      const day = document.createElement('div');
+      day.textContent = i;
+      day.className = "py-2 rounded-lg text-sm cursor-pointer hover:bg-white/20 transition";
+
+      const today = new Date();
+      if (
+        i === today.getDate() &&
+        month === today.getMonth() &&
+        year === today.getFullYear()
+      ) {
+        day.classList.add("bg-white", "text-indigo-700", "font-bold", "shadow-md");
+      }
+
+      calendarDays.appendChild(day);
+    }
+  }
+
+  prevMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  });
+
+  nextMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  });
+
+  renderCalendar();
 
     </script>
 </body>
