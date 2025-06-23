@@ -120,106 +120,60 @@
                     </div>
 
                     <div class="bg-white rounded-2xl p-6 shadow-sm border">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-800">Total expenses</h3>
-                                <div class="text-2xl font-bold text-gray-800">Rp. 2.000.000,-</div>
-                            </div>
-                            
-                            <div class="flex items-center space-x-2">
-                                <button id="filter-weekly" class="filter-btn text-sm border rounded px-3 py-1">7 Hari</button>
-                                <button id="filter-monthly" class="filter-btn text-sm border rounded px-3 py-1">Bulanan</button>
-                                <select class="text-sm border rounded px-2 py-1">
-                                    <option>JANUARI</option>
-                                    <option>FEBRUARI</option>
-                                    <option>MARET</option>
-                                    <option>APRIL</option>
-                                    <option>MEI</option>
-                                    <option>JUNI</option>
-                                    <option>JULI</option>
-                                    <option>AGUSTUS</option>
-                                    <option>SEPTEMBER</option>
-                                    <option>OKTOBER</option>
-                                    <option>NOVEMBER</option>
-                                    <option>DESEMBER</option>
-                                </select>
-                            </div>
-                        </div>
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h3 class="text-lg font-semibold text-gray-800">Total expenses</h3>
+            <div class="text-2xl font-bold text-gray-800">Rp. 2.000.000,-</div>
+        </div>
 
-                        <!-- Chart canvas -->
-                        <canvas id="expenseChart" height="120"></canvas>
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div class="flex items-center space-x-2">
+            <!-- Buttons -->
+            <button id="filter-weekly" class="filter-btn text-sm border rounded px-3 py-1 bg-white text-gray-700 border-gray-300 hover:bg-blue-50">
+                7 Hari
+            </button>
+            <button id="filter-monthly" class="filter-btn text-sm border rounded px-3 py-1 bg-blue-100 text-blue-600 border-blue-400">
+                Bulanan
+            </button>
+            <select id="month-select" class="text-sm border rounded px-2 py-1">
+                <option value="0">JANUARI</option>
+                <option value="1">FEBRUARI</option>
+                <option value="2">MARET</option>
+                <option value="3">APRIL</option>
+                <option value="4">MEI</option>
+                <option value="5" selected>JUNI</option>
+                <option value="6">JULI</option>
+                <option value="7">AGUSTUS</option>
+                <option value="8">SEPTEMBER</option>
+                <option value="9">OKTOBER</option>
+                <option value="10">NOVEMBER</option>
+                <option value="11">DESEMBER</option>
+            </select>
+        </div>
+    </div>
 
-                        <!-- <div class="relative w-full overflow-hidden">
-                            <div class="flex">
-                                <div class="flex flex-col justify-between h-40 pr-4 text-xs text-gray-400 font-medium z-10">
-                                    <span>400k</span>
-                                    <span>300k</span>
-                                    <span>200k</span>
-                                    <span>100k</span>
-                                    <span>0</span>
-                                </div>
-                                Grid Lines di belakang 
-                                <div class="absolute left-6 top-0 w-full h-40 pr-2 flex flex-col justify-between z-10">
-                                    <div class="border-t border-gray-200 w-full"></div>
-                                    <div class="border-t border-gray-200 w-full"></div>
-                                    <div class="border-t border-gray-200 w-full"></div>
-                                    <div class="border-t border-gray-200 w-full"></div>
-                                    <div class="border-t border-gray-300 w-full"></div> garis 0 
-                                </div>                                  
-                                <div class="flex-1 grid grid-cols-12 gap-3 h-40 items-end px-2 z-10">
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 60px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">01</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 80px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">02</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 120px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">03</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 40px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">04</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 65px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">05</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-700 rounded-t" style="height: 90px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">06</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 100px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">07</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-600 rounded-t" style="height: 110px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">08</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 75px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">09</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 95px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">10</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-400 rounded-t" style="height: 30px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">11</span>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-7 bg-indigo-500 rounded-t" style="height: 130px;"></div>
-                                        <span class="text-xs text-gray-500 mt-1">12</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> // -->
-                    </div>
+    <!-- Chart -->
+    <div class="relative">
+        <canvas id="expenseChart" height="120"></canvas>
+    </div>
+
+    <!-- Week Navigation moved below chart -->
+    <div id="weekly-controls" class="flex justify-center items-center mt-4 space-x-2 hidden">
+        <button id="prev-week" class="text-gray-600 hover:text-blue-600 p-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <span id="week-label" class="text-sm text-gray-600 px-2">Week 1</span>
+        <button id="next-week" class="text-gray-600 hover:text-blue-600 p-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</div>
 
                     <div class="bg-white rounded-2xl p-6 shadow-sm border">
                         <div class="flex justify-between items-center mb-6">
@@ -384,17 +338,6 @@
     </div>
 
     <script>
-        // logout
-        function openLogoutModal() {
-            document.getElementById("logoutModal").classList.remove("hidden");
-        }
-        function closeLogoutModal() {
-            document.getElementById("logoutModal").classList.add("hidden");
-        }
-        function confirmLogout() {
-            window.location.href = "signin.html";
-        }
-
         //note
         function openNoteModal() {
         document.getElementById("noteModal").classList.remove("hidden");
@@ -408,6 +351,17 @@
         closeNoteModal();
         }
 
+        // logout
+        function openLogoutModal() {
+            document.getElementById("logoutModal").classList.remove("hidden");
+        }
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").classList.add("hidden");
+        }
+        function confirmLogout() {
+            window.location.href = "signin.html";
+        }
+        
         //kalender
         const calendarMonth = document.getElementById('calendarMonth');
         const calendarYear = document.getElementById('calendarYear');
@@ -467,91 +421,146 @@
 
         renderCalendar();
 
+
+
+      // Chart functionality
 const ctx = document.getElementById("expenseChart").getContext("2d");
-  const chartContainer = document.getElementById('chart-container');
-  const btnWeekly = document.getElementById('filter-weekly');
-  const btnMonthly = document.getElementById('filter-monthly');
-  const monthSelect = document.getElementById('month-select');
+const btnWeekly = document.getElementById('filter-weekly');
+const btnMonthly = document.getElementById('filter-monthly');
+const monthSelect = document.getElementById('month-select');
+const weeklyControls = document.getElementById('weekly-controls');
+const weekLabel = document.getElementById('week-label');
+const prevWeekBtn = document.getElementById('prev-week');
+const nextWeekBtn = document.getElementById('next-week');
 
-  const chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: [],
-      datasets: [{
-        label: 'Expenses',
-        data: [],
-        backgroundColor: '#4e6af3',
-        borderRadius: 6,
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: value => 'Rp. ' + value.toLocaleString()
-          }
+let currentWeek = 1;
+let maxWeeksInMonth = 4;
+let currentView = 'monthly';
+
+const sampleWeeklyData = {
+    week1: { labels: ['1','2','3','4','5','6','7'], data: [120000, 80000, 150000, 90000, 200000, 110000, 170000] },
+    week2: { labels: ['8','9','10','11','12','13','14'], data: [130000, 95000, 145000, 100000, 190000, 115000, 160000] },
+    week3: { labels: ['15','16','17','18','19','20','21'], data: [140000, 85000, 155000, 105000, 180000, 120000, 150000] },
+    week4: { labels: ['22','23','24','25','26','27','28'], data: [125000, 88000, 140000, 95000, 170000, 108000, 145000] }
+};
+
+const sampleMonthlyData = {
+    labels: Array.from({ length: 30 }, (_, i) => (i + 1).toString()),
+    data: Array.from({ length: 30 }, () => Math.floor(Math.random() * 500000) + 100000)
+};
+
+let chart;
+
+function createChart(labels, data) {
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Expenses",
+                    data: data,
+                    fill: true,
+                    backgroundColor: "rgba(59, 130, 246, 0.2)",
+                    borderColor: "rgba(59, 130, 246, 1)",
+                    tension: 0.3,
+                    pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                    pointRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function (value) {
+                            return 'Rp ' + value.toLocaleString('id-ID');
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        maxRotation: 0,
+                        minRotation: 0
+                    }
+                }
+            }
         }
-      }
-    }
-  });
-
-  function setActiveButton(activeBtn) {
-    [btnWeekly, btnMonthly].forEach(btn => {
-      btn.classList.remove("bg-blue-100", "text-blue-600", "border-blue-400");
-      btn.classList.add("bg-white", "text-gray-700", "border", "border-gray-300");
     });
+}
 
-    activeBtn.classList.remove("bg-white", "text-gray-700", "border-gray-300");
-    activeBtn.classList.add("bg-blue-100", "text-blue-600", "border-blue-400");
-  }
+function updateChart() {
+    if (currentView === 'monthly') {
+        weeklyControls.classList.add('hidden');
 
-  // Fetch weekly or monthly data from backend
-  async function loadChartData(type, month = null) {
-    let url = `/api/${type}?type=expense`;
-    if (month && type === 'weekly') {
-      url += `&month=${month}`; // contoh: /api/weekly?type=expense&month=6
+        // Aktifkan tombol Monthly (biru)
+        btnMonthly.classList.add('bg-blue-100', 'text-blue-600', 'border-blue-400');
+        btnMonthly.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+
+        // Nonaktifkan tombol Weekly (putih)
+        btnWeekly.classList.remove('bg-blue-100', 'text-blue-600', 'border-blue-400');
+        btnWeekly.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+
+        createChart(sampleMonthlyData.labels, sampleMonthlyData.data);
+    } else {
+        weeklyControls.classList.remove('hidden');
+
+        // Aktifkan tombol Weekly (biru)
+        btnWeekly.classList.add('bg-blue-100', 'text-blue-600', 'border-blue-400');
+        btnWeekly.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+
+        // Nonaktifkan tombol Monthly (putih)
+        btnMonthly.classList.remove('bg-blue-100', 'text-blue-600', 'border-blue-400');
+        btnMonthly.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+
+        const weekKey = `week${currentWeek}`;
+        const weekData = sampleWeeklyData[weekKey];
+        weekLabel.textContent = `Week ${currentWeek}`;
+        createChart(weekData.labels, weekData.data);
     }
+}
 
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
 
-      const labels = data.map(item => item.label || item.day || item.month); // backend bisa return 'day' or 'month'
-      const values = data.map(item => item.total);
+btnWeekly.addEventListener('click', () => {
+    currentView = 'weekly';
+    updateChart();
+});
 
-      chart.data.labels = labels;
-      chart.data.datasets[0].data = values;
-      chart.update();
-      chartContainer.classList.remove("hidden");
-    } catch (err) {
-      console.error("Failed to load data:", err);
+btnMonthly.addEventListener('click', () => {
+    currentView = 'monthly';
+    updateChart();
+});
+
+prevWeekBtn.addEventListener('click', () => {
+    if (currentWeek > 1) {
+        currentWeek--;
+        updateChart();
     }
-  }
+});
 
-  btnWeekly.addEventListener('click', () => {
-    setActiveButton(btnWeekly);
-    const selectedMonth = monthSelect.value; // ex: "6" for June
-    loadChartData("weekly", selectedMonth);
-  });
-
-  btnMonthly.addEventListener('click', () => {
-    setActiveButton(btnMonthly);
-    loadChartData("monthly");
-  });
-
-  monthSelect.addEventListener('change', () => {
-    if (btnWeekly.classList.contains("bg-blue-100")) {
-      loadChartData("weekly", monthSelect.value);
+nextWeekBtn.addEventListener('click', () => {
+    if (currentWeek < maxWeeksInMonth) {
+        currentWeek++;
+        updateChart();
     }
-  });
+});
 
-  // Load monthly data by default on page load
-  window.addEventListener("DOMContentLoaded", () => {
-    setActiveButton(btnMonthly);
-    loadChartData("monthly");
-  });
+monthSelect.addEventListener('change', () => {
+    updateChart();
+});
+
+updateChart();
+</script>
+
+
+
+  
     </script>
 </body>
 </html>
