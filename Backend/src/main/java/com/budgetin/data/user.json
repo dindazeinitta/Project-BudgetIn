@@ -9,5 +9,10 @@
     "fullName" : "paiq",
     "email" : "paiq@gmail.com",
     "password" : "$2a$10$FaRzWFk5znpijQvZUGuIeeXljmsjMsyJlLYrzEmC/Eyal3vn7Azvy"
+  }, {
+    "id" : 3,
+    "fullName" : "raka",
+    "email" : "raka@gmail.com",
+    "password" : "$2a$10$./4.UZ6wzLyNoTgow3waTuHKavVoYET5rr/TxRn3JpJnJ7oCiHRkm"
   } ]
 }

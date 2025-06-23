@@ -24,7 +24,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody RegistrationDto registrationDto) {
         try {
             userService.register(registrationDto);
@@ -42,7 +42,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             boolean isValid = userService.validateUser(loginRequest.email(), loginRequest.password());
