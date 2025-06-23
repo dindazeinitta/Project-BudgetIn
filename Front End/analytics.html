@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BudgetIn - Analytic</title>
+  <title>BudgetIn - Analytics</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -11,106 +11,288 @@
     body { font-family: 'Poppins', sans-serif; }
   </style>
 </head>
-<body class="bg-gradient-to-br from-[#e8edff] to-[#ffffff] min-h-screen p-8">
-  <div class="flex">
-    <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0 z-20">
-      <div class="py-5 flex items-center justify-center border-b border-gray-200">
-        <img src="BUDGETIN LOGO.svg" alt="Logo Budgetin" class="w-[65%]">
-      </div>
-      <nav class="mt-8">
-        <ul class="space-y-2 px-4">
-          <li>
-            <a href="dashboard.html" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-              </svg>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="Transactions.html" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-              </svg>
-              <span>Transactions</span>
-            </a>
-          </li>
-          <li>
-            <a href="account.html" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-              </svg>
-              <span>Account</span>
-            </a>
-          </li>
-          <li>
-            <a href="analytics.html" class="flex items-center space-x-3 text-white bg-[#4e6af3] px-4 py-3 rounded-lg shadow-md">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 11V5a1 1 0 112 0v6h4a1 1 0 110 2h-4v6a1 1 0 11-2 0v-6H7a1 1 0 110-2h4z" />
-              </svg>
-              <span>Analytics</span>
-            </a>
-          </li>
-        </ul>
-        <div class="absolute bottom-0 w-64 p-4 space-y-2">
-          <a href="#" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg><span>Switch account</span></a>
-          <a href="#" onclick="openLogoutModal()" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span >Log out</span></a>
-        </div>
-      </nav>
-    </div>
+<body class="min-h-screen bg-gradient-to-br from-[#e8edff] to-[#ffffff] font-[Poppins]">
+  <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0 z-20">
+            <div class="py-5 flex items-center justify-center border-b border-gray-200">
+                <img src="BUDGETIN LOGO.svg" alt="Logo Budgetin" class="w-[65%]">
+            </div>
+            <nav class="mt-8">
+                <ul class="space-y-2 px-4">
+                    <li><a href="dashboard.html" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg><span>Dashboard</span></a></li>
+                    <li><a href="Transactions.html" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg><span>Transactions</span></a></li>
+                    <li>
+          <a href="analytics.html" class="flex items-center space-x-3 text-white bg-[#4e6af3] px-4 py-3 rounded-lg shadow-md">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            <span>Analytics</span>
+          </a>
+        </li>
 
-    <div class="pl-64 pr-6 pt-6">
-      <h1 class="text-3xl font-bold text-gray-800 mb-2">📊 Analytic Overview</h1>
-      <p class="text-gray-500 mb-8">Here’s a breakdown of your financial habits this month.</p>
-      
-      <div class="flex gap-8">
+                </ul>
+                <div class="absolute bottom-0 w-64 p-4 space-y-2">
+                    <a href="settings.html" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.607 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                        </svg>
+                        <span>Settings</span>
+                    </a>                
+                    <a href="#" onclick="openLogoutModal()" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span >Log out</span></a>
+                </div>
+            </nav>
+        </div>
+
+  <!-- Main Content Area -->
+  <div class="ml-64 min-h-screen">
+    <div class="px-8 py-8">
+      <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <!-- Header with Month Dropdown -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+  <div>
+    <h1 class="text-3xl font-bold text-gray-800 mb-1">📊 Analytics Overview</h1>
+    <p class="text-gray-500">Here's a breakdown of your financial habits this month.</p>
+  </div>
+  <div>
+    <label for="monthSelect" class="sr-only">Select Month</label>
+    <select id="monthSelect" class="text-sm text-gray-700 bg-white border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4e6af3]">
+      <option>January</option>
+      <option>February</option>
+      <option>March</option>
+      <option>April</option>
+      <option>May</option>
+      <option selected>June</option>
+      <option>July</option>
+      <option>August</option>
+      <option>September</option>
+      <option>October</option>
+      <option>November</option>
+      <option>December</option>
+    </select>
+  </div>
+</div>
+
+
         <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-rows-3 gap-6 mb-10 w-60 flex-shrink-0">
-          <div class="bg-green-100 p-6 rounded-xl shadow">
-            <h2 class="text-sm text-gray-600">Total Income</h2>
-            <p class="text-2xl font-bold text-green-700">Rp. 3.000.000</p>
+        <!-- Summary Cards -->
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6 mb-8">
+  <!-- Total Income -->
+  <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-gradient-to-r from-green-100 to-green-50 p-5 rounded-xl shadow-sm border border-green-200">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-sm font-medium text-green-600">Total Income</h2>
+      <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-green-700">Rp 3.000.000</p>
+    <p class="text-xs text-green-600 mt-1">+5% from last month</p>
+  </div>
+
+  <!-- Total Expenses -->
+  <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-gradient-to-r from-red-100 to-red-50 p-5 rounded-xl shadow-sm border border-red-200">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-sm font-medium text-red-600">Total Expenses</h2>
+      <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-red-700">Rp 2.000.000</p>
+    <p class="text-xs text-red-600 mt-1">-2% from last month</p>
+  </div>
+
+  <!-- Saving Rate -->
+  <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-gradient-to-r from-purple-100 to-purple-50 p-5 rounded-xl shadow-sm border border-purple-200">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-sm font-medium text-purple-600">Saving Rate</h2>
+      <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+        </svg>
+      </div>
+    </div>
+    <p class="text-2xl font-bold text-purple-700">33.3%</p>
+    <p class="text-xs text-purple-600 mt-1">Excellent savings!</p>
+  </div>
+
+  <!-- Top 3 Spending -->
+  <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-gradient-to-r from-blue-100 to-blue-50 p-5 rounded-xl shadow-sm border border-blue-200">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-sm font-medium text-blue-600">Top 3 Spending</h2>
+      <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+      </div>
+    </div>
+    <ul class="space-y-2">
+      <li class="flex justify-between items-center">
+        <span class="text-sm text-gray-700">🍕 Food</span>
+        <span class="text-sm font-semibold text-red-600">Rp 1.200.000</span>
+      </li>
+      <li class="flex justify-between items-center">
+        <span class="text-sm text-gray-700">💡 Bills</span>
+        <span class="text-sm font-semibold text-red-600">Rp 500.000</span>
+      </li>
+      <li class="flex justify-between items-center">
+        <span class="text-sm text-gray-700">🚗 Transport</span>
+        <span class="text-sm font-semibold text-red-600">Rp 300.000</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Line Chart -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-lg font-semibold text-gray-800">Income vs Expenses Over Time</h3>
+              <div class="flex items-center space-x-4 text-sm">
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-[#4e6af3] rounded-full mr-2"></div>
+                  <span class="text-gray-600">Income</span>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-[#f87171] rounded-full mr-2"></div>
+                  <span class="text-gray-600">Expenses</span>
+                </div>
+              </div>
+            </div>
+            <div class="relative" style="height: 300px;">
+              <canvas id="lineChart"></canvas>
+            </div>
           </div>
-          <div class="bg-red-100 p-6 rounded-xl shadow">
-            <h2 class="text-sm text-gray-600">Total Expenses</h2>
-            <p class="text-2xl font-bold text-red-700">Rp. 2.000.000</p>
-          </div>
-          <div class="bg-purple-100 p-6 rounded-xl shadow">
-            <h2 class="text-sm text-gray-600">Saving Rate</h2>
-            <p class="text-2xl font-bold text-purple-700">33.3%</p>
+
+          <!-- Pie Chart -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-lg font-semibold text-gray-800">Spending by Category</h3>
+              <div class="text-sm text-gray-500">This Month</div>
+            </div>
+            <div class="relative" style="height: 300px;">
+              <canvas id="pieChart"></canvas>
+            </div>
           </div>
         </div>
 
-        <!-- Line Chart -->
-        <div class="bg-white p-6 rounded-xl shadow mb-10 flex-1">
-          <h3 class="text-lg font-semibold text-gray-700 mb-4">Income vs Expenses Over Time</h3>
-          <canvas id="lineChart" class="w-full h-64"></canvas>
-        </div>
-      </div>
+        <!-- Additional Analytics -->
+        <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Monthly Comparison -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h4 class="text-lg font-semibold text-gray-800 mb-4">Monthly Comparison</h4>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">This Month</span>
+                <span class="text-sm font-semibold text-green-600">Rp 1.000.000</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">Last Month</span>
+                <span class="text-sm font-semibold text-gray-600">Rp 800.000</span>
+              </div>
+              <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+                <span class="text-sm text-gray-600">Difference</span>
+                <span class="text-sm font-semibold text-green-600">+25%</span>
+              </div>
+            </div>
+          </div>
 
-      <div class="flex flex-col lg:flex-row gap-8 mb-10">
-        <!-- Pie Chart -->
-        <div class="flex-1 bg-white p-6 rounded-xl shadow mb-10">
-          <h3 class="text-lg font-semibold text-gray-700 mb-4">Spending by Category</h3>
-          <canvas id="pieChart" height="100"></canvas>
+          <!-- Budget Progress -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h4 class="text-lg font-semibold text-gray-800 mb-4">Budget Progress</h4>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm text-gray-600">Food Budget</span>
+                  <span class="text-sm font-semibold">80%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-red-500 h-2 rounded-full" style="width: 80%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm text-gray-600">Transport Budget</span>
+                  <span class="text-sm font-semibold">60%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm text-gray-600">Bills Budget</span>
+                  <span class="text-sm font-semibold">100%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h4 class="text-lg font-semibold text-gray-800 mb-4">Quick Stats</h4>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">Avg Daily Spending</span>
+                <span class="text-sm font-semibold">Rp 64.516</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">Total Transactions</span>
+                <span class="text-sm font-semibold">47</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">Largest Expense</span>
+                <span class="text-sm font-semibold text-red-600">Rp 250.000</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">Days Until Next Salary</span>
+                <span class="text-sm font-semibold text-blue-600">12 days</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- Top Transactions -->
-        <div class="flex-1 bg-white p-6 rounded-xl shadow">
-          <h3 class="text-lg font-semibold text-gray-700 mb-4">Top 3 Spending</h3>
-          <ul class="space-y-2">
-            <li class="text-gray-600">1. Macbook Pro - <span class="text-red-600 font-semibold">Rp 24.000.000</span></li>
-            <li class="text-gray-600">2. Rent Payment - <span class="text-red-600 font-semibold">Rp 2.000.000</span></li>
-            <li class="text-gray-600">3. Groceries - <span class="text-red-600 font-semibold">Rp 500.000</span></li>
-          </ul>
-        </div>        
       </div>
-      
     </div>
   </div>
-  <!-- Chart JS Scripts -->
+
+      <!-- logout -->
+    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-96 max-w-md mx-4">
+            <div class="text-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirm Logout</h3>
+                <p class="text-gray-600">Are you sure you want to log out?</p>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="closeLogoutModal()" class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
+                    Cancel
+                </button>
+                <button onclick="confirmLogout()" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                    Yes, Log out
+                </button>
+            </div>
+        </div>
+    </div>
+
+
   <script>
+  <!-- Chart.js Script -->    
+    // Line Chart
     const ctxLine = document.getElementById('lineChart').getContext('2d');
-    const lineChart = new Chart(ctxLine, {
+    new Chart(ctxLine, {
       type: 'line',
       data: {
         labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
@@ -119,39 +301,115 @@
             label: 'Income',
             data: [1000000, 800000, 600000, 400000],
             borderColor: '#4e6af3',
-            fill: false,
-            tension: 0.4
+            backgroundColor: 'rgba(78, 106, 243, 0.1)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointBackgroundColor: '#4e6af3',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 6
           },
           {
             label: 'Expenses',
             data: [400000, 500000, 600000, 500000],
             borderColor: '#f87171',
-            fill: false,
-            tension: 0.4
+            backgroundColor: 'rgba(248, 113, 113, 0.1)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointBackgroundColor: '#f87171',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 6
           }
         ]
       },
       options: {
         responsive: true,
-        plugins: { legend: { position: 'bottom' } }
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            },
+            ticks: {
+              callback: function(value) {
+                return 'Rp ' + (value / 1000000).toFixed(1) + 'M';
+              }
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
       }
     });
 
+    // Pie Chart
     const ctxPie = document.getElementById('pieChart').getContext('2d');
-    const pieChart = new Chart(ctxPie, {
+    new Chart(ctxPie, {
       type: 'doughnut',
       data: {
-        labels: ['Food', 'Transport', 'Entertainment', 'Bills', 'Education'],
+        labels: ['Food', 'Bills', 'Transport', 'Entertainment', 'Others'],
         datasets: [{
-          data: [35, 25, 20, 15, 5],
-          backgroundColor: ['#6366f1', '#22c55e', '#facc15', '#f87171', '#06b6d4']
+          data: [60, 25, 15, 15, 10],
+          backgroundColor: [
+            '#6366f1',
+            '#f87171', 
+            '#06b6d4',
+            '#facc15',
+            '#10b981'
+          ],
+          borderWidth: 0,
+          cutout: '60%'
         }]
       },
       options: {
         responsive: true,
-        plugins: { legend: { position: 'right' } }
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 20,
+              font: {
+                size: 12
+              }
+            }
+          }
+        }
       }
     });
+
+    document.getElementById('monthSelect').addEventListener('change', function () {
+  const selectedMonth = this.value;
+  // TODO: Fetch and update chart + top 3 data based on selectedMonth
+});
+
+  //logout
+        function openLogoutModal() {
+            document.getElementById("logoutModal").classList.remove("hidden");
+        }
+
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").classList.add("hidden");
+        }
+
+        function confirmLogout() {
+            window.location.href = "signin.html";
+        }
+
   </script>
 </body>
 </html>
