@@ -218,48 +218,92 @@
                     </form>
                 </div>
 
-                <!-- Security -->
-                <div class="tab-pane hidden" id="security">
-                    <div class="mb-6">
-                        <h4 class="font-medium mb-2">Two-factor Authentication</h4>
-                        <div class="flex items-center space-x-3">
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" checked>
-                            <div class="w-11 h-6 bg-gray-200 peer-checked:bg-blue-500 rounded-full transition"></div>
-                            <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></div>
-                        </label>
-                        <span class="text-sm text-gray-700">Enable or disable two factor <span class="font-medium">authentication</span></span>
-                        </div>
-                    </div>
-                    <form class="space-y-4 max-w-md">
-                        <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-                        <div class="relative">
-                            <input type="password" id="password" name="password" value="01234"
-                            class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:border-transparent outline-none transition-all duration-300">
-                            
-                            <button type="button" onclick="togglePassword()"
-                            class="absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-gray-600">
-                            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-6-10-6s1.784-2.5 4.6-4.6m3.4-1.4a4 4 0 015.656 5.656M15 12a3 3 0 11-3-3" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 3l18 18" />
-                            </svg>
-                            </button>
-                        </div>
-                        </div>
-                        <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                        <input type="password" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="********">
-                        </div>
-                        <div class="mt-6 flex justify-end">
-                        <button type="submit" class="bg-blue-600 text-white text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700">
-                            Save
-                        </button>
-                        </div>
-                    </form>
-                </div>
+<!-- Security -->
+<div class="tab-pane hidden" id="security">
+  <!-- Two-factor Authentication -->
+  <div class="mb-8">
+    <h4 class="text-lg font-semibold text-gray-800 mb-3">Two-Factor Authentication</h4>
+    <div class="flex items-center gap-3">
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" class="sr-only peer" checked>
+        <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-500 transition-colors duration-300"></div>
+        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+      </label>
+      <span class="text-sm text-gray-700">
+        Enable or disable <span class="font-medium">two-factor authentication</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Password Form -->
+  <form class="space-y-5 max-w-md">
+    <!-- Current Password -->
+    <div>
+      <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+      <div class="relative">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value="01234"
+          class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:outline-none transition-all duration-300"
+        />
+        <button
+          type="button"
+          onclick="togglePassword('password', 'eyeIcon')"
+          class="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+        >
+          <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-6-10-6s1.784-2.5 4.6-4.6m3.4-1.4a4 4 0 015.656 5.656M15 12a3 3 0 11-3-3" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 3l18 18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- New Password -->
+    <div>
+      <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+      <div class="relative">
+        <input
+          type="password"
+          id="newPassword"
+          name="newPassword"
+
+          class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:outline-none transition-all duration-300"
+        />
+        <button
+          type="button"
+          onclick="togglePassword('newPassword', 'eyeIconNew')"
+          class="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+        >
+          <svg id="eyeIconNew" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-6-10-6s1.784-2.5 4.6-4.6m3.4-1.4a4 4 0 015.656 5.656M15 12a3 3 0 11-3-3" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 3l18 18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="pt-4 flex justify-end">
+      <button
+        type="submit"
+        class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-6 py-2 rounded-lg shadow-sm transition-all"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+
+
             </div>
         </div>
     </div>
@@ -314,16 +358,33 @@
             });
         });
 
-        //pw        
-        function togglePassword() {
-            const input = document.getElementById("password");
-            const icon = document.getElementById("eyeIcon");
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
             if (input.type === "password") {
-                input.type = "text";
-                icon.outerHTML = `<svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" /></svg>`;
+            input.type = "text";
+            icon.outerHTML = `
+                <svg id="${iconId}" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7
+                    c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" />
+                </svg>`;
             } else {
-                input.type = "password";
-                icon.outerHTML = `<svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-6-10-6s1.784-2.5 4.6-4.6m3.4-1.4a4 4 0 015.656 5.656M15 12a3 3 0 11-3-3" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" /></svg>`;
+            input.type = "password";
+            icon.outerHTML = `
+                <svg id="${iconId}" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-6-10-6
+                    s1.784-2.5 4.6-4.6m3.4-1.4a4 4 0 015.656 5.656M15 12a3 3 0
+                    11-3-3" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3l18 18" />
+                </svg>`;
             }
         }
     </script>
