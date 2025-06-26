@@ -23,7 +23,7 @@ public class User {
     private Long id;
 
     @NotBlank(message = "Nama Tidak Boleh Kosong")
-    @Size(max = 100, message = "Nama Harus Kurang dari 100 Karakter")
+    @Size(max = 20, message = "Nama Harus Kurang dari 20 Karakter")
     @Column(nullable = false)
     private String fullName;
 
