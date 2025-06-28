@@ -1,17 +1,19 @@
 package com.budgetin.service;
 
-import com.budgetin.model.Transaction;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.budgetin.model.Transaction;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class TransactionService {
 
-    private final String TRANSACTION_FILE = "transaction.json";
+    private final String TRANSACTION_FILE = "src/main/java/com/budgetin/data/transaction.json";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<Transaction> getAllTransactions() throws IOException {

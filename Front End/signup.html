@@ -259,7 +259,7 @@
   </div>
 
   <script>
-  document.getElementById('registerForm').addEventListener('submit', function(event) {
+  document.getElementById('registerForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const fullName = document.getElementById('fullName').value.trim();
@@ -275,11 +275,29 @@
       return;
     }
 
-    if (fullName === 'Dinda Zeinitta' && email === 'dinda.z.q.p@gmail.com' && password === '01234') {
-      alert('Welcome Admin!');
-      window.location.href = 'signin.html';
-    } else {
-      alert('Invalid credentials. Try again.');
+    try {
+      const response = await fetch('http://localhost:8082/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: fullName,
+          email: email,
+          password: password
+        })
+      });
+
+      const result = await response.json();
+      if (response.ok && result.success) {
+        alert('Registration successful! Please sign in.');
+        window.location.href = 'signin.html';
+      } else {
+        alert(result.message || 'Registration failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('An error occurred. Please try again later.');
     }
   });
   </script>

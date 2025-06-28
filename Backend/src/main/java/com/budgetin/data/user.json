@@ -1,3 +1,18 @@
 {
-  "users" : []
+  "users" : [ {
+    "id": 1,
+    "fullName" : "azvar",
+    "email" : "azvar@gmail.com",
+    "password" : "$2a$10$UTdFm/RJio7RbawpDVdUI.6bBPQtgH1rX6z0KT2T3kgRMeGQ768b."
+  }, {
+    "id" : 2,
+    "fullName" : "dinda",
+    "email" : "dinda@gmail.com",
+    "password" : "$2a$10$9O6qXqBLm1e5le0AuWV4JuIk.1TVjg2r/4Kj5PgWzmkUWWwbSZkwm"
+  }, {
+    "id" : 3,
+    "fullName" : "asa",
+    "email" : "asa@gmail.com",
+    "password" : "$2a$10$CjIaKJ7ebHaBBLpI1MjeLeR61M8POhjiEKwUoq9LGgvcgYlSJOoY6"
+  } ]
 }

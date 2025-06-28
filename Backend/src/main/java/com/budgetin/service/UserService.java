@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-    private final String USER_DATA_FILE = "user.json";
+    private final String USER_DATA_FILE = "src/main/java/com/budgetin/data/user.json";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     // Dependency Injection via constructor

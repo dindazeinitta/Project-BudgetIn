@@ -1,120 +1,39 @@
 {
   "transactions" : [ {
     "id" : 1,
-    "name" : "Makan Siang",
-    "category" : "Food",
-    "paymentMethod" : "Cash",
-    "amount" : "-Rp. 50.000",
-    "date" : "27 June 2025",
-    "time" : "12:00",
-    "notes" : "Nasi Padang"
+    "name" : "avr",
+    "category" : "Others",
+    "paymentMethod" : "gopay",
+    "amount" : "+Rp. 100000",
+    "date" : "28 June 2025",
+    "time" : "20.55",
+    "notes" : "gopay"
   }, {
     "id" : 2,
-    "name" : "Duit Jajan",
+    "name" : "dinda",
     "category" : "Others",
-    "paymentMethod" : "OVO",
+    "paymentMethod" : "gopay",
     "amount" : "+Rp. 50000",
-    "date" : "27 June 2025",
-    "time" : "04:01 PM",
-    "notes" : "OVO"
+    "date" : "28 June 2025",
+    "time" : "21.00",
+    "notes" : "gopay"
   }, {
     "id" : 3,
-    "name" : "top up ff",
+    "name" : "asa",
     "category" : "Others",
-    "paymentMethod" : "OVO",
-    "amount" : "+Rp. 500000",
-    "date" : "27 June 2025",
-    "time" : "04:03 PM",
-    "notes" : "OVO"
+    "paymentMethod" : "dana",
+    "amount" : "+Rp. 50000",
+    "date" : "28 June 2025",
+    "time" : "21.21",
+    "notes" : "dana"
   }, {
     "id" : 4,
-    "name" : "duit rampok",
-    "category" : "Gift",
-    "paymentMethod" : "cash",
-    "amount" : "+Rp. 4000000",
-    "date" : "27 June 2025",
-    "time" : "04:10 PM",
-    "notes" : "cash"
-  }, {
-    "id" : 5,
-    "name" : "duit dari om anton",
-    "category" : "Gift",
-    "paymentMethod" : "cash",
-    "amount" : "+Rp. 300000",
-    "date" : "27 June 2025",
-    "time" : "04:17 PM",
-    "notes" : "cash"
-  }, {
-    "id" : 6,
-    "name" : "duit jajan azvar",
+    "name" : "qinan",
     "category" : "Others",
-    "paymentMethod" : "OVO",
-    "amount" : "+Rp. 1000",
-    "date" : "27 June 2025",
-    "time" : "04:35 PM",
-    "notes" : "OVO"
-  }, {
-    "id" : 7,
-    "name" : "beli rokok",
-    "category" : "Others",
-    "paymentMethod" : "OVO",
-    "amount" : "+Rp. 20000",
-    "date" : "27 June 2025",
-    "time" : "05:18 PM",
-    "notes" : "OVO"
-  }, {
-    "id" : 8,
-    "name" : "duit rokok lagi",
-    "category" : "Others",
-    "paymentMethod" : "OVO",
-    "amount" : "+Rp. 20000",
-    "date" : "27 June 2025",
-    "time" : "05:29 PM",
-    "notes" : "OVO"
-  }, {
-    "id" : 9,
-    "name" : "Test Thunder",
-    "category" : "Test Category",
-    "paymentMethod" : null,
-    "amount" : "-123456",
-    "date" : "2025-06-27",
-    "time" : null,
-    "notes" : null
-  }, {
-    "id" : 10,
-    "name" : "uang beli narkoba",
-    "category" : "Gift",
-    "paymentMethod" : "OVO",
-    "amount" : "+Rp. 500000",
+    "paymentMethod" : "black card",
+    "amount" : "+Rp. 9999999999999",
     "date" : "28 June 2025",
-    "time" : "01:34 PM",
-    "notes" : "OVO"
-  }, {
-    "id" : 11,
-    "name" : "duit jajan azvar 2",
-    "category" : "Gift",
-    "paymentMethod" : "cash",
-    "amount" : "+Rp. 2000",
-    "date" : "28 June 2025",
-    "time" : "02:38 PM",
-    "notes" : "cash"
-  }, {
-    "id" : 12,
-    "name" : "bayar kontrakan",
-    "category" : "Bills",
-    "paymentMethod" : "OVO",
-    "amount" : "-Rp. 100000",
-    "date" : "28 June 2025",
-    "time" : "03:00 PM",
-    "notes" : "OVO"
-  }, {
-    "id" : 13,
-    "name" : "duit jajan azvar 3",
-    "category" : "Gift",
-    "paymentMethod" : "cash",
-    "amount" : "+Rp. 2000",
-    "date" : "28 June 2025",
-    "time" : "04:36 PM",
-    "notes" : "cash"
+    "time" : "21.22",
+    "notes" : "black card"
   } ]
 }
