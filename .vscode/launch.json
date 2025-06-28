@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "BudgetInApplication",
+            "request": "launch",
+            "mainClass": "com.budgetin.BudgetInApplication",
+            "projectName": "budgetin"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-BudgetInApplication<budgetplanner>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

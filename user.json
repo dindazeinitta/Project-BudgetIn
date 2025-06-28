@@ -1,0 +1,13 @@
+{
+  "users" : [ {
+    "id" : 1,
+    "fullName" : "Test User",
+    "email" : "testuser@gmail.com",
+    "password" : "$2a$10$mfi5vTs6l3H7cA79lt0Nle08ZWVM/p6X10gbjPnnw3k/L.3iZprA2"
+  }, {
+    "id" : 2,
+    "fullName" : "Test User",
+    "email" : "testuser2@gmail.com",
+    "password" : "$2a$10$N3DrgCjeIi94LnpzonYAx.P9Hl2Bgcw9KbCorIJI2VjOKd8j//6gu"
+  } ]
+}

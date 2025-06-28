@@ -1,13 +1,3 @@
 {
-  "users" : [ {
-    "id" : 1,
-    "fullName" : "azvar",
-    "email" : "azvar@gmail.com",
-    "password" : "$2a$10$TELa67oBwQ2wZiXh2bvKUObzeE0ijIv.p.xvMKgSN8RUE1.9TGvjy"
-  }, {
-    "id" : 2,
-    "fullName" : "paiq",
-    "email" : "paiq@gmail.com",
-    "password" : "$2a$10$FaRzWFk5znpijQvZUGuIeeXljmsjMsyJlLYrzEmC/Eyal3vn7Azvy"
-  } ]
+  "users" : []
 }

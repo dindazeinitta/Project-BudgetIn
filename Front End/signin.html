@@ -216,36 +216,38 @@
 
 
 <script>
-  // Simulasi akun yang ada
-  const users = [
-    {
-      email: 'dinda.z.q.p@gmail.com',
-      password: '01234'
-    }
-  ];
+document.querySelector('form').addEventListener('submit', async function(event) {
+  event.preventDefault();
 
-  // Form Sign In
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();
+  const email = document.getElementById('signinEmail').value.trim().toLowerCase();
+  const password = document.getElementById('signinPassword').value;
 
-    const email = document.getElementById('signinEmail').value.trim().toLowerCase();
-    const password = document.getElementById('signinPassword').value;
+  try {
+    const response = await fetch('http://localhost:8082/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
 
-    // Debugging check
-    console.log('Email:', email);
-    console.log('Password:', password);
+    const data = await response.json();
 
-    // Cek apakah akun ditemukan
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (user) {
+    if (data.success) {
       alert('Welcome back!');
+      localStorage.setItem('userEmail', email);
       window.location.href = 'dashboard.html';
     } else {
-      alert('Account not found, please sign up.');
+      alert(data.message);
     }
-  });
+  } catch (error) {
+    alert('Terjadi kesalahan saat menghubungi server: ' + error.message);
+    console.error(error);
+  }
+});
 </script>
+
+
 
 
 
