@@ -159,15 +159,15 @@
             <div class="space-y-3">
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-600">This Month</span>
-                <span class="text-sm font-semibold text-green-600">Rp 1.000.000</span>
+                <span id="monthly-comparison-current" class="text-sm font-semibold text-green-600">Rp 0</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-600">Last Month</span>
-                <span class="text-sm font-semibold text-gray-600">Rp 800.000</span>
+                <span id="monthly-comparison-last" class="text-sm font-semibold text-gray-600">Rp 0</span>
               </div>
               <div class="flex justify-between items-center pt-2 border-t border-gray-100">
                 <span class="text-sm text-gray-600">Difference</span>
-                <span class="text-sm font-semibold text-green-600">+25%</span>
+                <span id="monthly-comparison-diff" class="text-sm font-semibold text-green-600">+0%</span>
               </div>
             </div>
           </div>
@@ -175,34 +175,8 @@
           <!-- Budget Progress -->
           <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h4 class="text-lg font-semibold text-gray-800 mb-4">Budget Progress</h4>
-            <div class="space-y-4">
-              <div>
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-sm text-gray-600">Food Budget</span>
-                  <span class="text-sm font-semibold">80%</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                  <div class="bg-red-500 h-2 rounded-full" style="width: 80%"></div>
-                </div>
-              </div>
-              <div>
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-sm text-gray-600">Transport Budget</span>
-                  <span class="text-sm font-semibold">60%</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                  <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
-                </div>
-              </div>
-              <div>
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-sm text-gray-600">Bills Budget</span>
-                  <span class="text-sm font-semibold">100%</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                  <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
-                </div>
-              </div>
+            <div id="budget-progress-container" class="space-y-4">
+              <!-- Budget progress bars will be inserted here dynamically -->
             </div>
           </div>
 
@@ -212,15 +186,15 @@
             <div class="space-y-3">
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-600">Avg Daily Spending</span>
-                <span class="text-sm font-semibold">Rp 64.516</span>
+                <span id="quick-stats-avg-spending" class="text-sm font-semibold">Rp 0</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-600">Total Transactions</span>
-                <span class="text-sm font-semibold">47</span>
+                <span id="quick-stats-total-tx" class="text-sm font-semibold">0</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-600">Largest Expense</span>
-                <span class="text-sm font-semibold text-red-600">Rp 250.000</span>
+                <span id="quick-stats-largest-expense" class="text-sm font-semibold text-red-600">Rp 0</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-600">Days Until Next Salary</span>
@@ -277,6 +251,25 @@
     }
 
     /**
+     * Mengambil semua transaksi dari backend.
+     */
+    async function fetchAllTransactions() {
+      try {
+        const res = await fetch("http://localhost:8080/api/transactions", { credentials: 'include' });
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 403) {
+            window.location.href = 'signin.html';
+          }
+          throw new Error(`Gagal memuat data: ${res.statusText}`);
+        }
+        return await res.json();
+      } catch (err) {
+        console.error("Gagal fetch transaksi:", err);
+        return [];
+      }
+    }
+
+    /**
      * Memperbarui kartu ringkasan (Total Income, Expense, Saving Rate).
      */
     function updateSummaryCards(summary) {
@@ -290,10 +283,260 @@
       document.getElementById("savingRate").textContent = `${savingRate.toFixed(1)}%`;
     }
 
+    /**
+     * Memperbarui UI dengan data analitik.
+     */
+    function updateAnalytics(transactions) {
+        if (!transactions || transactions.length === 0) return;
+
+        const selectedMonth = document.getElementById('monthSelect').selectedIndex;
+        const currentYear = new Date().getFullYear();
+
+        const monthlyTransactions = transactions.filter(tx => {
+            const txDate = new Date(tx.transactionDateTime);
+            return txDate.getMonth() === selectedMonth && txDate.getFullYear() === currentYear;
+        });
+
+        const previousMonthTransactions = transactions.filter(tx => {
+            const txDate = new Date(tx.transactionDateTime);
+            const prevMonth = selectedMonth === 0 ? 11 : selectedMonth - 1;
+            const yearOfPrevMonth = selectedMonth === 0 ? currentYear - 1 : currentYear;
+            return txDate.getMonth() === prevMonth && txDate.getFullYear() === yearOfPrevMonth;
+        });
+
+        updateTopSpending(monthlyTransactions);
+        updateQuickStats(monthlyTransactions);
+        updateMonthlyComparison(monthlyTransactions, previousMonthTransactions);
+        updateBudgetProgress(monthlyTransactions);
+        renderLineChart(monthlyTransactions);
+        renderPieChart(monthlyTransactions);
+    }
+
+    /**
+     * Memperbarui daftar Top 3 Spending.
+     */
+    function updateTopSpending(transactions) {
+        const spending = transactions
+            .filter(tx => tx.type === 'EXPENSE')
+            .reduce((acc, tx) => {
+                if (!acc[tx.category]) {
+                    acc[tx.category] = 0;
+                }
+                acc[tx.category] += tx.amount;
+                return acc;
+            }, {});
+
+        const topSpending = Object.entries(spending)
+            .sort(([, a], [, b]) => b - a)
+            .slice(0, 3);
+
+        const topSpendingList = document.getElementById('topSpendingList');
+        topSpendingList.innerHTML = '';
+
+        if (topSpending.length === 0) {
+            topSpendingList.innerHTML = '<li class="text-xs text-gray-500">No spending data available.</li>';
+            return;
+        }
+
+        topSpending.forEach(([category, amount]) => {
+            const li = document.createElement('li');
+            li.className = 'flex justify-between items-center text-xs';
+            li.innerHTML = `
+                <span class="text-gray-700">${category}</span>
+                <span class="font-semibold text-blue-700">${formatRupiah(amount)}</span>
+            `;
+            topSpendingList.appendChild(li);
+        });
+    }
+
+    /**
+     * Memperbarui Quick Stats.
+     */
+    function updateQuickStats(transactions) {
+        const expenses = transactions.filter(tx => tx.type === 'EXPENSE');
+        const totalExpense = expenses.reduce((sum, tx) => sum + tx.amount, 0);
+        const daysInMonth = new Date(new Date().getFullYear(), document.getElementById('monthSelect').selectedIndex + 1, 0).getDate();
+        
+        const avgDailySpending = totalExpense > 0 ? totalExpense / daysInMonth : 0;
+        const totalTransactions = transactions.length;
+        const largestExpense = Math.max(0, ...expenses.map(tx => tx.amount));
+
+        document.querySelector('#quick-stats-avg-spending').textContent = formatRupiah(avgDailySpending);
+        document.querySelector('#quick-stats-total-tx').textContent = totalTransactions;
+        document.querySelector('#quick-stats-largest-expense').textContent = formatRupiah(largestExpense);
+        // Days until next salary is static for now
+    }
+
+    /**
+     * Memperbarui perbandingan bulanan.
+     */
+    function updateMonthlyComparison(currentMonthTxs, lastMonthTxs) {
+        const currentMonthIncome = currentMonthTxs.filter(tx => tx.type === 'INCOME').reduce((sum, tx) => sum + tx.amount, 0);
+        const lastMonthIncome = lastMonthTxs.filter(tx => tx.type === 'INCOME').reduce((sum, tx) => sum + tx.amount, 0);
+
+        const difference = currentMonthIncome - lastMonthIncome;
+        const percentageChange = lastMonthIncome > 0 ? (difference / lastMonthIncome) * 100 : (currentMonthIncome > 0 ? 100 : 0);
+
+        document.querySelector('#monthly-comparison-current').textContent = formatRupiah(currentMonthIncome);
+        document.querySelector('#monthly-comparison-last').textContent = formatRupiah(lastMonthIncome);
+        
+        const diffElement = document.querySelector('#monthly-comparison-diff');
+        diffElement.textContent = `${percentageChange >= 0 ? '+' : ''}${percentageChange.toFixed(0)}%`;
+        diffElement.className = `text-sm font-semibold ${percentageChange >= 0 ? 'text-green-600' : 'text-red-600'}`;
+    }
+
+    /**
+     * Memperbarui progress budget.
+     */
+    function updateBudgetProgress(transactions) {
+        const budgetContainer = document.getElementById('budget-progress-container');
+        budgetContainer.innerHTML = ''; // Clear previous content
+
+        const budgets = {
+            'Food': 500000,
+            'Transport': 300000,
+            'Bills': 700000
+        };
+
+        Object.entries(budgets).forEach(([category, budgetAmount]) => {
+            const spent = transactions
+                .filter(tx => tx.type === 'EXPENSE' && tx.category === category)
+                .reduce((sum, tx) => sum + tx.amount, 0);
+            
+            const progress = budgetAmount > 0 ? (spent / budgetAmount) * 100 : 0;
+            const progressBarColor = progress > 80 ? 'bg-red-500' : progress > 60 ? 'bg-yellow-500' : 'bg-green-500';
+
+            const budgetDiv = document.createElement('div');
+            budgetDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-sm text-gray-600">${category} Budget</span>
+                    <span class="text-sm font-semibold">${progress.toFixed(0)}%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="${progressBarColor} h-2 rounded-full" style="width: ${Math.min(100, progress)}%"></div>
+                </div>
+            `;
+            budgetContainer.appendChild(budgetDiv);
+        });
+    }
+
+    /**
+     * Merender Line Chart (Income vs Expenses).
+     */
+    function renderLineChart(transactions) {
+        const selectedMonth = document.getElementById('monthSelect').selectedIndex;
+        const currentYear = new Date().getFullYear();
+        const daysInMonth = new Date(currentYear, selectedMonth + 1, 0).getDate();
+        
+        const labels = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+        const incomeData = Array(daysInMonth).fill(0);
+        const expenseData = Array(daysInMonth).fill(0);
+
+        transactions.forEach(tx => {
+            const day = new Date(tx.transactionDateTime).getDate() - 1;
+            if (tx.type === 'INCOME') {
+                incomeData[day] += tx.amount;
+            } else {
+                expenseData[day] += tx.amount;
+            }
+        });
+
+        const ctx = document.getElementById('lineChart').getContext('2d');
+        if (lineChartInstance) {
+            lineChartInstance.destroy();
+        }
+        lineChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: incomeData,
+                        borderColor: '#4e6af3',
+                        backgroundColor: 'rgba(78, 106, 243, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Expenses',
+                        data: expenseData,
+                        borderColor: '#f87171',
+                        backgroundColor: 'rgba(248, 113, 113, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value => formatRupiah(value)
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Merender Pie Chart (Spending by Category).
+     */
+    function renderPieChart(transactions) {
+        const spending = transactions
+            .filter(tx => tx.type === 'EXPENSE')
+            .reduce((acc, tx) => {
+                if (!acc[tx.category]) {
+                    acc[tx.category] = 0;
+                }
+                acc[tx.category] += tx.amount;
+                return acc;
+            }, {});
+
+        const labels = Object.keys(spending);
+        const data = Object.values(spending);
+
+        const ctx = document.getElementById('pieChart').getContext('2d');
+        if (pieChartInstance) {
+            pieChartInstance.destroy();
+        }
+        pieChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: ['#4e6af3', '#f87171', '#fbbf24', '#34d399', '#a78bfa', '#fb923c'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+    }
+
     // Jalankan saat halaman dimuat
     document.addEventListener("DOMContentLoaded", async () => {
       const summary = await fetchAnalyticsSummary();
       updateSummaryCards(summary);
+
+      const transactions = await fetchAllTransactions();
+      updateAnalytics(transactions);
+
+      document.getElementById('monthSelect').addEventListener('change', () => {
+          updateAnalytics(transactions);
+      });
     });
   </script>
   </body>
