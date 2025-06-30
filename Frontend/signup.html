@@ -215,6 +215,7 @@
               class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
               required
             />
+            <span id="fullNameError" class="text-red-500 text-xs mt-1"></span>
           </div>
 
           <div class="slide-up" style="animation-delay: 1.2s; animation-fill-mode: both;">
@@ -225,6 +226,7 @@
               class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
               required
             />
+            <span id="emailError" class="text-red-500 text-xs mt-1"></span>
           </div>
 
           <div class="slide-up" style="animation-delay: 1.4s; animation-fill-mode: both;">
@@ -235,6 +237,7 @@
               class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
               required
             />
+            <span id="passwordError" class="text-red-500 text-xs mt-1"></span>
           </div>
 
           <div class="slide-up" style="animation-delay: 1.6s; animation-fill-mode: both;">
@@ -262,13 +265,20 @@
   document.getElementById('registerForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
+    // Clear previous errors
+    document.getElementById('fullNameError').textContent = '';
+    document.getElementById('emailError').textContent = '';
+    document.getElementById('passwordError').textContent = '';
+
     const fullName = document.getElementById('fullName').value.trim();
     const email = document.getElementById('email').value.trim().toLowerCase();
     const password = document.getElementById('password').value;
 
-    console.log("Full Name:", fullName);
-    console.log("Email:", email);
-    console.log("Password:", password);
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.innerHTML;
+    submitButton.disabled = true;
+    submitButton.innerHTML = `<span class="animate-pulse">Signing Up...</span>`;
+
 
     if (!fullName || !email || !password) {
       alert('Please fill in all fields.');
@@ -276,7 +286,7 @@
     }
 
     try {
-      const response = await fetch('http://localhost:8082/api/auth/register', {
+      const response = await fetch('http://localhost:8080/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -289,15 +299,32 @@
       });
 
       const result = await response.json();
+      console.log('Registration response:', result); // Log the full response for debugging
       if (response.ok && result.success) {
         alert('Registration successful! Please sign in.');
         window.location.href = 'signin.html';
       } else {
-        alert(result.message || 'Registration failed. Please try again.');
+        // Handle errors returned by the server
+        if (result.message) {
+          document.getElementById('emailError').textContent = result.message;
+        } else if (result.errors) {
+          // If the backend returns field-specific errors
+          for (const field in result.errors) {
+            const errorElement = document.getElementById(`${field}Error`);
+            if (errorElement) {
+              errorElement.textContent = result.errors[field];
+            }
+          }
+        } else {
+          document.getElementById('emailError').textContent = 'Registration failed. Please ensure your email is unique and your password meets the requirements (at least 6 characters).';
+        }
       }
     } catch (error) {
       console.error('Error during registration:', error);
       alert('An error occurred. Please try again later.');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonText;
     }
   });
   </script>

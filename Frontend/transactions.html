@@ -122,10 +122,10 @@
                     <!-- Profile Section -->
                     <div class="flex flex-col items-end space-y-3">
                         <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-full profile-avatar flex items-center justify-center text-white font-medium">
-                                D
+                            <div id="user-avatar" class="w-10 h-10 rounded-full profile-avatar flex items-center justify-center text-white font-medium">
+                                ?
                             </div>
-                            <span class="text-gray-700 font-medium">Dinda Zeinitta Q. P</span>
+                            <span id="user-fullname" class="text-gray-700 font-medium">Loading...</span>
                         </div>
                     </div>
                 </div>
@@ -312,271 +312,328 @@
 </div>
 
 
+    <script src="global.js" defer></script>
     <script>
-        // Search functionality
-        const searchInput = document.querySelector('input[placeholder="Search anything on Transactions"]');
-        const transactionRows = document.querySelectorAll('.transaction-row');
+document.addEventListener('DOMContentLoaded', function () {
+    // --- STATE MANAGEMENT ---
+    let allTransactions = [];
+    let currentUser = null;
+    let isIncome = true;
+    let transactionIdToDelete = null;
 
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            
-            transactionRows.forEach(row => {
-                const transactionName = row.querySelector('.font-medium').textContent.toLowerCase();
-                const transactionType = row.querySelector('.text-gray-600').textContent.toLowerCase();
-                
-                if (transactionName.includes(searchTerm) || transactionType.includes(searchTerm)) {
-                    row.style.display = 'grid';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
+    // --- DOM ELEMENTS ---
+    const searchInput = document.querySelector('input[placeholder="Search anything on Transactions"]');
+    const transactionContainer = document.querySelector('.transaction-list-container');
 
-        // View button functionality
-        document.querySelectorAll('button').forEach(button => {
-            if (button.textContent.trim() === 'View') {
-                button.addEventListener('click', function() {
-                    const transactionName = this.closest('.transaction-row').querySelector('.font-medium').textContent;
-                    
-                });
+    // Add Modal Elements
+    const addModal = document.getElementById('modalOverlay');
+    const openAddBtn = document.getElementById('openModal');
+    const closeAddBtn = document.getElementById('closeModal');
+    const incomeBtn = document.getElementById('incomeBtn');
+    const expenseBtn = document.getElementById('expenseBtn');
+    const categorySelect = document.getElementById('categorySelect');
+    const transactionForm = document.getElementById('transactionForm');
+
+    // Detail Modal Elements
+    const detailModal = document.getElementById('transactionDetailModal');
+    const closeDetailBtn = document.getElementById('closeDetailModal');
+    const deleteBtn = document.getElementById('deleteTransaction');
+
+    // Delete Confirmation Modal Elements
+    const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+    const cancelDeleteBtn = document.getElementById('cancelDelete');
+    const confirmDeleteBtn = document.getElementById('confirmDelete');
+
+    const incomeCategories = ['Salary', 'Freelance', 'Gift', 'Allowance', 'Scholarship', 'Refund', 'Others'];
+    const expenseCategories = ['Food', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Education', 'Health', 'Donation', 'Skincare', 'Others'];
+
+    // --- USER DATA ---
+    async function loadUserData() {
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/me', { credentials: 'include' });
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) window.location.href = 'signin.html';
+                return;
             }
-        });
+            const userData = await response.json();
+            if (userData.success) {
+                currentUser = userData;
+                document.getElementById('user-fullname').textContent = currentUser.fullName;
+                document.getElementById('user-avatar').textContent = currentUser.fullName.charAt(0).toUpperCase();
+            }
+        } catch (error) {
+            console.error('Failed to load user data:', error);
+        }
+    }
 
-        //add new
-        const modal = document.getElementById('modalOverlay');
-        const openBtn = document.getElementById('openModal');
-        const closeBtn = document.getElementById('closeModal');
-        const incomeBtn = document.getElementById('incomeBtn');
-        const expenseBtn = document.getElementById('expenseBtn');
-        const categorySelect = document.getElementById('categorySelect');
+    // --- DATA FETCHING & RENDERING ---
+    async function loadTransactions() {
+        try {
+            const response = await fetch('http://localhost:8080/api/transactions', { credentials: 'include' });
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) window.location.href = 'signin.html';
+                throw new Error('Failed to load transactions');
+            }
+            allTransactions = await response.json();
+            renderTransactions(allTransactions);
+        } catch (err) {
+            console.error('Error loading transactions:', err);
+            transactionContainer.innerHTML = `<p class="p-6 text-center text-gray-500">Could not load transactions.</p>`;
+        }
+    }
 
-        // Default state
-        let isIncome = true;
-
-        const incomeCategories = ['Salary', 'Freelance', 'Gift','Allowance','Scholarship','Refund','Others'];
-        const expenseCategories = ['Food', 'Transport', 'Entertainment', 'Shopping','Bills','Education','Health','Donation','Skincare','Others'];
-
-        function populateCategories(categories) {
-            categorySelect.innerHTML = '<option value="" disabled selected>Select Category</option>';
-            categories.forEach(cat => {
-            const option = document.createElement('option');
-            option.value = cat.toLowerCase();
-            option.textContent = cat;
-            categorySelect.appendChild(option);
-            });
+    function renderTransactions(transactions) {
+        transactionContainer.innerHTML = ''; // Clear previous content
+        if (transactions.length === 0) {
+            transactionContainer.innerHTML = `<p class="p-6 text-center text-gray-500">No transactions found.</p>`;
+            return;
         }
 
-        openBtn.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-            populateCategories(incomeCategories); // default
-        });
+        transactions.forEach(tx => {
+            const isIncome = tx.type === 'INCOME';
+            const amountClass = isIncome ? 'amount-positive' : 'amount-negative';
+            const formattedAmount = (isIncome ? '+ ' : '- ') + formatRupiah(tx.amount);
+            const dateTime = new Date(tx.transactionDateTime);
+            const date = dateTime.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
-        closeBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
+            const row = document.createElement('div');
+            row.className = 'transaction-grid px-6 py-4 transaction-row';
+            row.dataset.id = tx.id; // Store ID for easy access
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) modal.classList.add('hidden');
+            row.innerHTML = `
+                <div class="flex items-center space-x-3 transaction-name-cell">
+                    <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span class="text-white font-bold">${tx.name.charAt(0).toUpperCase()}</span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="font-medium text-gray-900 truncate">${tx.name}</div>
+                    </div>
+                </div>
+                <div><span class="text-gray-600">${tx.category}</span></div>
+                <div><span class="font-medium ${amountClass}">${formattedAmount}</span></div>
+                <div><div class="text-gray-900">${date}</div></div>
+                <div class="text-center">
+                    <button data-action="view" data-id="${tx.id}" class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        View
+                    </button>
+                </div>
+            `;
+            transactionContainer.appendChild(row);
         });
+    }
 
-        incomeBtn.addEventListener('click', () => {
-            isIncome = true;
+    // --- EVENT HANDLERS ---
+
+    // Handle clicks on "View" buttons using event delegation
+    transactionContainer.addEventListener('click', (e) => {
+        if (e.target.dataset.action === 'view') {
+            const transactionId = e.target.dataset.id;
+            const transaction = allTransactions.find(tx => tx.id == transactionId);
+            if (transaction) {
+                openDetailModal(transaction);
+            }
+        }
+    });
+
+    // Search functionality
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredTransactions = allTransactions.filter(tx =>
+            tx.name.toLowerCase().includes(searchTerm) ||
+            tx.category.toLowerCase().includes(searchTerm)
+        );
+        renderTransactions(filteredTransactions);
+    });
+
+    // --- MODAL LOGIC ---
+
+    // Add New Transaction Modal
+    function openAddModal() {
+        transactionForm.reset();
+        isIncome = true;
+        updateTypeButtons();
+        populateCategories(incomeCategories);
+        addModal.classList.remove('hidden');
+    }
+
+    function closeAddModal() {
+        addModal.classList.add('hidden');
+    }
+
+    function updateTypeButtons() {
+        if (isIncome) {
             incomeBtn.classList.add('bg-blue-500', 'text-white');
             incomeBtn.classList.remove('bg-gray-200', 'text-gray-700');
             expenseBtn.classList.remove('bg-blue-500', 'text-white');
             expenseBtn.classList.add('bg-gray-200', 'text-gray-700');
-            populateCategories(incomeCategories);
-        });
-
-        expenseBtn.addEventListener('click', () => {
-            isIncome = false;
+        } else {
             expenseBtn.classList.add('bg-blue-500', 'text-white');
             expenseBtn.classList.remove('bg-gray-200', 'text-gray-700');
             incomeBtn.classList.remove('bg-blue-500', 'text-white');
             incomeBtn.classList.add('bg-gray-200', 'text-gray-700');
-            populateCategories(expenseCategories);
-        });
-
-        const transactionForm = document.getElementById('transactionForm');
-transactionForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const name = transactionForm.querySelector('input[type="text"]').value;
-  const amountInput = transactionForm.querySelector('input[type="number"]').value;
-  const amount = isIncome ? `+Rp. ${amountInput}` : `-Rp. ${amountInput}`;
-  const paymentMethod = document.getElementById('paymentMethodInput').value;
-  const date = transactionForm.querySelector('input[type="date"]').value;
-  const category = categorySelect.options[categorySelect.selectedIndex].text;
-  const notes = transactionForm.querySelectorAll('input[type="text"]')[1].value;
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  const transactionData = {
-    name,
-    category,
-    paymentMethod,
-    amount,
-    date: formatDate(date),
-    time,
-    notes
-  };
-
-  try {
-    const response = await fetch('http://localhost:8082/api/transactions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(transactionData)
-    });
-
-    if (response.ok) {
-      modal.classList.add('hidden');
-      transactionForm.reset();
-      populateCategories(isIncome ? incomeCategories : expenseCategories);
-      loadTransactions(); // refresh tampilan
-    } else {
-      alert('Failed to save transaction.');
+        }
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('An error occurred.');
-  }
-});
 
-function formatDate(dateStr) {
-  const months = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-  const [year, month, day] = dateStr.split("-");
-  return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
-}
+    function populateCategories(categories) {
+        categorySelect.innerHTML = '<option value="" disabled selected>Select Category</option>';
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            categorySelect.appendChild(option);
+        });
+    }
 
-        //logout
-        function openLogoutModal() {
-            document.getElementById("logoutModal").classList.remove("hidden");
+    // Detail Modal
+    function openDetailModal(tx) {
+        const isIncome = tx.type === 'INCOME';
+        const formattedAmount = (isIncome ? '+ ' : '- ') + formatRupiah(tx.amount);
+        const amountElement = document.getElementById('detailAmount');
+        const dateTime = new Date(tx.transactionDateTime);
+
+        document.getElementById('detailName').textContent = tx.name;
+        document.getElementById('detailCategory').textContent = tx.category;
+        document.getElementById('detailPayment').textContent = tx.paymentMethod || '-';
+        amountElement.textContent = formattedAmount;
+        amountElement.className = `text-gray-800 font-semibold ${isIncome ? 'text-green-500' : 'text-red-500'}`;
+        document.getElementById('detailDate').textContent = dateTime.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        document.getElementById('detailTime').textContent = dateTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('detailNotes').textContent = tx.notes || 'No notes provided.';
+
+        transactionIdToDelete = tx.id; // Store the ID for the delete button
+        detailModal.classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+        detailModal.classList.add('hidden');
+        transactionIdToDelete = null;
+    }
+
+    // Delete Confirmation
+    function openDeleteConfirmModal() {
+        deleteConfirmModal.classList.remove('hidden');
+    }
+
+    function closeDeleteConfirmModal() {
+        deleteConfirmModal.classList.add('hidden');
+    }
+
+    async function handleDeleteTransaction() {
+        if (!transactionIdToDelete) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/transactions/${transactionIdToDelete}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                // Remove from local state and re-render
+                allTransactions = allTransactions.filter(tx => tx.id !== transactionIdToDelete);
+                renderTransactions(allTransactions);
+                closeDetailModal();
+                closeDeleteConfirmModal();
+            } else {
+                alert('Failed to delete transaction. Please try again.');
+                console.error('Delete failed:', await response.text());
+            }
+        } catch (error) {
+            console.error('Error deleting transaction:', error);
+            alert('An error occurred while deleting.');
         }
+    }
 
-        function closeLogoutModal() {
-            document.getElementById("logoutModal").classList.add("hidden");
+    // --- FORM SUBMISSION ---
+    transactionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(transactionForm);
+        const transactionData = {
+            name: formData.get('name'),
+            category: formData.get('category'),
+            paymentMethod: formData.get('paymentMethod'),
+            amount: parseFloat(formData.get('amount')),
+            type: isIncome ? 'INCOME' : 'EXPENSE',
+            transactionDateTime: new Date(formData.get('date')).toISOString(),
+            notes: formData.get('notes'),
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/api/transactions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(transactionData),
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                closeAddModal();
+                loadTransactions(); // Refresh the list
+            } else {
+                alert('Failed to save transaction.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred.');
         }
-
-        function confirmLogout() {
-            window.location.href = "signin.html";
-        }
-
-
-
-
-
-
-
-
-        // Perbarui script view agar baca dari data-* attributes
-const detailModal = document.getElementById('transactionDetailModal');
-const closeDetailBtn = document.getElementById('closeDetailModal');
-
-closeDetailBtn.addEventListener('click', () => detailModal.classList.add('hidden'));
-
-// Ganti event listener View agar akses data-payment, data-time, data-notes
-const allViewButtons = document.querySelectorAll('button');
-allViewButtons.forEach(button => {
-  if (button.textContent.trim() === 'View') {
-    button.addEventListener('click', function () {
-      const row = this.closest('.transaction-row');
-      const name = row.querySelector('.transaction-name-cell .font-medium').textContent;
-      const category = row.querySelectorAll('span.text-gray-600')[0].textContent;
-      const amount = row.querySelector('.font-medium.amount-positive, .font-medium.amount-negative').textContent;
-      const allTextGray900 = row.querySelectorAll('div.text-gray-900');
-const date = allTextGray900[allTextGray900.length - 1].textContent;
-
-      // Ambil data tersembunyi dari atribut
-      const payment = row.dataset.payment || '-';
-      const time = row.dataset.time || '-';
-      const notes = row.dataset.notes || '-';
-
-      document.getElementById('detailName').textContent = name;
-      document.getElementById('detailCategory').textContent = category;
-      document.getElementById('detailPayment').textContent = payment;
-      document.getElementById('detailAmount').textContent = amount;
-      const amountElement = document.getElementById('detailAmount');
-amountElement.textContent = amount;
-
-if (amount.trim().startsWith('+')) {
-  amountElement.classList.add('text-green-500');
-  amountElement.classList.remove('text-red-500');
-} else if (amount.trim().startsWith('-')) {
-  amountElement.classList.add('text-red-500');
-  amountElement.classList.remove('text-green-500');
-} else {
-  amountElement.classList.remove('text-green-500', 'text-red-500');
-}
-
-      document.getElementById('detailDate').textContent = date;
-      document.getElementById('detailTime').textContent = time;
-      document.getElementById('detailNotes').textContent = notes;
-
-      detailModal.classList.remove('hidden');
     });
-  }
-});
 
+    // --- EVENT LISTENERS ---
+    openAddBtn.addEventListener('click', openAddModal);
+    closeAddBtn.addEventListener('click', closeAddModal);
+    addModal.addEventListener('click', (e) => { if (e.target === addModal) closeAddModal(); });
 
-
-
-
-
-// Get elements
-const deleteBtn = document.getElementById('deleteTransaction');
-const deleteModal = document.getElementById('deleteConfirmModal');
-const cancelDelete = document.getElementById('cancelDelete');
-const confirmDelete = document.getElementById('confirmDelete');
-
-let activeTransactionRow = null;
-
-// Set active row when View is clicked
-document.querySelectorAll('button').forEach(button => {
-  if (button.textContent.trim() === 'View') {
-    button.addEventListener('click', function () {
-      activeTransactionRow = this.closest('.transaction-row');
+    incomeBtn.addEventListener('click', () => {
+        isIncome = true;
+        updateTypeButtons();
+        populateCategories(incomeCategories);
     });
-  }
+
+    expenseBtn.addEventListener('click', () => {
+        isIncome = false;
+        updateTypeButtons();
+        populateCategories(expenseCategories);
+    });
+
+    closeDetailBtn.addEventListener('click', closeDetailModal);
+    deleteBtn.addEventListener('click', openDeleteConfirmModal);
+    cancelDeleteBtn.addEventListener('click', closeDeleteConfirmModal);
+    confirmDeleteBtn.addEventListener('click', handleDeleteTransaction);
+
+    // --- INITIALIZATION ---
+    loadUserData();
+    loadTransactions();
 });
-
-// Open delete confirmation modal
-deleteBtn.addEventListener('click', () => {
-  deleteModal.classList.remove('hidden');
-});
-
-// Cancel delete
-cancelDelete.addEventListener('click', () => {
-  deleteModal.classList.add('hidden');
-});
-
-// Confirm delete
-confirmDelete.addEventListener('click', () => {
-  if (activeTransactionRow) {
-    activeTransactionRow.remove(); // Remove from DOM
-    document.getElementById('transactionDetailModal').classList.add('hidden');
-    deleteModal.classList.add('hidden');
-  }
-});
-
-
-
-    </script>
+</script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:8082/api/transactions')
-        .then(res => res.json())
-        .then(data => {
-            const container = document.querySelector('.transaction-list-container');
-            container.innerHTML = ''; // Kosongkan isi sebelumnya
+    // This script block is intentionally left separate to handle the form element naming issue.
+    // The form elements were not named, so we add them here.
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('transactionForm');
+        if(form) {
+            form.elements[0].name = 'name';
+            form.elements[1].name = 'amount';
+            form.elements[2].name = 'paymentMethod';
+            form.elements[3].name = 'date';
+            form.elements[4].name = 'category';
+            form.elements[5].name = 'notes';
+        }
+    });
+</script>
 
-            data.forEach(tx => {
-                const amountClass = tx.amount.trim().startsWith('+') ? 'amount-positive' : 'amount-negative';
+</body>
+</html>
+                const isIncome = tx.type === 'INCOME';
+                const amountClass = isIncome ? 'amount-positive' : 'amount-negative';
+                const formattedAmount = (isIncome ? '+ ' : '- ') + formatRupiah(tx.amount);
+                const dateTime = new Date(tx.transactionDateTime);
+                const date = dateTime.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                const time = dateTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
 
                 const row = document.createElement('div');
                 row.className = 'transaction-grid px-6 py-4 transaction-row';
                 row.setAttribute('data-payment', tx.paymentMethod || '-');
-                row.setAttribute('data-time', tx.time || '-');
+                row.setAttribute('data-time', time || '-');
                 row.setAttribute('data-notes', tx.notes || '-');
 
                 row.innerHTML = `
@@ -592,10 +649,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         <span class="text-gray-600">${tx.category}</span>
                     </div>
                     <div>
-                        <span class="font-medium ${amountClass}">${tx.amount}</span>
+                        <span class="font-medium ${amountClass}">${formattedAmount}</span>
                     </div>
                     <div>
-                        <div class="text-gray-900">${tx.date}</div>
+                        <div class="text-gray-900">${date}</div>
                     </div>
                     <div class="text-center">
                         <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">

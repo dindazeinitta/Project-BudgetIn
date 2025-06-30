@@ -86,7 +86,7 @@
 
         <div class="ml-64 p-6 flex-1">
             <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">Hello, Guest!</h1>
+                <h1 id="userGreeting" class="text-3xl font-bold text-gray-800 mb-2">Hello, Guest!</h1>
                 <p class="text-gray-600">Get your summary of your monthly transaction here.</p>
             </div>
 
@@ -286,31 +286,8 @@
         </div>
     </div>
 
+    <script src="global.js" defer></script>
     <script>
-        //note
-        function openNoteModal() {
-        document.getElementById("noteModal").classList.remove("hidden");
-        }
-        function closeNoteModal() {
-        document.getElementById("noteModal").classList.add("hidden");
-        }
-        function saveNote() {
-        const note = document.getElementById("noteInput").value;
-        console.log("Saved Note:", note); // Bisa ganti dengan simpan ke backend/localstorage
-        closeNoteModal();
-        }
-
-        // logout
-        function openLogoutModal() {
-            document.getElementById("logoutModal").classList.remove("hidden");
-        }
-        function closeLogoutModal() {
-            document.getElementById("logoutModal").classList.add("hidden");
-        }
-        function confirmLogout() {
-            window.location.href = "signin.html";
-        }
-        
         //kalender
         const calendarMonth = document.getElementById('calendarMonth');
         const calendarYear = document.getElementById('calendarYear');
@@ -385,20 +362,8 @@ const nextWeekBtn = document.getElementById('next-week');
 let currentWeek = 1;
 let maxWeeksInMonth = 4;
 let currentView = 'monthly';
-
-const sampleWeeklyData = {
-    week1: { labels: ['1','2','3','4','5','6','7'], data: [120000, 80000, 150000, 90000, 200000, 110000, 170000] },
-    week2: { labels: ['8','9','10','11','12','13','14'], data: [130000, 95000, 145000, 100000, 190000, 115000, 160000] },
-    week3: { labels: ['15','16','17','18','19','20','21'], data: [140000, 85000, 155000, 105000, 180000, 120000, 150000] },
-    week4: { labels: ['22','23','24','25','26','27','28'], data: [125000, 88000, 140000, 95000, 170000, 108000, 145000] }
-};
-
-const sampleMonthlyData = {
-    labels: Array.from({ length: 30 }, (_, i) => (i + 1).toString()),
-    data: Array.from({ length: 30 }, () => Math.floor(Math.random() * 500000) + 100000)
-};
-
 let chart;
+let allTransactions = []; // Store all transactions globally
 
 function createChart(labels, data) {
     if (chart) chart.destroy();
@@ -445,33 +410,64 @@ function createChart(labels, data) {
 }
 
 function updateChart() {
+    const selectedMonth = parseInt(monthSelect.value, 10);
+    const currentYear = new Date().getFullYear();
+
+    const filteredTransactions = allTransactions.filter(tx => {
+        const txDate = new Date(tx.transactionDateTime);
+        return tx.type === 'EXPENSE' && txDate.getMonth() === selectedMonth && txDate.getFullYear() === currentYear;
+    });
+
     if (currentView === 'monthly') {
         weeklyControls.classList.add('hidden');
-
-        // Aktifkan tombol Monthly (biru)
         btnMonthly.classList.add('bg-blue-100', 'text-blue-600', 'border-blue-400');
         btnMonthly.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
-
-        // Nonaktifkan tombol Weekly (putih)
         btnWeekly.classList.remove('bg-blue-100', 'text-blue-600', 'border-blue-400');
         btnWeekly.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
 
-        createChart(sampleMonthlyData.labels, sampleMonthlyData.data);
+        const daysInMonth = new Date(currentYear, selectedMonth + 1, 0).getDate();
+        const labels = Array.from({ length: daysInMonth }, (_, i) => (i + 1).toString());
+        const data = Array(daysInMonth).fill(0);
+
+        filteredTransactions.forEach(tx => {
+            const day = new Date(tx.transactionDateTime).getDate() - 1;
+            data[day] += tx.amount;
+        });
+
+        createChart(labels, data);
     } else {
         weeklyControls.classList.remove('hidden');
-
-        // Aktifkan tombol Weekly (biru)
         btnWeekly.classList.add('bg-blue-100', 'text-blue-600', 'border-blue-400');
         btnWeekly.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
-
-        // Nonaktifkan tombol Monthly (putih)
         btnMonthly.classList.remove('bg-blue-100', 'text-blue-600', 'border-blue-400');
         btnMonthly.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
 
-        const weekKey = `week${currentWeek}`;
-        const weekData = sampleWeeklyData[weekKey];
+        const firstDayOfMonth = new Date(currentYear, selectedMonth, 1);
+        const startDayOfWeek = (currentWeek - 1) * 7;
+        
+        const labels = [];
+        const data = Array(7).fill(0);
+
+        for (let i = 0; i < 7; i++) {
+            const dayDate = new Date(firstDayOfMonth);
+            dayDate.setDate(startDayOfWeek + i + 1);
+            if (dayDate.getMonth() === selectedMonth) {
+                labels.push(dayDate.getDate().toString());
+            } else {
+                labels.push(''); // Empty label for days outside the month
+            }
+        }
+
+        filteredTransactions.forEach(tx => {
+            const dayOfMonth = new Date(tx.transactionDateTime).getDate();
+            const dayIndex = dayOfMonth - startDayOfWeek - 1;
+            if (dayIndex >= 0 && dayIndex < 7) {
+                data[dayIndex] += tx.amount;
+            }
+        });
+
         weekLabel.textContent = `Week ${currentWeek}`;
-        createChart(weekData.labels, weekData.data);
+        createChart(labels, data);
     }
 }
 
@@ -505,72 +501,75 @@ monthSelect.addEventListener('change', () => {
 });
 
 updateChart();
-</script>
 
-     <script>
-async function updateDashboardTotals() {
-  try {
-    const res = await fetch("http://localhost:8082/api/transactions");
-    const transactions = await res.json();
-
-    let totalIncome = 0;
-    let totalExpenses = 0;
-
-    transactions.forEach(tx => {
-      const cleanAmount = Number(tx.amount.replace(/[^\d]/g, ""));
-      if (tx.amount.startsWith('+')) {
-        totalIncome += cleanAmount;
-      } else if (tx.amount.startsWith('-')) {
-        totalExpenses += cleanAmount;
-      }
-    });
-
-    const totalBalance = totalIncome - totalExpenses;
-
-    document.getElementById("totalBalance").innerText = `Rp. ${totalBalance.toLocaleString("id-ID")}`;
-    document.getElementById("totalIncome").innerText = `Rp. ${totalIncome.toLocaleString("id-ID")}`;
-    document.getElementById("totalExpenses").innerText = `Rp. ${totalExpenses.toLocaleString("id-ID")}`;
-  } catch (err) {
-    console.error("Gagal memuat data transaksi:", err);
+  //note
+  function openNoteModal() {
+    document.getElementById("noteModal").classList.remove("hidden");
   }
-}
+  function closeNoteModal() {
+    document.getElementById("noteModal").classList.add("hidden");
+  }
+  function saveNote() {
+    const note = document.getElementById("noteInput").value;
+    console.log("Saved Note:", note); // Bisa ganti dengan simpan ke backend/localstorage
+    closeNoteModal();
+  }
 
-updateDashboardTotals(); // panggil saat halaman dibuka
-</script>
+  async function loadUserData() {
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/me', { credentials: 'include' });
+      if (!response.ok) {
+        // Jika tidak terotentikasi, arahkan ke halaman login
+        if (response.status === 401 || response.status === 403) {
+          window.location.href = 'signin.html';
+        }
+        return;
+      }
+      const userData = await response.json();
+      if (userData.success && userData.fullName) {
+        document.getElementById('userGreeting').textContent = `Hello, ${userData.fullName}!`;
+      }
+    } catch (error) {
+      console.error('Failed to load user data:', error);
+      // Biarkan sapaan default jika terjadi error
+    }
+  }
 
-          <script>
   async function updateDashboardTotals() {
     try {
-      const res = await fetch("http://localhost:8082/api/transactions");
-      const transactions = await res.json();
+      const res = await fetch("http://localhost:8080/api/transactions", { credentials: 'include' });
+      allTransactions = await res.json(); // Store in global variable
+      const transactions = allTransactions; // Use for this function
 
-      let totalIncome = 0;
-      let totalExpenses = 0;
+      // Menggunakan data terstruktur dari backend
+      const totalIncome = transactions
+        .filter(tx => tx.type === 'INCOME')
+        .reduce((sum, tx) => sum + tx.amount, 0);
 
-      transactions.forEach(tx => {
-        const cleanAmount = Number(tx.amount.replace(/[^\d]/g, ""));
-        if (tx.amount.startsWith('+')) {
-          totalIncome += cleanAmount;
-        } else if (tx.amount.startsWith('-')) {
-          totalExpenses += cleanAmount;
-        }
-      });
+      const totalExpenses = transactions
+        .filter(tx => tx.type === 'EXPENSE')
+        .reduce((sum, tx) => sum + tx.amount, 0);
 
       const totalBalance = totalIncome - totalExpenses;
 
-      document.getElementById("totalBalance").innerText = `Rp. ${totalBalance.toLocaleString("id-ID")}`;
-      document.getElementById("totalIncome").innerText = `Rp. ${totalIncome.toLocaleString("id-ID")}`;
-      document.getElementById("totalExpenses").innerText = `Rp. ${totalExpenses.toLocaleString("id-ID")}`;
+      // Menggunakan fungsi formatRupiah dari app.js
+      document.getElementById("totalBalance").innerText = formatRupiah(totalBalance);
+      document.getElementById("totalIncome").innerText = formatRupiah(totalIncome);
+      document.getElementById("totalExpenses").innerText = formatRupiah(totalExpenses);
+
+      // Memuat transaksi terbaru setelah data diterima
+      loadRecentTransactions(transactions);
+
+      // Update chart with the new data
+      updateChart();
+
     } catch (err) {
       console.error("Gagal memuat data transaksi:", err);
     }
   }
 
-  async function loadRecentTransactions() {
+  function loadRecentTransactions(transactions) {
     try {
-      const response = await fetch('http://localhost:8082/api/transactions');
-      const transactions = await response.json();
-
       const container = document.getElementById('recent-transactions');
       container.innerHTML = '';
 
@@ -578,9 +577,12 @@ updateDashboardTotals(); // panggil saat halaman dibuka
 
       latest.forEach(t => {
         const div = document.createElement('div');
-        const amountColor = t.amount.startsWith('+') ? 'text-green-600' : 'text-red-600';
+        const isIncome = t.type === 'INCOME';
+        const amountColor = isIncome ? 'text-green-600' : 'text-red-600';
         const iconLetter = t.name.trim().charAt(0).toUpperCase();
-        const colorBg = t.amount.startsWith('+') ? 'bg-green-600' : 'bg-red-600';
+        const colorBg = isIncome ? 'bg-green-600' : 'bg-red-600';
+        const formattedAmount = (isIncome ? '+ ' : '- ') + formatRupiah(t.amount);
+        const date = new Date(t.transactionDateTime).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
 
         div.className = "flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg";
         div.innerHTML = `
@@ -594,8 +596,8 @@ updateDashboardTotals(); // panggil saat halaman dibuka
             </div>
           </div>
           <div class="text-right">
-            <div class="font-semibold ${amountColor}">${t.amount}</div>
-            <div class="text-sm text-gray-500">${t.date}</div>
+            <div class="font-semibold ${amountColor}">${formattedAmount}</div>
+            <div class="text-sm text-gray-500">${date}</div>
           </div>
         `;
         container.appendChild(div);
@@ -606,10 +608,10 @@ updateDashboardTotals(); // panggil saat halaman dibuka
   }
 
   // Panggil saat halaman dibuka
-  updateDashboardTotals();
-  loadRecentTransactions();
-</script>
-
+  document.addEventListener('DOMContentLoaded', () => {
+    loadUserData();
+    updateDashboardTotals();
+  });
 </script>
 </body>
 </html>

@@ -127,35 +127,25 @@
                     <!-- Foto Profil -->
                     <div class="relative w-24 h-24 mb-4">
                         <img src="https://i.pravatar.cc/100?img=3" alt="Profile Picture" class="w-24 h-24 object-cover rounded-full border border-gray-300 shadow-sm">
-                        <!-- Tombol ganti foto -->
-                        <label for="upload-photo" class="absolute bottom-0 right-0 bg-blue-600 text-white p-1 rounded-full cursor-pointer text-xs hover:bg-blue-700 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 002.828 2.828L18 10.828M7 7h.01" />
-                        </svg>
-                        </label>
-                        <input type="file" id="upload-photo" class="hidden" />
+                        
                     </div>
 
                     <!-- Nama dan Email -->
                     <div>
-                        <h4 class="text-lg font-semibold text-gray-800">Dinda Aulia</h4>
-                        <p class="text-sm text-gray-500">dinda@example.com</p>
+                        <h4 id="profileName" class="text-lg font-semibold text-gray-800">Loading...</h4>
+                        <p id="profileEmail" class="text-sm text-gray-500">Loading...</p>
                     </div>
                     </div>
 
                     <!-- Form Edit -->
-                    <form class="space-y-4 w-full lg:w-2/3 lg:pt-2">
+                    <form id="profileForm" class="space-y-4 w-full lg:w-2/3 lg:pt-2">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-400" value="Dinda Aulia">
+                        <input type="text" id="fullNameInput" name="fullName" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-400" required>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                        <input type="email" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-400" value="dinda@example.com">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                        <input type="tel" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-400" value="+62 812-3456-7890">
+                        <input type="email" id="emailInput" name="email" class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100 cursor-not-allowed" readonly>
                     </div>
 
                     <div class="mt-6 flex justify-end">
@@ -231,27 +221,14 @@
                         <span class="text-sm text-gray-700">Enable or disable two factor <span class="font-medium">authentication</span></span>
                         </div>
                     </div>
-                    <form class="space-y-4 max-w-md">
+                    <form id="securityForm" class="space-y-4 max-w-md">
                         <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-                        <div class="relative">
-                            <input type="password" id="password" name="password" value="01234"
-                            class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:border-transparent outline-none transition-all duration-300">
-                            
-                            <button type="button" onclick="togglePassword()"
-                            class="absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-gray-600">
-                            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-6-10-6s1.784-2.5 4.6-4.6m3.4-1.4a4 4 0 015.656 5.656M15 12a3 3 0 11-3-3" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 3l18 18" />
-                            </svg>
-                            </button>
-                        </div>
+                        <input type="password" id="currentPassword" name="currentPassword" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="Enter current password" required>
                         </div>
                         <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                        <input type="password" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="********">
+                        <input type="password" id="newPassword" name="newPassword" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="Enter new password" required>
                         </div>
                         <div class="mt-6 flex justify-end">
                         <button type="submit" class="bg-blue-600 text-white text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700">
@@ -282,50 +259,98 @@
         </div>
     </div>
 
+    <script src="js/app.js" defer></script>
     <script>
-        //logout
-        function openLogoutModal() {
-            document.getElementById("logoutModal").classList.remove("hidden");
-        }
-
-        function closeLogoutModal() {
-            document.getElementById("logoutModal").classList.add("hidden");
-        }
-
-        function confirmLogout() {
-            window.location.href = "signin.html";
-        }
-
         const tabs = document.querySelectorAll(".tab-btn");
         const panes = document.querySelectorAll(".tab-pane");
 
         tabs.forEach(tab => {
             tab.addEventListener("click", () => {
-            // Hapus active dari semua tab
-            tabs.forEach(t => t.classList.remove("text-blue-600", "border-b-2", "border-blue-600"));
-            tab.classList.add("text-blue-600", "border-b-2", "border-blue-600");
+                tabs.forEach(t => t.classList.remove("text-blue-600", "border-b-2", "border-blue-600"));
+                tab.classList.add("text-blue-600", "border-b-2", "border-blue-600");
 
-            // Sembunyikan semua pane
-            panes.forEach(p => p.classList.add("hidden"));
+                panes.forEach(p => p.classList.add("hidden"));
 
-            // Tampilkan pane yang sesuai
-            const selected = tab.getAttribute("data-tab");
-            document.getElementById(selected).classList.remove("hidden");
+                const selected = tab.getAttribute("data-tab");
+                document.getElementById(selected).classList.remove("hidden");
             });
         });
 
-        //pw        
-        function togglePassword() {
-            const input = document.getElementById("password");
-            const icon = document.getElementById("eyeIcon");
-            if (input.type === "password") {
-                input.type = "text";
-                icon.outerHTML = `<svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" /></svg>`;
-            } else {
-                input.type = "password";
-                icon.outerHTML = `<svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-6-10-6s1.784-2.5 4.6-4.6m3.4-1.4a4 4 0 015.656 5.656M15 12a3 3 0 11-3-3" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" /></svg>`;
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileForm = document.getElementById('profileForm');
+            const securityForm = document.getElementById('securityForm');
+
+            // Load user data and populate the form
+            async function loadUserData() {
+                try {
+                    const response = await fetch('/api/auth/me', { credentials: 'include' });
+                    if (!response.ok) {
+                        if (response.status === 401 || response.status === 403) window.location.href = 'signin.html';
+                        throw new Error('Failed to fetch user data');
+                    }
+                    const data = await response.json();
+                    if (data.success) {
+                        document.getElementById('profileName').textContent = data.fullName;
+                        document.getElementById('profileEmail').textContent = data.email;
+                        document.getElementById('fullNameInput').value = data.fullName;
+                        document.getElementById('emailInput').value = data.email;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Could not load user data.');
+                }
             }
-        }
+
+            // Handle profile update
+            profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const fullName = document.getElementById('fullNameInput').value;
+
+                try {
+                    const response = await fetch('/api/user/profile', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ fullName })
+                    });
+                    const result = await response.json();
+                    alert(result.message);
+                    if (result.success) {
+                        loadUserData(); // Refresh display
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while updating profile.');
+                }
+            });
+
+            // Handle password change
+            securityForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+
+                try {
+                    const response = await fetch('/api/user/password', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ currentPassword, newPassword })
+                    });
+                    const result = await response.json();
+                    alert(result.message);
+                    if (result.success) {
+                        securityForm.reset();
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while changing password.');
+                }
+            });
+
+            // Initial load
+            loadUserData();
+        });
     </script>
 </body>
 </html>

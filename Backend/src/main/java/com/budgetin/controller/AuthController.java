@@ -1,16 +1,30 @@
 package com.budgetin.controller;
 
-import java.io.IOException;
-import java.util.Optional;
+import java.security.Principal;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.budgetin.config.JwtUtil;
 import com.budgetin.service.UserService;
+import com.budgetin.web.dto.ApiResponse;
+import com.budgetin.web.dto.LoginRequest;
+import com.budgetin.web.dto.LoginResponse;
 import com.budgetin.web.dto.RegistrationDto;
+import com.budgetin.web.dto.UserResponse;
 
 import jakarta.validation.Valid;
 
@@ -19,79 +33,67 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService) {
+    private final boolean cookieSecure;
+
+    @Autowired
+    public AuthController(
+        UserService userService, 
+        AuthenticationManager authenticationManager, 
+        JwtUtil jwtUtil,
+        @Value("${app.cookie.secure:false}") boolean cookieSecure
+    ) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.cookieSecure = cookieSecure;
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegistrationDto registrationDto) {
-        try {
-            userService.register(registrationDto);
-            return ResponseEntity.ok().body(
-                new ApiResponse(true, "Registration successful")
-            );
-        } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(
-                new ApiResponse(false, e.getMessage())
-            );
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(
-                new ApiResponse(false, "Error saving user data")
-            );
-        }
+        // @Valid akan memicu RestExceptionHandler jika validasi gagal.
+        // userService akan melempar IllegalStateException jika email sudah ada, yang juga ditangani oleh handler.
+        userService.register(registrationDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            new ApiResponse(true, "Registration successful")
+        );
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        try {
-            boolean isValid = userService.validateUser(loginRequest.email(), loginRequest.password());
-            if (isValid) {
-                return ResponseEntity.ok().body(
-                    new ApiResponse(true, "Login successful")
-                );
-            } else {
-                return ResponseEntity.badRequest().body(
-                    new ApiResponse(false, "Invalid email or password")
-                );
-            }
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(
-                new ApiResponse(false, "Error processing login")
-            );
-        }
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                loginRequest.email(), 
+                loginRequest.password()
+            )
+        );
+
+        String jwt = jwtUtil.generateToken(loginRequest.email());
+        ResponseCookie cookie = ResponseCookie.from("jwt", jwt)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(60 * 60 * 10) // 10 hours
+                .sameSite("None")
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new LoginResponse(true, "Login successful"));
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<?> getUserByEmail(@RequestBody UserRequest userRequest) {
-        try {
-            Optional<com.budgetin.model.User> userOptional = userService.findByEmail(userRequest.email());
-            if (userOptional.isPresent()) {
-                com.budgetin.model.User user = userOptional.get();
-                return ResponseEntity.ok().body(
-                    new UserResponse(true, "User found", user.getFullName(), user.getEmail())
-                );
-            } else {
-                return ResponseEntity.badRequest().body(
-                    new ApiResponse(false, "User not found")
-                );
-            }
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(
-                new ApiResponse(false, "Error fetching user data")
-            );
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(false, "No user logged in"));
         }
+        
+        // Gunakan gaya fungsional dan biarkan RestExceptionHandler yang menangani error.
+        // Ini lebih bersih dan konsisten.
+        return userService.findByEmail(principal.getName())
+                .map(user -> ResponseEntity.ok(new UserResponse(true, "User found", user.getFullName(), user.getEmail())))
+                .orElseThrow(() -> new UsernameNotFoundException("Authenticated user not found in database"));
     }
-
-    // Helper class untuk response standar
-    record ApiResponse(boolean success, String message) {}
-
-    // Helper class untuk login request
-    record LoginRequest(String email, String password) {}
-
-    // Helper class untuk user request
-    record UserRequest(String email) {}
-
-    // Helper class untuk user response
-    record UserResponse(boolean success, String message, String fullName, String email) {}
 }
