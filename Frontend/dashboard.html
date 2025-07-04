@@ -5,36 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Dashboard</title>
 </head>
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-    }
-        
-    .bg-gradient-custom {
-        background: linear-gradient(135deg, #e8edff 0%, #ffffff 100%);
-    }
-
-    /* Styling untuk grid lines */
-    .chart-grid {
-        position: relative;
-    }
-    
-    .grid-line {
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: repeating-linear-gradient(
-            to right,
-            #d1d5db 0px,
-            #d1d5db 4px,
-            transparent 4px,
-            transparent 8px
-        );
-    }
-</style>
 <body class="bg-gradient-custom min-h-screen">
     <div class="flex min-h-screen">
         <div class="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0 z-20">
@@ -140,7 +113,7 @@
                 <option value="2">MARET</option>
                 <option value="3">APRIL</option>
                 <option value="4">MEI</option>
-                <option value="5" selected>JUNI</option>
+                <option value="5">JUNI</option>
                 <option value="6">JULI</option>
                 <option value="7">AGUSTUS</option>
                 <option value="8">SEPTEMBER</option>
@@ -196,24 +169,8 @@
                             </button>
                         </div>
                         
-                        <div class="space-y-3 text-sm">
-                            <div class="flex items-start">
-                                <span class="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                <span class="opacity-90">This is template that is very long text</span>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                <span class="opacity-90">This is template that is very long text</span>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                <span class="opacity-90">This is template that is very long text</span>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                                <span class="opacity-90">This is template that is very long text</span>
-                            </div>
-                            
+                        <div id="notes-container" class="space-y-3 text-sm max-h-48 overflow-y-auto pr-2">
+                            <!-- Notes will be dynamically inserted here -->
                         </div>
                     </div>
 
@@ -346,8 +303,6 @@
         });
 
         renderCalendar();
-
-
 
       // Chart functionality
 const ctx = document.getElementById("expenseChart").getContext("2d");
@@ -504,20 +459,123 @@ updateChart();
 
   //note
   function openNoteModal() {
+    document.getElementById("noteInput").value = ""; // Clear previous input
     document.getElementById("noteModal").classList.remove("hidden");
   }
   function closeNoteModal() {
     document.getElementById("noteModal").classList.add("hidden");
   }
-  function saveNote() {
-    const note = document.getElementById("noteInput").value;
-    console.log("Saved Note:", note); // Bisa ganti dengan simpan ke backend/localstorage
-    closeNoteModal();
+  async function saveNote() {
+    const content = document.getElementById("noteInput").value;
+    if (!content.trim()) {
+        alert("Note cannot be empty.");
+        return;
+    }
+
+    try {
+        const response = await fetch('http://127.0.0.1:8080/api/notes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ content }),
+        });
+
+        if (response.ok) {
+            closeNoteModal();
+            loadNotes(); // Refresh the notes list
+        } else {
+            const error = await response.json();
+            console.error("Failed to save note:", error.message);
+            alert("Error saving note. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error during saveNote fetch:", error);
+        alert("A network error occurred. Please try again.");
+    }
+  }
+
+  async function deleteNote(noteId) {
+    if (!confirm("Are you sure you want to delete this note?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://127.0.0.1:8080/api/notes/${noteId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+
+        if (response.ok) {
+            loadNotes(); // Refresh the notes list
+        } else {
+            console.error("Failed to delete note, status:", response.status);
+            alert("Error deleting note. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error during deleteNote fetch:", error);
+        alert("A network error occurred. Please try again.");
+    }
+  }
+
+
+  function renderNotes(notes) {
+    const container = document.getElementById('notes-container');
+    container.innerHTML = ''; // Clear existing notes
+
+    if (notes.length === 0) {
+        container.innerHTML = '<p class="opacity-70">No notes yet. Add one!</p>';
+        return;
+    }
+
+    notes.forEach(note => {
+        const noteElement = document.createElement('div');
+        noteElement.className = "flex items-start justify-between group";
+        
+        noteElement.innerHTML = `
+            <div class="flex items-start">
+                <span class="w-2 h-2 bg-white rounded-full mt-1.5 mr-3 flex-shrink-0"></span>
+                <span class="opacity-90">${note.content}</span>
+            </div>
+            <button onclick="deleteNote(${note.id})" class="text-white opacity-0 group-hover:opacity-100 transition-opacity ml-2">&times;</button>
+        `;
+        container.appendChild(noteElement);
+    });
+  }
+
+  async function loadNotes() {
+    try {
+        const response = await fetch('http://127.0.0.1:8080/api/notes', { credentials: 'include' });
+        if (response.ok) {
+            const notes = await response.json();
+            renderNotes(notes);
+        } else {
+            console.error("Failed to load notes.");
+        }
+    } catch (error) {
+        console.error("Error loading notes:", error);
+    }
   }
 
   async function loadUserData() {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/me', { credentials: 'include' });
+      // Add a small delay to ensure the browser has processed the cookie
+      await new Promise(resolve => setTimeout(resolve, 500));
+      // Check if the JWT cookie is present
+      const cookies = document.cookie.split(';');
+      let jwtCookieFound = false;
+      for (let cookie of cookies) {
+        if (cookie.trim().startsWith('jwt=')) {
+          jwtCookieFound = true;
+          console.log('JWT cookie found in document.cookie');
+          break;
+        }
+      }
+      if (!jwtCookieFound) {
+        console.log('JWT cookie NOT found in document.cookie');
+      }
+      const response = await fetch('http://127.0.0.1:8080/api/auth/me', { credentials: 'include' });
       if (!response.ok) {
         // Jika tidak terotentikasi, arahkan ke halaman login
         if (response.status === 401 || response.status === 403) {
@@ -537,7 +595,7 @@ updateChart();
 
   async function updateDashboardTotals() {
     try {
-      const res = await fetch("http://localhost:8080/api/transactions", { credentials: 'include' });
+      const res = await fetch("http://127.0.0.1:8080/api/transactions", { credentials: 'include' });
       allTransactions = await res.json(); // Store in global variable
       const transactions = allTransactions; // Use for this function
 
@@ -609,8 +667,13 @@ updateChart();
 
   // Panggil saat halaman dibuka
   document.addEventListener('DOMContentLoaded', () => {
+    const currentMonth = new Date().getMonth();
+    document.getElementById('month-select').value = currentMonth;
+    
     loadUserData();
     updateDashboardTotals();
+    loadNotes();
+    loadDarkModePreference();
   });
 </script>
 </body>

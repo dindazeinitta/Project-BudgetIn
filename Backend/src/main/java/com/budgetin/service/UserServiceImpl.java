@@ -7,8 +7,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,6 +34,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("Email already in use");
         }
         User user = new User();
+        user.setUsername(registrationDto.email());
         user.setFullName(registrationDto.fullName());
         user.setEmail(registrationDto.email());
         user.setPassword(passwordEncoder.encode(registrationDto.password()));
@@ -41,11 +48,53 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateProfile(String email, String fullName) {
+    public void updateProfile(String email, String fullName, String newEmail) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         user.setFullName(fullName);
+        user.setEmail(newEmail);
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public User updateProfile(String email, String fullName, String newEmail, MultipartFile profilePicture) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        // Check if the new email is already taken by another user
+        if (!email.equals(newEmail) && userRepository.existsByEmail(newEmail)) {
+            throw new IllegalStateException("Email " + newEmail + " is already in use.");
+        }
+
+        user.setFullName(fullName);
+        user.setEmail(newEmail);
+        user.setUsername(newEmail);
+
+        if (profilePicture != null && !profilePicture.isEmpty()) {
+            try {
+                String pictureUrl = saveProfilePicture(profilePicture);
+                user.setProfilePicture(pictureUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save profile picture", e);
+            }
+        }
+
+        return userRepository.save(user);
+    }
+
+    private String saveProfilePicture(MultipartFile file) throws IOException {
+        String uploadDir = "uploads/profile-pictures";
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath);
+
+        return "/" + uploadDir + "/" + fileName;
     }
 
     @Override

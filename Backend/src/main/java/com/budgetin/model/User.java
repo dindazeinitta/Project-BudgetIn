@@ -17,12 +17,20 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users", 
-       uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+       uniqueConstraints = {
+           @UniqueConstraint(columnNames = {"email"}),
+           @UniqueConstraint(columnNames = {"username"})
+       })
 public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Username tidak boleh kosong")
+    @Size(max = 50, message = "Username harus kurang dari 50 karakter")
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @NotBlank(message = "Nama Tidak Boleh Kosong")
     @Size(max = 100, message = "Nama Harus Kurang dari 100 Karakter")
@@ -39,28 +47,50 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // Manually added getters and setters to resolve compilation issues
-    public String getFullName() {
-        return fullName;
+    @Column
+    private String profilePicture;
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getUsername() {
+        return username;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

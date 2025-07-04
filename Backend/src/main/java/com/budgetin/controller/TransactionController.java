@@ -2,6 +2,8 @@ package com.budgetin.controller;
 
 import com.budgetin.model.Transaction;
 import com.budgetin.service.TransactionService;
+import com.budgetin.web.dto.CreateTransactionDto;
+import jakarta.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -32,8 +34,8 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction, Principal principal) {
-        Transaction saved = transactionService.addTransaction(transaction, principal.getName());
+    public ResponseEntity<Transaction> addTransaction(@Valid @RequestBody CreateTransactionDto transactionDto, Principal principal) {
+        Transaction saved = transactionService.addTransaction(transactionDto, principal.getName());
         return ResponseEntity.ok(saved);
     }
 

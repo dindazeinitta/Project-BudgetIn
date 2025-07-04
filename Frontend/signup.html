@@ -220,6 +220,17 @@
 
           <div class="slide-up" style="animation-delay: 1.2s; animation-fill-mode: both;">
             <input 
+              type="text" 
+              id="username"
+              placeholder="Username" 
+              class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
+              required
+            />
+            <span id="usernameError" class="text-red-500 text-xs mt-1"></span>
+          </div>
+
+          <div class="slide-up" style="animation-delay: 1.3s; animation-fill-mode: both;">
+            <input 
               type="email" 
               id="email"
               placeholder="Email Address" 
@@ -267,10 +278,12 @@
 
     // Clear previous errors
     document.getElementById('fullNameError').textContent = '';
+    document.getElementById('usernameError').textContent = '';
     document.getElementById('emailError').textContent = '';
     document.getElementById('passwordError').textContent = '';
 
     const fullName = document.getElementById('fullName').value.trim();
+    const username = document.getElementById('username').value.trim();
     const email = document.getElementById('email').value.trim().toLowerCase();
     const password = document.getElementById('password').value;
 
@@ -286,13 +299,14 @@
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/register', {
-        method: 'POST',
-        headers: {
+    const response = await fetch('http://127.0.0.1:8080/api/auth/register', {
+      method: 'POST',
+      headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           fullName: fullName,
+          username: username,
           email: email,
           password: password
         })
@@ -328,5 +342,12 @@
     }
   });
   </script>
+
+<script src="global.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  loadDarkModePreference();
+});
+</script>
 </body>
 </html>

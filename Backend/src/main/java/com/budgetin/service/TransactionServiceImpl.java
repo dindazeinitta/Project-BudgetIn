@@ -2,12 +2,14 @@ package com.budgetin.service;
 
 import com.budgetin.model.Transaction;
 import com.budgetin.model.User;
+import com.budgetin.web.dto.CreateTransactionDto;
 import com.budgetin.repository.TransactionRepository;
 import com.budgetin.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -30,10 +32,20 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Transaction addTransaction(Transaction transaction, String email) {
+    public Transaction addTransaction(CreateTransactionDto transactionDto, String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        
+        Transaction transaction = new Transaction();
+        transaction.setName(transactionDto.name());
+        transaction.setType(transactionDto.type());
+        transaction.setAmount(transactionDto.amount());
+        transaction.setCategory(transactionDto.category());
+        transaction.setPaymentMethod(transactionDto.paymentMethod());
+        transaction.setTransactionDateTime(transactionDto.transactionDateTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        transaction.setDescription(transactionDto.notes());
         transaction.setUser(user);
+        
         return transactionRepository.save(transaction);
     }
 
@@ -63,11 +75,13 @@ public class TransactionServiceImpl implements TransactionService {
             throw new SecurityException("User does not have permission to update this transaction");
         }
 
+        transaction.setName(transactionDetails.getName());
         transaction.setAmount(transactionDetails.getAmount());
         transaction.setTransactionDateTime(transactionDetails.getTransactionDateTime());
         transaction.setDescription(transactionDetails.getDescription());
         transaction.setType(transactionDetails.getType());
         transaction.setCategory(transactionDetails.getCategory());
+        transaction.setPaymentMethod(transactionDetails.getPaymentMethod());
 
         return transactionRepository.save(transaction);
     }

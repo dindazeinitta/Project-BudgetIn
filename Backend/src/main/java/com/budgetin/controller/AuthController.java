@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.budgetin.config.JwtUtil;
+import com.budgetin.config.JwtTokenProvider;
 import com.budgetin.service.UserService;
 import com.budgetin.web.dto.ApiResponse;
 import com.budgetin.web.dto.LoginRequest;
@@ -34,20 +34,19 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider tokenProvider;
 
     private final boolean cookieSecure;
 
-    @Autowired
     public AuthController(
         UserService userService, 
         AuthenticationManager authenticationManager, 
-        JwtUtil jwtUtil,
+        JwtTokenProvider tokenProvider,
         @Value("${app.cookie.secure:false}") boolean cookieSecure
     ) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
+        this.tokenProvider = tokenProvider;
         this.cookieSecure = cookieSecure;
     }
 
@@ -70,18 +69,19 @@ public class AuthController {
             )
         );
 
-        String jwt = jwtUtil.generateToken(loginRequest.email());
+        String jwt = tokenProvider.generateToken(authentication);
+
         ResponseCookie cookie = ResponseCookie.from("jwt", jwt)
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .maxAge(60 * 60 * 10) // 10 hours
-                .sameSite("None")
-                .build();
+            .httpOnly(true)
+            .secure(cookieSecure)
+            .path("/")
+            .maxAge(60 * 60 * 24) // 1 day
+            .sameSite("Lax") // Explicitly set SameSite
+            .build();
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new LoginResponse(true, "Login successful"));
+            .header(HttpHeaders.SET_COOKIE, cookie.toString())
+            .body(new LoginResponse(true, "Login successful"));
     }
 
     @GetMapping("/me")
@@ -93,7 +93,21 @@ public class AuthController {
         // Gunakan gaya fungsional dan biarkan RestExceptionHandler yang menangani error.
         // Ini lebih bersih dan konsisten.
         return userService.findByEmail(principal.getName())
-                .map(user -> ResponseEntity.ok(new UserResponse(true, "User found", user.getFullName(), user.getEmail())))
+                .map(user -> ResponseEntity.ok(new UserResponse(true, "User found", user.getFullName(), user.getEmail(), user.getUsername(), user.getProfilePicture())))
                 .orElseThrow(() -> new UsernameNotFoundException("Authenticated user not found in database"));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+            .httpOnly(true)
+            .secure(cookieSecure)
+            .path("/")
+            .maxAge(0)
+            .build();
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.SET_COOKIE, cookie.toString())
+            .body(new ApiResponse(true, "Logout successful"));
     }
 }

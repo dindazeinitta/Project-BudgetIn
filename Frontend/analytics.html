@@ -7,11 +7,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <style>
-    body { font-family: 'Poppins', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen bg-gradient-to-br from-[#e8edff] to-[#ffffff] font-[Poppins]">
+<body class="bg-gradient-custom min-h-screen font-[Poppins]">
   <!-- Sidebar -->
   <div class="w-64 bg-white shadow-lg min-h-screen fixed left-0 top-0 z-20">
     <div class="py-5 flex items-center justify-center border-b border-gray-200">
@@ -47,7 +45,7 @@
               <option>March</option>
               <option>April</option>
               <option>May</option>
-              <option selected>June</option>
+              <option>June</option>
               <option>July</option>
               <option>August</option>
               <option>September</option>
@@ -236,7 +234,7 @@
      */
     async function fetchAnalyticsSummary() {
       try {
-        const res = await fetch("http://localhost:8080/api/analytics/summary", { credentials: 'include' });
+        const res = await fetch("http://127.0.0.1:8080/api/analytics/summary", { credentials: 'include' });
         if (!res.ok) {
           if (res.status === 401 || res.status === 403) {
             window.location.href = 'signin.html';
@@ -255,7 +253,7 @@
      */
     async function fetchAllTransactions() {
       try {
-        const res = await fetch("http://localhost:8080/api/transactions", { credentials: 'include' });
+        const res = await fetch("http://127.0.0.1:8080/api/transactions", { credentials: 'include' });
         if (!res.ok) {
           if (res.status === 401 || res.status === 403) {
             window.location.href = 'signin.html';
@@ -528,6 +526,9 @@
 
     // Jalankan saat halaman dimuat
     document.addEventListener("DOMContentLoaded", async () => {
+      const currentMonth = new Date().getMonth();
+      document.getElementById('monthSelect').selectedIndex = currentMonth;
+
       const summary = await fetchAnalyticsSummary();
       updateSummaryCards(summary);
 
@@ -537,6 +538,8 @@
       document.getElementById('monthSelect').addEventListener('change', () => {
           updateAnalytics(transactions);
       });
+      
+      loadDarkModePreference();
     });
   </script>
   </body>

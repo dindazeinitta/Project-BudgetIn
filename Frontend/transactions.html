@@ -6,54 +6,7 @@
     <title>BudgetIn - Transactions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .bg-gradient-custom {
-            background: linear-gradient(135deg, #e8edff 0%, #ffffff 100%);
-        }
-
-        /* Adjusted margin for the main content */
-        .main-content {
-            margin-left: 16px; /* Adjust as needed */
-        }
-
-        .transaction-row {
-            transition: all 0.2s ease;
-        }
-        
-        .transaction-row:hover {
-            background-color: #f8faff;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-        
-        .amount-positive {
-            color: #10b981;
-        }
-
-        .amount-negative {
-            color: #ef4444;
-        }
-
-        .profile-avatar {
-            background: linear-gradient(135deg, #4e6af3 0%, #3c56c0 100%);
-        }
-
-        /* Custom grid template untuk tabel yang lebih proporsional */
-        .transaction-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1.2fr 1fr 0.8fr;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .transaction-name-cell {
-            min-width: 0; /* Allows flex items to shrink below their content width */
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gradient-custom min-h-screen">
     <div class="flex">
@@ -111,7 +64,7 @@
         <!-- Main Content -->
         <div class="flex-1 min-h-screen main-content">
             <!-- Background with gradient -->
-            <div class="absolute inset-0 bg-gradient-to-br from-[#e8edff] via-white to-[#f8faff]"></div>
+            <div class="absolute inset-0 bg-gradient-custom"></div>
             <div class="relative z-10 p-6 overflow-y-auto max-h-screen">
                 <!-- Header Section -->
                 <div class="flex items-center justify-between mb-6">
@@ -194,19 +147,19 @@
             <form id="transactionForm">
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Name Transaction</label>
-                    <input type="text" class="block w-full border border-gray-300 rounded-lg p-2" required>
+<input type="text" class="block w-full border border-gray-300 rounded-lg p-2 dark:text-gray-900" required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Amount</label>
-                    <input type="number" class="block w-full border border-gray-300 rounded-lg p-2" required>
+<input type="number" class="block w-full border border-gray-300 rounded-lg p-2 dark:text-gray-900" required>
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Payment Method</label>
-                    <input 
+<input 
                         type="text" 
                         id="paymentMethodInput" 
-                        class="block w-full border border-gray-300 rounded-lg p-2" 
+                        class="block w-full border border-gray-300 rounded-lg p-2 dark:text-gray-900" 
                         placeholder="e.g. OVO, BNI Mobile" 
                         required
                     >
@@ -215,17 +168,17 @@
                 
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Date</label>
-                    <input type="date" class="block w-full border border-gray-300 rounded-lg p-2" required>
+<input type="date" class="block w-full border border-gray-300 rounded-lg p-2 dark:text-gray-900" required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Category</label>
-                    <select id="categorySelect" class="block w-full border border-gray-300 rounded-lg p-2" required>
+<select id="categorySelect" class="block w-full border border-gray-300 rounded-lg p-2 dark:text-gray-900" required>
                         <!-- Options will be filled via JavaScript -->
                 </select>
                 </div>
                     <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">Note (Optional)</label>
-                    <input type="text" class="block w-full border border-gray-300 rounded-lg p-2">
+<input name="notes" type="text" class="block w-full border border-gray-300 rounded-lg p-2 dark:text-gray-900">
                 </div>
                 <button type="submit" class="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">Save</button>
             </form>
@@ -350,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- USER DATA ---
     async function loadUserData() {
         try {
-            const response = await fetch('http://localhost:8080/api/auth/me', { credentials: 'include' });
+            const response = await fetch('http://127.0.0.1:8080/api/auth/me', { credentials: 'include' });
             if (!response.ok) {
                 if (response.status === 401 || response.status === 403) window.location.href = 'signin.html';
                 return;
@@ -369,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- DATA FETCHING & RENDERING ---
     async function loadTransactions() {
         try {
-            const response = await fetch('http://localhost:8080/api/transactions', { credentials: 'include' });
+            const response = await fetch('http://127.0.0.1:8080/api/transactions', { credentials: 'include' });
             if (!response.ok) {
                 if (response.status === 401 || response.status === 403) window.location.href = 'signin.html';
                 throw new Error('Failed to load transactions');
@@ -498,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function () {
         amountElement.className = `text-gray-800 font-semibold ${isIncome ? 'text-green-500' : 'text-red-500'}`;
         document.getElementById('detailDate').textContent = dateTime.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
         document.getElementById('detailTime').textContent = dateTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-        document.getElementById('detailNotes').textContent = tx.notes || 'No notes provided.';
+        document.getElementById('detailNotes').textContent = tx.description || 'No notes provided.';
 
         transactionIdToDelete = tx.id; // Store the ID for the delete button
         detailModal.classList.remove('hidden');
@@ -522,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!transactionIdToDelete) return;
 
         try {
-            const response = await fetch(`http://localhost:8080/api/transactions/${transactionIdToDelete}`, {
+            const response = await fetch(`http://127.0.0.1:8080/api/transactions/${transactionIdToDelete}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -547,18 +500,25 @@ document.addEventListener('DOMContentLoaded', function () {
     transactionForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(transactionForm);
+        const dateString = formData.get('date');
+        const now = new Date();
+        const transactionDateTime = new Date(dateString);
+        transactionDateTime.setHours(now.getHours());
+        transactionDateTime.setMinutes(now.getMinutes());
+        transactionDateTime.setSeconds(now.getSeconds());
+
         const transactionData = {
             name: formData.get('name'),
             category: formData.get('category'),
             paymentMethod: formData.get('paymentMethod'),
             amount: parseFloat(formData.get('amount')),
             type: isIncome ? 'INCOME' : 'EXPENSE',
-            transactionDateTime: new Date(formData.get('date')).toISOString(),
+            transactionDateTime: transactionDateTime,
             notes: formData.get('notes'),
         };
 
         try {
-            const response = await fetch('http://localhost:8080/api/transactions', {
+            const response = await fetch('http://127.0.0.1:8080/api/transactions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(transactionData),
@@ -602,6 +562,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- INITIALIZATION ---
     loadUserData();
     loadTransactions();
+    loadDarkModePreference();
 });
 </script>
 
@@ -616,57 +577,8 @@ document.addEventListener('DOMContentLoaded', function () {
             form.elements[2].name = 'paymentMethod';
             form.elements[3].name = 'date';
             form.elements[4].name = 'category';
-            form.elements[5].name = 'notes';
         }
     });
-</script>
-
-</body>
-</html>
-                const isIncome = tx.type === 'INCOME';
-                const amountClass = isIncome ? 'amount-positive' : 'amount-negative';
-                const formattedAmount = (isIncome ? '+ ' : '- ') + formatRupiah(tx.amount);
-                const dateTime = new Date(tx.transactionDateTime);
-                const date = dateTime.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-                const time = dateTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-
-                const row = document.createElement('div');
-                row.className = 'transaction-grid px-6 py-4 transaction-row';
-                row.setAttribute('data-payment', tx.paymentMethod || '-');
-                row.setAttribute('data-time', time || '-');
-                row.setAttribute('data-notes', tx.notes || '-');
-
-                row.innerHTML = `
-                    <div class="flex items-center space-x-3 transaction-name-cell">
-                        <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <span class="text-white font-bold">${tx.name.charAt(0).toUpperCase()}</span>
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <div class="font-medium text-gray-900 truncate">${tx.name}</div>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="text-gray-600">${tx.category}</span>
-                    </div>
-                    <div>
-                        <span class="font-medium ${amountClass}">${formattedAmount}</span>
-                    </div>
-                    <div>
-                        <div class="text-gray-900">${date}</div>
-                    </div>
-                    <div class="text-center">
-                        <button class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                            View
-                        </button>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
-        })
-        .catch(err => {
-            console.error('Gagal memuat transaksi:', err);
-        });
-});
 </script>
 
 </body>

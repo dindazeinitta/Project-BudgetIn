@@ -232,21 +232,22 @@ document.querySelector('form').addEventListener('submit', async function(event) 
   submitButton.innerHTML = `<span class="animate-pulse">Signing In...</span>`;
 
   try {
-    const response = await fetch('http://localhost:8080/api/auth/login', {
+    const response = await fetch('http://127.0.0.1:8080/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      credentials: 'include', // Ensure cookies are sent and received
+      credentials: 'include',
       body: JSON.stringify({ email, password })
     });
 
-    const data = await response.json();
-
-    if (data.success) {
-      localStorage.setItem('userEmail', email);
-      window.location.href = 'dashboard.html';
+    if (response.ok) {
+      // Wait briefly to ensure the cookie is processed before redirecting
+      setTimeout(function() {
+        window.location.href = 'dashboard.html';
+      }, 500);
     } else {
+      const data = await response.json();
       // Display general error message
       document.getElementById('generalError').textContent = data.message || 'Invalid email or password.';
     }
@@ -264,5 +265,11 @@ document.querySelector('form').addEventListener('submit', async function(event) 
 
 
 
+<script src="global.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  loadDarkModePreference();
+});
+</script>
 </body>
 </html>

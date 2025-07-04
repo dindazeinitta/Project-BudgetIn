@@ -1,5 +1,6 @@
 package com.budgetin.config;
 
+import com.budgetin.service.UserDetailsServiceImpl;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,44 +31,42 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtRequestFilter jwtRequestFilter;
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService userDetailsService) {
-        this.jwtRequestFilter = jwtRequestFilter;
-        this.userDetailsService = userDetailsService;
+    private JwtAuthenticationEntryPoint unauthorizedHandler;
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
+            .csrf(AbstractHttpConfigurer::disable)
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                .requestMatchers("/api/auth/**", "/uploads/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .headers(headers -> headers.frameOptions().disable())
-            .authenticationProvider(authenticationProvider()) // Provider diatur di sini
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling(exception -> exception
-                .authenticationEntryPoint((request, response, authException) -> {
-                    response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
-                })
-            )
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .logout(logout -> logout
                 .logoutUrl("/api/auth/logout")
                 .addLogoutHandler((request, response, authentication) -> {
                     ResponseCookie cookie = ResponseCookie.from("jwt", "")
                             .httpOnly(true)
-                            .secure(true)
+                            .secure(false)
                             .path("/")
                             .maxAge(0)
-                            .sameSite("None")
+                            .sameSite("Lax")
                             .build();
                     response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
                 })
@@ -79,7 +79,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5501"));
+        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5501", "http://localhost:5501", "http://127.0.0.1:5500", "http://localhost:5500"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
