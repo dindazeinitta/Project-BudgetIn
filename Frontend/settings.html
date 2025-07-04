@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BudgetIn - Settings</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -103,18 +104,13 @@
                         </svg>
                         <span>Settings</span>
                     </a>                
-                    <a href="#" onclick="openLogoutModal()" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
-                        </svg>
-                        <span>Logout</span>
-                    </a>
+                    <a href="#" onclick="openLogoutModal()" class="flex items-center space-x-3 text-gray-600 hover:text-[#4e6af3] hover:bg-blue-50 px-4 py-3 rounded-lg transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span >Log out</span></a>
                 </div>
             </nav>
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 min-h-screen main-content">
+        <div class="flex-1 min-h-screen ml-64">
             <div class="bg-white shadow-xl rounded-xl p-6 max-w-3xl mx-auto mt-10">
             <!-- Tabs -->
             <div class="flex space-x-6 border-b pb-2 mb-6 text-sm font-medium text-gray-500 custom-dark-border-gray-700 custom-dark-text-gray-400" id="tab-buttons">
@@ -167,7 +163,7 @@
 
                 <!-- Preferences -->
                 <div class="tab-pane hidden" id="preferences">
-                    <form class="space-y-6 max-w-lg px-4">
+                    <form class="space-y-6 w-full px-4">
                         <div>
                         <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Default Currency</label>
                             <div class="relative">
@@ -208,56 +204,56 @@
                                 <span class="text-sm text-gray-700 custom-dark-text-gray-300">Enable dark mode</span>
                             </div>
                         </div>
-                        <div class="mt-6 flex justify-end">
+                        <!-- <div class="mt-6 flex justify-end">
 <button type="submit" class="bg-blue-600 text-white custom-dark-bg-blue-700 custom-dark-text-gray-200 text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700 custom-dark-hover-bg-blue-800">
                                 Save
                             </button>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
 
                 <!-- Security -->
-                <div class="tab-pane hidden" id="security">
-                    <div class="mb-6">
-                        <h4 class="font-medium mb-2 text-gray-800 custom-dark-text-gray-300">Two-factor Authentication</h4>
-                        <div class="flex items-center space-x-3">
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" checked>
-                            <div class="w-11 h-6 bg-gray-200 peer-checked:bg-blue-500 rounded-full transition"></div>
-                            <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></div>
-                        </label>
-                        <span class="text-sm text-gray-700 custom-dark-text-gray-300">Enable or disable two factor <span class="font-medium">authentication</span></span>
+                    <div class="tab-pane hidden" id="security">
+                        <div class="mb-6">
+                            <h4 class="font-medium mb-2 text-gray-800 custom-dark-text-gray-300">Two-factor Authentication</h4>
+                            <div class="flex items-center space-x-3">
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="twoFactorToggle" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-checked:bg-blue-500 rounded-full transition"></div>
+                                <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></div>
+                            </label>
+                            <span class="text-sm text-gray-700 custom-dark-text-gray-300">Enable or disable two factor <span class="font-medium">authentication</span></span>
+                            </div>
                         </div>
+                        <form id="securityForm" class="space-y-4 w-full">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Current Password</label>
+                                <input type="password" id="currentPassword" name="currentPassword" class="w-full border border-gray-300 custom-dark-border-gray-600 rounded-lg px-4 py-2 custom-dark-text-gray-200 custom-dark-bg-gray-700" placeholder="Enter current password" required disabled>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword" class="w-full border border-gray-300 custom-dark-border-gray-600 rounded-lg px-4 py-2 custom-dark-text-gray-200 custom-dark-bg-gray-700" placeholder="Enter new password" required disabled>
+                            </div>
+                            <div class="mt-6 flex justify-end">
+                                <button type="submit" id="saveSecurityBtn" class="bg-blue-600 text-white custom-dark-bg-blue-700 custom-dark-text-gray-200 text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700 custom-dark-hover-bg-blue-800" disabled>
+                                    Save
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <form id="securityForm" class="space-y-4 max-w-md">
-                        <div>
-                        <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Current Password</label>
-<input type="password" id="currentPassword" name="currentPassword" class="w-full border border-gray-300 custom-dark-border-gray-600 rounded-lg px-4 py-2 custom-dark-text-gray-200 custom-dark-bg-gray-700" placeholder="Enter current password" required>
-                        </div>
-                        <div>
-                        <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">New Password</label>
-<input type="password" id="newPassword" name="newPassword" class="w-full border border-gray-300 custom-dark-border-gray-600 rounded-lg px-4 py-2 custom-dark-text-gray-200 custom-dark-bg-gray-700" placeholder="Enter new password" required>
-                        </div>
-                        <div class="mt-6 flex justify-end">
-                        <button type="submit" class="bg-blue-600 text-white custom-dark-bg-blue-700 custom-dark-text-gray-200 text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700 custom-dark-hover-bg-blue-800">
-                            Save
-                        </button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
 
     <!-- logout -->
-    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-75 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl p-6 w-96 max-w-md mx-4 custom-dark-bg-gray-800 custom-dark-text-gray-300">
+    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-96 max-w-md mx-4">
             <div class="text-center mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 custom-dark-text-gray-200 mb-2">Confirm Logout</h3>
-                <p class="text-gray-600 custom-dark-text-gray-400">Are you sure you want to log out?</p>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirm Logout</h3>
+                <p class="text-gray-600">Are you sure you want to log out?</p>
             </div>
             <div class="flex space-x-3">
-                <button onclick="closeLogoutModal()" class="flex-1 px-4 py-2 bg-gray-200 custom-dark-bg-gray-700 text-gray-800 custom-dark-text-gray-200 rounded-lg hover:bg-gray-300 custom-dark-hover-bg-gray-600">
+                <button onclick="closeLogoutModal()" class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
                     Cancel
                 </button>
                 <button onclick="confirmLogout()" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">

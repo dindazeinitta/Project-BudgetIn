@@ -106,11 +106,6 @@
       animation: float 7s ease-in-out infinite;
     }
 
-
-
-
-
-
     .animate-float { animation: float 4s ease-in-out infinite; }
     .animate-float-reverse { animation: floatReverse 5s ease-in-out infinite; }
 
@@ -131,6 +126,39 @@
       transform: translateY(-2px);
       box-shadow: 0 10px 30px rgba(78, 106, 243, 0.3);
     }
+
+    <style>
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+
+  .animate-slideIn {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  .animate-slideOut {
+    animation: slideOut 0.3s ease-in forwards;
+  }
+</style>
+
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-[#e8edff] to-[#f0f4ff] relative overflow-hidden">
@@ -191,6 +219,11 @@
               required 
             />
             <span id="generalError" class="text-red-500 text-sm mt-2 block text-center"></span>
+            <div class="text-end mt-3 slide-up" style="animation-delay: 1.8s; animation-fill-mode: both;">
+              <button onclick="openModal()" class="text-blue-600 hover:text-blue-800 font-reguler">
+                Forgot Password
+              </button>
+            </div>            
           </div>
 
           <div class="slide-up" style="animation-delay: 1.4s;">
@@ -203,7 +236,7 @@
           </div>
         </form>
 
-        <div class="text-center mt-8 slide-up" style="animation-delay: 1.6s;">
+        <div class="text-center mt-3 slide-up" style="animation-delay: 1.6s;">
           <p class="text-gray-500">
             Don’t have an account? 
             <a href="signup.html" class="text-[#4e6af3] hover:text-[#3c56c0] font-medium transition-colors">Sign Up</a>
@@ -212,11 +245,78 @@
       </div>
     </div>
 
+ <!-- Overlay -->
+<div id="forgotModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+  <!-- Modal Box -->
+  <div class="bg-white w-full max-w-md p-6 rounded-xl shadow-lg animate-slideIn">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">Forgot Password</h2>
+    <form id="forgotForm" novalidate>
+      <label for="forgotEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+      <input type="email" id="forgotEmail" required
+        class="w-full px-4 py-2 mb-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        placeholder="you@example.com" />
+      <p id="forgotError" class="text-sm text-red-500 hidden mb-2">Please enter a valid email address.</p>
+
+      <button type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition">
+        Send Reset Link
+      </button>
+    </form>
+    <button onclick="closeModal()" class="mt-4 text-sm text-gray-500 hover:underline block mx-auto">Cancel</button>
+  </div>
+</div>
+
+</div>
+
   </div>
 
 
 
 <script>
+  const modal = document.getElementById("forgotModal");
+  const modalBox = document.getElementById("modalBox");
+  const form = document.getElementById("forgotForm");
+  const email = document.getElementById("forgotEmail");
+  const error = document.getElementById("forgotError");
+
+  function openModal() {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    modalBox.classList.remove("animate-slideOut");
+    modalBox.classList.add("animate-slideIn");
+  }
+
+  function closeModal() {
+    modalBox.classList.remove("animate-slideIn");
+    modalBox.classList.add("animate-slideOut");
+
+    // Delay hide until animation completes
+    setTimeout(() => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      form.reset();
+      error.classList.add("hidden");
+    }, 300); // match animation duration
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+    if (!isValid) {
+      error.classList.remove("hidden");
+      email.classList.add("border-red-500");
+      return;
+    }
+
+    error.classList.add("hidden");
+    email.classList.remove("border-red-500");
+
+    alert("Reset link sent to your email!");
+    closeModal();
+  });
+
+
 document.querySelector('form').addEventListener('submit', async function(event) {
   event.preventDefault();
   
