@@ -83,7 +83,15 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between mb-6 w-full max-w-5xl">
+                
+                    <!-- Add New Button -->
+
+                    
+
+
+
+
+                    <div class="flex items-center justify-between mb-6 w-full max-w-screen">
                     <!-- Search Bar -->
                     <div class="relative w-full max-w-md">
                         <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,13 +105,16 @@
                     </div>
 
                     <!-- Add New Button -->
-                    <a id="openModal" class="ml-4 bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2 transition-colors">
+                    <a id="openModal" class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2 transition-colors mr-3">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
                         <span>Add new</span>
                     </a>
                 </div>
+
+
+
 
                 <!-- Transactions Table -->
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -321,19 +332,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- DATA FETCHING & RENDERING ---
     async function loadTransactions() {
-        try {
-            const response = await fetch('http://127.0.0.1:8080/api/transactions', { credentials: 'include' });
-            if (!response.ok) {
-                if (response.status === 401 || response.status === 403) window.location.href = 'signin.html';
-                throw new Error('Failed to load transactions');
-            }
-            allTransactions = await response.json();
-            renderTransactions(allTransactions);
-        } catch (err) {
-            console.error('Error loading transactions:', err);
-            transactionContainer.innerHTML = `<p class="p-6 text-center text-gray-500">Could not load transactions.</p>`;
+    try {
+        const response = await fetch('http://127.0.0.1:8080/api/transactions', { credentials: 'include' });
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 403) window.location.href = 'signin.html';
+            throw new Error('Failed to load transactions');
         }
+
+        allTransactions = await response.json();
+
+        // ⬇️ Tambahkan baris ini untuk mengurutkan berdasarkan tanggal paling baru ke paling lama
+        allTransactions.sort((a, b) => new Date(b.transactionDateTime) - new Date(a.transactionDateTime));
+
+        renderTransactions(allTransactions);
+    } catch (err) {
+        console.error('Error loading transactions:', err);
+        transactionContainer.innerHTML = `<p class="p-6 text-center text-gray-500">Could not load transactions.</p>`;
     }
+}
+
 
     function renderTransactions(transactions) {
         transactionContainer.innerHTML = ''; // Clear previous content

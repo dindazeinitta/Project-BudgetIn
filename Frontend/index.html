@@ -3,72 +3,592 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome - Budgetin</title>
+  <title>BudgetIn - Smart Daily Finance Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="min-h-screen relative overflow-hidden">
-  
-  <!-- Background Decorative Circles -->
-  <div class="bg-circle bg-circle-1"></div>
-  <div class="bg-circle bg-circle-2"></div>
-  <div class="bg-circle bg-circle-3"></div>
-  <div class="bg-circle bg-circle-4"></div>
-  <div class="bg-circle bg-circle-5"></div>
-  <div class="bg-circle bg-circle-6"></div>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
 
-  <div class="grid grid-cols-1 md:grid-cols-2 min-h-screen relative z-10">
-    
-    <!-- Left Side -->
-    <div class="bg-[#e8edff] flex flex-col justify-center px-10 py-12 fade-in relative">
-      <!-- Additional floating circles for left side -->
-      <div class="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-300 to-blue-400 rounded-full opacity-30 animate-float blur-sm"></div>
-      <div class="absolute bottom-32 left-20 w-24 h-24 bg-gradient-to-br from-blue-200 to-blue-300 rounded-full opacity-35 animate-float-reverse blur-sm"></div>
-      <div class="absolute top-1/2 right-10 w-28 h-28 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full opacity-25 animate-float blur-sm"></div>
-      <div class="absolute top-10 right-20 w-20 h-20 bg-gradient-to-br from-blue-300 to-blue-400 rounded-full opacity-20 animate-float-reverse blur-sm"></div>
-      
-      <div class="max-w-md mx-auto text-center md:text-left relative z-10">
-        <h1 class="text-4xl md:text-5xl font-bold text-[#3B3B98] mb-6 slide-up">
-          Take Control of Your Finances with <span class="text-[#4e6af3]">Budgetin!</span>
-        </h1>
-        <p class="text-gray-700 text-lg mb-6 slide-up" style="animation-delay: 0.2s; animation-fill-mode: both;">
-          A modern money tracker to help you manage your daily finances with 
-          <span class="highlight-clarity">clarity</span> and 
-          <span class="highlight-confidence">confidence</span>.
-        </p>
-        <a href="signup.html" class="inline-block bg-[#4e6af3] text-white px-6 py-3 rounded-md text-lg font-semibold shadow-md hover:bg-[#3c56c0] transition slide-up transform hover:scale-105 hover:shadow-lg" style="animation-delay: 0.4s; animation-fill-mode: both;">
-          Start now
+    /* Enhanced Animations */
+    .fade-in {
+      animation: fadeIn 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    .slide-up {
+      animation: slideUp 0.8s ease-out forwards;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .slide-left {
+      animation: slideLeft 1s ease-out forwards;
+      opacity: 0;
+      transform: translateX(50px);
+    }
+
+    .zoom-in {
+      animation: zoomIn 1s ease-out forwards;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideLeft {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes zoomIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes floatReverse {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(20px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-float-reverse {
+      animation: floatReverse 7s ease-in-out infinite;
+    }
+
+    .animate-pulse-custom {
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    .animate-rotate-slow {
+      animation: rotate 20s linear infinite;
+    }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Glassmorphism effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Hover effects */
+    .hover-scale {
+      transition: all 0.3s ease;
+    }
+
+    .hover-scale:hover {
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .hover-glow:hover {
+      box-shadow: 0 0 30px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Background decorative elements */
+    .bg-decoration {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Stagger animations */
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; }
+    .stagger-4 { animation-delay: 0.4s; }
+    .stagger-5 { animation-delay: 0.5s; }
+    .stagger-6 { animation-delay: 0.6s; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #667eea;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #5a6fd8;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 overflow-x-hidden">
+
+  <!-- Floating background decorations -->
+  <div class="bg-decoration w-72 h-72 bg-gradient-to-br from-blue-300/30 to-purple-400/30 top-10 -left-20 animate-float"></div>
+  <div class="bg-decoration w-64 h-64 bg-gradient-to-br from-purple-300/25 to-pink-400/25 top-1/3 -right-16 animate-float-reverse"></div>
+  <div class="bg-decoration w-48 h-48 bg-gradient-to-br from-indigo-300/20 to-blue-400/20 bottom-1/4 left-1/4 animate-float"></div>
+  <div class="bg-decoration w-56 h-56 bg-gradient-to-br from-cyan-300/15 to-teal-400/15 bottom-10 -right-12 animate-float-reverse"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-white/20">
+   
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center py-4">
+      <!-- Logo Image Start -->
+      <div class="flex items-center space-x-2 fade-in">
+        <img src="BUDGETIN LOGO.svg" alt="BudgetIn Logo" class="h-10 w-auto">
+      </div>
+        <div class="hidden md:flex space-x-8 fade-in stagger-2">
+          <a href="#features" class="text-gray-600 hover:text-blue-600 transition-colors">Features</a>
+          <a href="#demo" class="text-gray-600 hover:text-blue-600 transition-colors">Demo</a>
+          <a href="#testimonials" class="text-gray-600 hover:text-blue-600 transition-colors">Reviews</a>
+        </div>
+
+         <!-- Sign Up & Sign In Buttons -->
+      <div class="flex space-x-4 fade-in stagger-3">
+        <a href="signup.html" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 py-2 rounded-full hover:shadow-lg transition-all duration-300">
+          Sign Up
+        </a>
+        <a href="signin.html" class="border border-blue-600 text-blue-600 px-5 py-2 rounded-full hover:bg-blue-50 transition-all duration-300">
+          Sign In
         </a>
       </div>
     </div>
+  </div>
+</nav>
 
-    <!-- Right Side with White Background & Shadow -->
-    <div class="bg-white relative shadow-xl slide-up flex items-center justify-center p-8 md:p-12" style="animation-delay: 0.6s; animation-fill-mode: both;">
-      <!-- Additional floating circles for right side -->
-      <div class="absolute top-16 right-12 w-36 h-36 bg-gradient-to-br from-blue-200 to-blue-300 rounded-full opacity-40 animate-float blur-sm"></div>
-      <div class="absolute bottom-20 left-8 w-28 h-28 bg-gradient-to-br from-blue-300 to-blue-400 rounded-full opacity-35 animate-float-reverse blur-sm"></div>
-      <div class="absolute top-1/3 left-1/4 w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full opacity-30 animate-float blur-sm"></div>
-      <div class="absolute bottom-1/3 right-1/4 w-24 h-24 bg-gradient-to-br from-blue-200 to-blue-400 rounded-full opacity-25 animate-float-reverse blur-sm"></div>
-      
-      <!-- Logo di kiri atas -->
-      <div class="absolute top-6 left-6 z-20">
-        <img src="BUDGETIN LOGO.png" alt="Logo Budgetin" class="w-40 object-contain animate-float" />
+  <!-- Hero Section -->
+  <section class="relative pt-32 pb-20 px-4 text-center">
+    <div class="max-w-6xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+              <!-- Left Content -->
+      <div class="text-left">
+        <h1 class="text-5xl lg:text-7xl font-bold mb-6 slide-up">
+          Take Control of Your 
+          <span class="gradient-text">Daily Finances</span>
+        </h1>
+        <p class="text-xl text-gray-600 mb-8 slide-up stagger-2">
+          BudgetIn helps you track daily transactions, monitor spending, and analyze your financial habits with a modern, intuitive dashboard.
+        </p>
+        <div class="flex slide-up stagger-3">
+          <a href="signup.html" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 hover-glow hover-scale">
+            Start Now
+          </a>
+        </div>
       </div>
 
-      <!-- Main Image -->
-      <img src="WELCOME PAGE PIC.png" alt="Budgetin Preview" class="w-full max-w-md relative z-10 animate-float" style="animation-delay: 1s;" />
-      
-      <!-- Floating decorative elements around main image -->
-      <div class="absolute top-1/4 right-8 w-6 h-6 bg-green-400 rounded-full opacity-60 animate-float" style="animation-delay: 2s;"></div>
-      <div class="absolute bottom-1/4 right-12 w-4 h-4 bg-yellow-400 rounded-full opacity-70 animate-float-reverse" style="animation-delay: 2.5s;"></div>
-      <div class="absolute top-1/2 left-4 w-5 h-5 bg-purple-400 rounded-full opacity-50 animate-float" style="animation-delay: 3s;"></div>
+
+        <!-- Right Image -->
+        <div class="relative zoom-in stagger-4">
+          <div class="relative">
+            <!-- Phone mockup -->
+            <div class="bg-white rounded-3xl shadow-2xl p-6 mx-auto max-w-sm animate-float">
+              <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-6 text-white">
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-semibold">Dashboard</h3>
+                  <div class="w-8 h-8 bg-white/20 rounded-full"></div>
+                </div>
+                <div class="space-y-4">
+                  <div class="bg-white/20 rounded-lg p-3">
+                    <div class="text-sm opacity-80">Total Balance</div>
+                    <div class="text-2xl font-bold">Rp. 2.000.000</div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white/20 rounded-lg p-3">
+                      <div class="text-sm opacity-80">Income</div>
+                      <div class="text-lg font-bold text-green-300">+Rp. 90.000</div>
+                    </div>
+                    <div class="bg-white/20 rounded-lg p-3">
+                      <div class="text-sm opacity-80">Expenses</div>
+                      <div class="text-lg font-bold text-red-300">-Rp. 50.000</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Floating elements around phone -->
+            <div class="absolute -top-4 -right-4 w-16 h-16 bg-green-400 rounded-full flex items-center justify-center text-white font-bold animate-float-reverse">
+              +50K
+            </div>
+            <div class="absolute -bottom-4 -left-4 w-12 h-12 bg-red-400 rounded-full flex items-center justify-center text-white text-sm animate-float">
+              -20K
+            </div>
+            <div class="absolute top-1/2 -right-8 w-10 h-10 bg-blue-400 rounded-full animate-pulse-custom"></div>
+            <div class="absolute top-1/4 -left-6 w-8 h-8 bg-purple-400 rounded-full animate-float-reverse"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20 px-4 bg-white relative">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl lg:text-5xl font-bold mb-6 slide-up">
+          Powerful Features for <span class="gradient-text">Smart Finance</span>
+        </h2>
+        <p class="text-xl text-gray-600 slide-up stagger-2">
+          Everything you need to manage your money efficiently in one place
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl hover-scale slide-up stagger-1">
+          <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 animate-float">
+            <div class="w-8 h-8 bg-white rounded-lg"></div>
+          </div>
+          <h3 class="text-xl font-bold mb-4">Smart Dashboard</h3>
+          <p class="text-gray-600">Get a complete overview of your balance, income, expenses, and daily notes at a glance.</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl hover-scale slide-up stagger-2">
+          <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 animate-float-reverse">
+            <div class="w-8 h-8 bg-white rounded-lg"></div>
+          </div>
+          <h3 class="text-xl font-bold mb-4">Advanced Analytics</h3>
+          <p class="text-gray-600">Interactive charts and monthly statistics to understand your spending patterns better.</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl hover-scale slide-up stagger-3">
+          <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 animate-float">
+            <div class="w-8 h-8 bg-white rounded-lg"></div>
+          </div>
+          <h3 class="text-xl font-bold mb-4">Transaction Manager</h3>
+          <p class="text-gray-600">Easily record income, expenses, payment methods, and categorize all your transactions.</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl hover-scale slide-up stagger-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6 animate-float-reverse">
+            <div class="w-8 h-8 bg-white rounded-lg"></div>
+          </div>
+          <h3 class="text-xl font-bold mb-4">Notes & Calendar</h3>
+          <p class="text-gray-600">Add important financial notes and organize your financial schedule with our built-in calendar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Section -->
+    <section id="demo" class="py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
+      <div class="max-w-6xl mx-auto text-center">
+        <h2 class="text-4xl lg:text-5xl font-bold mb-8 slide-up">
+          See BudgetIn in <span class="gradient-text">Action</span>
+        </h2>
+        <p class="text-xl text-gray-600 mb-12 slide-up stagger-2">
+          Experience the intuitive interface that makes financial tracking effortless
+        </p>
+
+        <div class="flex flex-col lg:flex-row items-start justify-center gap-10">
+          <!-- Monthly Overview Card -->
+          <div class="bg-white rounded-3xl shadow-xl p-8 w-full max-w-sm hover-scale slide-left stagger-3 flex flex-col justify-between h-[600px]">
+            <div>
+              <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-6 text-white mb-6">
+                <h3 class="text-lg font-semibold mb-4">Monthly Overview</h3>
+                <div class="bg-white/20 rounded-xl p-3 mb-4">
+                  <canvas id="incomeExpenseChart" width="200" height="120"></canvas>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="bg-white/20 rounded-lg p-2">
+                    <div class="text-xs opacity-80">Total Income</div>
+                    <div class="text-lg font-bold text-green-300">Rp 3.2M</div>
+                  </div>
+                  <div class="bg-white/20 rounded-lg p-2">
+                    <div class="text-xs opacity-80">Total Expenses</div>
+                    <div class="text-lg font-bold text-red-300">Rp 1.9M</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span class="text-sm">Groceries</span>
+                  <span class="font-semibold text-red-500">−Rp 85.000</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span class="text-sm">Freelance</span>
+                  <span class="font-semibold text-green-500">+Rp 450.000</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span class="text-sm">Coffee</span>
+                  <span class="font-semibold text-red-500">−Rp 12.500</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spending by Categories Card -->
+          <div class="bg-white rounded-3xl shadow-xl p-8 w-full max-w-sm hover-scale slide-left stagger-4 flex flex-col justify-between h-[600px]">
+            <div>
+              <div class="bg-gray-50 rounded-2xl p-6 text-gray-800 mb-6">
+
+                <h3 class="text-lg font-semibold mb-4 text-center">Spending by Categories</h3>
+                <div class="flex justify-center mb-4">
+                  <canvas id="categoryChart" width="100" height="100"></canvas>
+                </div>
+                <div class="flex justify-center gap-4 text-sm text-black opacity-90">
+                  <div class="flex items-center gap-1">
+                    <div class="w-3 h-3 bg-[#3B82F6] rounded-full"></div>
+                    <span>Food</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <div class="w-3 h-3 bg-[#EF4444] rounded-full"></div>
+                    <span>Transport</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <div class="w-3 h-3 bg-[#FACC15] rounded-full"></div>
+                    <span>Shopping</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-4 text-white text-center mb-4">
+                <div class="text-sm opacity-80">This Month Savings</div>
+                <div class="text-2xl font-bold">Rp 1.3M</div>
+                <div class="text-sm opacity-80">↑ 12% from last month</div>
+              </div>
+
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+ <!-- Testimonials -->
+<section id="testimonials" class="py-20 px-6 sm:px-8 lg:px-16 bg-white">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-4xl lg:text-5xl font-bold mb-16 slide-up">
+      What Our <span class="gradient-text">Users Say</span>
+    </h2>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl hover-scale slide-up stagger-1">
+        <div class="flex justify-center text-4xl mb-4">⭐⭐⭐⭐⭐</div>
+        <p class="text-gray-700 mb-6 italic">"As a student, keeping track of my budget was stressful—until I found BudgetIn. Now I know exactly where my money goes."</p>
+        <div class="font-semibold">Salsabila</div>
+        <div class="text-sm text-gray-500">College Student</div>
+      </div>
+
+      <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl hover-scale slide-up stagger-2">
+        <div class="flex justify-center text-4xl mb-4">⭐⭐⭐⭐⭐</div>
+        <p class="text-gray-700 mb-6 italic">"BudgetIn helped me manage my allowance better and even save for things I didn't think I could afford before."</p>
+        <div class="font-semibold">Dinda</div>
+        <div class="text-sm text-gray-500">College Student</div>
+      </div>
+
+      <div class="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl hover-scale slide-up stagger-3">
+        <div class="flex justify-center text-4xl mb-4">⭐⭐⭐⭐⭐</div>
+        <p class="text-gray-700 mb-6 italic">"This app has everything a college student needs to stay financially organized. It's clean, smart, and super helpful."</p>
+        <div class="font-semibold">Azvar Qinan</div>
+        <div class="text-sm text-gray-500">College Student</div>
+      </div>
     </div>
   </div>
-  <script src="global.js"></script>
+</section>
+
+
+  <!-- CTA Section -->
+<section class="pt-20 pb-10 px-4 bg-gradient-to-br from-blue-600 to-purple-700 text-white text-center relative overflow-hidden">
+  <div class="bg-decoration w-96 h-96 bg-white/10 -top-20 -left-20 animate-rotate-slow"></div>
+  <div class="bg-decoration w-80 h-80 bg-white/5 -bottom-16 -right-16 animate-rotate-slow"></div>
+  
+  <div class="max-w-4xl mx-auto relative z-10">
+    <h2 class="text-4xl lg:text-6xl font-bold mb-6 slide-up">
+      Start Managing Your Finances <span class="text-yellow-300">Today</span>
+    </h2>
+    <p class="text-xl mb-8 opacity-90 slide-up stagger-2">
+      Join thousands of users who've taken control of their financial future with BudgetIn
+    </p>
+  </div>
+</section>
+
+
+  <footer class="py-6 px-4 bg-gray-900 text-white text-sm">
+  <div class="max-w-6xl mx-auto text-center text-gray-400">
+    <p>&copy; 2025 BudgetIn. All rights reserved.</p>
+  </div>
+</footer>
+
   <script>
+    
+    // Doughnut Chart: Spending Categories
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(categoryCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Food', 'Transport', 'Shopping'],
+        datasets: [{
+          label: 'Spending',
+          data: [40, 30, 30],
+          backgroundColor: ['#3B82F6', '#EF4444', '#FACC15'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: '65%',
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Initialize Chart
+    function initChart() {
+      const ctx = document.getElementById('incomeExpenseChart');
+      if (!ctx) return;
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          datasets: [{
+            label: 'Income',
+            data: [800000, 750000, 900000, 750000],
+            borderColor: '#10B981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }, {
+            label: 'Expenses',
+            data: [450000, 520000, 480000, 450000],
+            borderColor: '#EF4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                color: 'white',
+                font: {
+                  size: 10
+                },
+                padding: 10
+              }
+            }
+          },
+          scales: {
+            x: {
+              display: true,
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.8)',
+                font: {
+                  size: 9
+                }
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            },
+            y: {
+              display: false
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize chart when page loads
     document.addEventListener('DOMContentLoaded', function() {
-      loadDarkModePreference();
+      setTimeout(initChart, 500);
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('.slide-up, .slide-left, .zoom-in, .fade-in').forEach(el => {
+      el.style.animationPlayState = 'paused';
+      observer.observe(el);
+    });
+
+    // Parallax scrolling effect for background decorations
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const decorations = document.querySelectorAll('.bg-decoration');
+      
+      decorations.forEach((decoration, index) => {
+        const speed = 0.5 + (index * 0.1);
+        decoration.style.transform = `translateY(${scrolled * speed}px)`;
+      });
     });
   </script>
 </body>

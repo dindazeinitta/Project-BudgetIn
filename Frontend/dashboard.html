@@ -57,11 +57,26 @@
             </nav>
         </div>
 
+        
+
         <div class="ml-64 p-6 flex-1">
-            <div class="mb-8">
-                <h1 id="userGreeting" class="text-3xl font-bold text-gray-800 mb-2">Hello, Guest!</h1>
-                <p class="text-gray-600">Get your summary of your monthly transaction here.</p>
+    <!-- TOP BAR dengan Profile di kanan -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 id="userGreeting" class="text-3xl font-bold text-gray-800 mb-2">Hello, Guest!</h1>
+            <p class="text-gray-600">Get your summary of your monthly transaction here.</p>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="flex items-center space-x-3">
+            <div id="user-avatar" class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium">
+                ?
             </div>
+            <span id="user-fullname" class="text-gray-700 font-medium">Loading...</span>
+        </div>
+    </div>
+
+            
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 space-y-6">
@@ -102,24 +117,25 @@
         <div class="flex items-center space-x-2">
             <!-- Buttons -->
             <button id="filter-weekly" class="filter-btn text-sm border rounded px-3 py-1 bg-white text-gray-700 border-gray-300 hover:bg-blue-50">
-                7 Hari
+                Weekly
             </button>
             <button id="filter-monthly" class="filter-btn text-sm border rounded px-3 py-1 bg-blue-100 text-blue-600 border-blue-400">
-                Bulanan
+                Monthly
             </button>
             <select id="month-select" class="text-sm border rounded px-2 py-1">
-                <option value="0">JANUARI</option>
-                <option value="1">FEBRUARI</option>
-                <option value="2">MARET</option>
+                <option value="0">JANUARY</option>
+                <option value="1">FEBRUARY</option>
+                <option value="2">MARCH</option>
                 <option value="3">APRIL</option>
-                <option value="4">MEI</option>
-                <option value="5">JUNI</option>
-                <option value="6">JULI</option>
-                <option value="7">AGUSTUS</option>
+                <option value="4">MAY</option>
+                <option value="5">JUNE</option>
+                <option value="6">JULY</option>
+                <option value="7">AUGUST</option>
                 <option value="8">SEPTEMBER</option>
-                <option value="9">OKTOBER</option>
+                <option value="9">OCTOBER</option>
                 <option value="10">NOVEMBER</option>
-                <option value="11">DESEMBER</option>
+                <option value="11">DECEMBER</option>
+
             </select>
         </div>
     </div>
@@ -150,11 +166,25 @@
 
                     
                         <!-- Judul Recent Transactions -->
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Recent Transactions</h3>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden" id="recent-transactions-wrapper">
+                            <!-- Header: Judul + View All -->
+                            <div class="flex items-center justify-between px-5 pt-4 pb-2 border-b border-gray-200/60">
+                                <h3 class="text-lg font-semibold text-gray-800">Recent Transactions</h3>
+                                <a href="transactions.html" class="text-sm font-medium text-green-600 hover:text-green-700 flex items-center">
+                                View All
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                                </a>
+                            </div>
 
-                        <div class="space-y-4" id="recent-transactions">
+                            <!-- Daftar Transaksi -->
+                            <div id="recent-transactions">
+                                <!-- Akan diisi oleh JS -->
+                            </div>
+                            </div>
 
-                        </div>
+
                             
                     </div>
 
@@ -173,6 +203,9 @@
                             <!-- Notes will be dynamically inserted here -->
                         </div>
                     </div>
+
+
+
 
 
 
@@ -274,22 +307,50 @@
             calendarDays.appendChild(empty);
             }
 
+
             for (let i = 1; i <= lastDate; i++) {
-            const day = document.createElement('div');
-            day.textContent = i;
-            day.className = "py-2 rounded-lg text-sm cursor-pointer hover:bg-white/20 transition";
+  const day = document.createElement('div');
+  day.textContent = i;
+  day.className = "py-2 rounded-lg text-sm cursor-pointer hover:bg-white/20 transition";
 
-            const today = new Date();
-            if (
-                i === today.getDate() &&
-                month === today.getMonth() &&
-                year === today.getFullYear()
-            ) {
-                day.classList.add("bg-white", "text-indigo-700", "font-bold", "shadow-md");
-            }
+  const today = new Date();
+  if (
+    i === today.getDate() &&
+    month === today.getMonth() &&
+    year === today.getFullYear()
+  ) {
+    day.classList.add("bg-white", "text-indigo-700", "font-bold", "shadow-md");
+  }
 
-            calendarDays.appendChild(day);
-            }
+  // ✅ Tambahkan ini untuk klik tanggal
+  day.addEventListener('click', () => {
+    const isHighlighted = day.classList.contains('bg-indigo-600');
+
+    document.querySelectorAll('#calendarDays div').forEach(el => {
+        el.classList.remove('bg-indigo-600', 'text-white', 'font-bold', 'ring-2', 'ring-indigo-300');
+    });
+
+    if (!isHighlighted) {
+        day.classList.add('bg-indigo-600', 'text-white', 'font-bold', 'ring-2', 'ring-indigo-300');
+        
+        monthSelect.value = month;
+        currentView = 'weekly';
+        const clickedDay = i;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        maxWeeksInMonth = Math.ceil(daysInMonth / 7);
+        currentWeek = Math.ceil(clickedDay / 7);
+        updateChart();
+    } else {
+        // balik ke tampilan default (tidak perlu do anything, sudah dihapus class-nya)
+        currentView = 'monthly';
+        updateChart();
+    }
+});
+
+
+
+  calendarDays.appendChild(day);
+}
         }
 
         prevMonthBtn.addEventListener('click', () => {
@@ -315,7 +376,7 @@ const prevWeekBtn = document.getElementById('prev-week');
 const nextWeekBtn = document.getElementById('next-week');
 
 let currentWeek = 1;
-let maxWeeksInMonth = 4;
+let maxWeeksInMonth;
 let currentView = 'monthly';
 let chart;
 let allTransactions = []; // Store all transactions globally
@@ -367,6 +428,9 @@ function createChart(labels, data) {
 function updateChart() {
     const selectedMonth = parseInt(monthSelect.value, 10);
     const currentYear = new Date().getFullYear();
+    const daysInMonth = new Date(currentYear, selectedMonth + 1, 0).getDate();
+maxWeeksInMonth = Math.ceil(daysInMonth / 7);
+
 
     const filteredTransactions = allTransactions.filter(tx => {
         const txDate = new Date(tx.transactionDateTime);
@@ -398,28 +462,33 @@ function updateChart() {
         btnMonthly.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
 
         const firstDayOfMonth = new Date(currentYear, selectedMonth, 1);
-        const startDayOfWeek = (currentWeek - 1) * 7;
-        
-        const labels = [];
-        const data = Array(7).fill(0);
+        const weekStart = (currentWeek - 1) * 7 + 1;
+const weekEnd = Math.min(currentWeek * 7, daysInMonth); // agar tidak lewat akhir bulan
 
-        for (let i = 0; i < 7; i++) {
-            const dayDate = new Date(firstDayOfMonth);
-            dayDate.setDate(startDayOfWeek + i + 1);
-            if (dayDate.getMonth() === selectedMonth) {
-                labels.push(dayDate.getDate().toString());
-            } else {
-                labels.push(''); // Empty label for days outside the month
-            }
-        }
+const labels = [];
+const data = Array(7).fill(0);
+
+// Generate label tanggal untuk minggu saat ini
+for (let i = 0; i < 7; i++) {
+    const currentDay = weekStart + i;
+    if (currentDay <= daysInMonth) {
+        labels.push(currentDay.toString());
+    } else {
+        labels.push('');
+    }
+}
+
 
         filteredTransactions.forEach(tx => {
-            const dayOfMonth = new Date(tx.transactionDateTime).getDate();
-            const dayIndex = dayOfMonth - startDayOfWeek - 1;
-            if (dayIndex >= 0 && dayIndex < 7) {
-                data[dayIndex] += tx.amount;
-            }
-        });
+    const txDate = new Date(tx.transactionDateTime);
+    const txDay = txDate.getDate();
+
+    if (txDay >= weekStart && txDay <= weekEnd) {
+        const index = txDay - weekStart;
+        data[index] += tx.amount;
+    }
+});
+
 
         weekLabel.textContent = `Week ${currentWeek}`;
         createChart(labels, data);
@@ -627,43 +696,48 @@ updateChart();
   }
 
   function loadRecentTransactions(transactions) {
-    try {
-      const container = document.getElementById('recent-transactions');
-      container.innerHTML = '';
+  try {
+    const container = document.getElementById('recent-transactions');
+    container.innerHTML = '';
 
-      const latest = transactions.slice(-3).reverse();
+    const latest = transactions.slice(-3).reverse();
 
-      latest.forEach(t => {
-        const div = document.createElement('div');
-        const isIncome = t.type === 'INCOME';
-        const amountColor = isIncome ? 'text-green-600' : 'text-red-600';
-        const iconLetter = t.name.trim().charAt(0).toUpperCase();
-        const colorBg = isIncome ? 'bg-green-600' : 'bg-red-600';
-        const formattedAmount = (isIncome ? '+ ' : '- ') + formatRupiah(t.amount);
-        const date = new Date(t.transactionDateTime).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    latest.forEach(t => {
+      const div = document.createElement('div');
+      const isIncome = t.type === 'INCOME';
+      const amountColor = isIncome ? 'text-green-600' : 'text-red-600';
+      const iconLetter = t.name.trim().charAt(0).toUpperCase();
+      const colorBg = isIncome ? 'bg-green-600' : 'bg-red-600';
+      const formattedAmount = (isIncome ? '+ ' : '- ') + formatRupiah(t.amount);
+      const date = new Date(t.transactionDateTime).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
 
-        div.className = "flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg";
-        div.innerHTML = `
-          <div class="flex items-center">
-            <div class="w-10 h-10 ${colorBg} rounded-full flex items-center justify-center mr-3">
-              <span class="text-white font-bold">${iconLetter}</span>
-            </div>
-            <div>
-              <h4 class="font-medium text-gray-800">${t.name}</h4>
-              <p class="text-sm text-gray-500">${t.category}</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <div class="font-semibold ${amountColor}">${formattedAmount}</div>
-            <div class="text-sm text-gray-500">${date}</div>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    } catch (err) {
-      console.error('Gagal memuat transaksi:', err);
-    }
+      // ✅ Tambahkan styling card putih dengan border tipis
+            div.className = "flex items-center justify-between px-5 py-4 border-b border-gray-200/60 last:border-b-0 hover:bg-gray-50 transition";
+
+div.innerHTML = `
+  <div class="flex items-center">
+    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+      ${iconLetter}
+    </div>
+    <div class="space-y-0.5">
+      <div class="text-sm font-medium text-gray-800">${t.name}</div>
+      <div class="text-xs text-gray-500">${t.category}</div>
+    </div>
+  </div>
+  <div class="text-right space-y-0.5">
+    <div class="font-semibold ${amountColor} text-sm">${formattedAmount}</div>
+    <div class="text-xs text-gray-500">${date}</div>
+  </div>
+`;
+
+
+      container.appendChild(div);
+    });
+  } catch (err) {
+    console.error('Gagal memuat transaksi:', err);
   }
+}
+
 
   // Panggil saat halaman dibuka
   document.addEventListener('DOMContentLoaded', () => {
@@ -675,6 +749,21 @@ updateChart();
     loadNotes();
     loadDarkModePreference();
   });
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+        const res = await fetch('http://127.0.0.1:8080/api/auth/me', { credentials: 'include' });
+        if (!res.ok) return window.location.href = 'signin.html';
+        const userData = await res.json();
+        if (userData.success) {
+            document.getElementById('user-fullname').textContent = userData.fullName;
+            document.getElementById('user-avatar').textContent = userData.fullName.charAt(0).toUpperCase();
+        }
+    } catch (err) {
+        console.error("Error fetching user data:", err);
+    }
+});
+
 </script>
 </body>
 </html>
