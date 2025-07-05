@@ -75,9 +75,7 @@
                     <!-- Profile Section -->
                     <div class="flex flex-col items-end space-y-3">
                         <div class="flex items-center space-x-3">
-                            <div id="user-avatar" class="w-10 h-10 rounded-full profile-avatar flex items-center justify-center text-white font-medium">
-                                ?
-                            </div>
+                            <img id="user-avatar" class="w-10 h-10 rounded-full object-cover" alt="User Avatar">
                             <span id="user-fullname" class="text-gray-700 font-medium">Loading...</span>
                         </div>
                     </div>
@@ -323,7 +321,17 @@ document.addEventListener('DOMContentLoaded', function () {
             if (userData.success) {
                 currentUser = userData;
                 document.getElementById('user-fullname').textContent = currentUser.fullName;
-                document.getElementById('user-avatar').textContent = currentUser.fullName.charAt(0).toUpperCase();
+                const avatarElement = document.getElementById('user-avatar');
+                if (currentUser.profilePicture) {
+                    avatarElement.src = 'http://127.0.0.1:8080' + currentUser.profilePicture;
+                } else {
+                    // Fallback to initials if no picture
+                    const avatarDiv = document.createElement('div');
+                    avatarDiv.id = 'user-avatar';
+                    avatarDiv.className = 'w-10 h-10 rounded-full profile-avatar flex items-center justify-center text-white font-medium';
+                    avatarDiv.textContent = currentUser.fullName.charAt(0).toUpperCase();
+                    avatarElement.replaceWith(avatarDiv);
+                }
             }
         } catch (error) {
             console.error('Failed to load user data:', error);

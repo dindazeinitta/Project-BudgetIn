@@ -43,9 +43,7 @@
   <div class="flex flex-col items-end gap-2">
     <!-- Profile Section -->
     <div class="flex items-center space-x-3">
-      <div id="user-avatar" class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium">
-        ?
-      </div>
+      <img id="user-avatar" class="w-10 h-10 rounded-full object-cover" alt="User Avatar">
       <span id="user-fullname" class="text-gray-700 font-medium">Loading...</span>
     </div>
     
@@ -559,7 +557,17 @@
         const userData = await res.json();
         if (userData.success) {
             document.getElementById('user-fullname').textContent = userData.fullName;
-            document.getElementById('user-avatar').textContent = userData.fullName.charAt(0).toUpperCase();
+            const avatarElement = document.getElementById('user-avatar');
+            if (userData.profilePicture) {
+                avatarElement.src = 'http://127.0.0.1:8080' + userData.profilePicture;
+            } else {
+                // Fallback to initials if no picture
+                const avatarDiv = document.createElement('div');
+                avatarDiv.id = 'user-avatar';
+                avatarDiv.className = 'w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium';
+                avatarDiv.textContent = userData.fullName.charAt(0).toUpperCase();
+                avatarElement.replaceWith(avatarDiv);
+            }
         }
     } catch (err) {
         console.error("Error fetching user data:", err);

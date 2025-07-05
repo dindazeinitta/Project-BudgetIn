@@ -10,4 +10,7 @@ public interface UserService {
     void updateProfile(String email, String fullName, String newEmail);
     User updateProfile(String name, String fullName, String email, org.springframework.web.multipart.MultipartFile profilePicture);
     void changePassword(String email, String currentPassword, String newPassword);
+    void createPasswordResetTokenForUser(User user, String token);
+    Optional<User> validatePasswordResetToken(String token);
+    void changeUserPassword(User user, String password);
 }

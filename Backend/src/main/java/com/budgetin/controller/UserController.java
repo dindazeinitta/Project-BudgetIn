@@ -5,6 +5,7 @@ import com.budgetin.model.User;
 import com.budgetin.service.UserService;
 import com.budgetin.web.dto.ApiResponse;
 import com.budgetin.web.dto.ChangePasswordDto;
+import com.budgetin.web.dto.UpdateProfileDto;
 import com.budgetin.web.dto.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,12 +32,11 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestParam("fullName") String fullName,
-                                           @RequestParam("email") String email,
+    public ResponseEntity<?> updateProfile(@Valid @ModelAttribute UpdateProfileDto profileDto,
                                            @RequestParam(value = "profilePicture", required = false) MultipartFile profilePicture,
                                            Principal principal) {
         String oldEmail = principal.getName();
-        User updatedUser = userService.updateProfile(oldEmail, fullName, email, profilePicture);
+        User updatedUser = userService.updateProfile(oldEmail, profileDto.fullName(), profileDto.email(), profilePicture);
 
         String newJwt = jwtUtil.generateToken(updatedUser);
 

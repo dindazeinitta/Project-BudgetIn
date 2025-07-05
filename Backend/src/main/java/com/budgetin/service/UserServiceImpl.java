@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("Email already in use");
         }
         User user = new User();
-        user.setUsername(registrationDto.email());
+        user.setUsername(registrationDto.username());
         user.setFullName(registrationDto.fullName());
         user.setEmail(registrationDto.email());
         user.setPassword(passwordEncoder.encode(registrationDto.password()));
@@ -69,7 +70,6 @@ public class UserServiceImpl implements UserService {
 
         user.setFullName(fullName);
         user.setEmail(newEmail);
-        user.setUsername(newEmail);
 
         if (profilePicture != null && !profilePicture.isEmpty()) {
             try {
@@ -107,6 +107,29 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("Wrong current password");
         }
         user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void createPasswordResetTokenForUser(User user, String token) {
+        user.setResetToken(token);
+        user.setResetTokenExpiry(LocalDateTime.now().plusHours(1));
+        userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> validatePasswordResetToken(String token) {
+        return userRepository.findByResetToken(token)
+                .filter(user -> user.getResetTokenExpiry().isAfter(LocalDateTime.now()));
+    }
+
+    @Override
+    @Transactional
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
         userRepository.save(user);
     }
 }

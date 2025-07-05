@@ -127,7 +127,11 @@
       box-shadow: 0 10px 30px rgba(78, 106, 243, 0.3);
     }
 
-    <style>
+    .center-recaptcha {
+      display: flex;
+      justify-content: center;
+    }
+
   @keyframes slideIn {
     from {
       opacity: 0;
@@ -158,8 +162,6 @@
     animation: slideOut 0.3s ease-in forwards;
   }
 </style>
-
-  </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-[#e8edff] to-[#f0f4ff] relative overflow-hidden">
 
@@ -221,12 +223,13 @@
             <span id="generalError" class="text-red-500 text-sm mt-2 block text-center"></span>
             <div class="text-end mt-3 slide-up" style="animation-delay: 1.8s; animation-fill-mode: both;">
               <button onclick="openModal()" class="text-blue-600 hover:text-blue-800 font-reguler">
-                Forgot Password
+                Forgot Password?
               </button>
             </div>            
           </div>
 
           <div class="slide-up" style="animation-delay: 1.4s;">
+            <div class="g-recaptcha mb-4 center-recaptcha" data-sitekey="6LcXpncrAAAAAMx0MUhdQZN0trDzp8UDCCNvAt6T"></div>
             <button 
               type="submit" 
               class="signin-btn w-full bg-[#4e6af3] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#3c56c0] focus:outline-none focus:ring-4 focus:ring-[#4e6af3]/30"
@@ -274,7 +277,7 @@
 
 <script>
   const modal = document.getElementById("forgotModal");
-  const modalBox = document.getElementById("modalBox");
+  const modalBox = modal.querySelector(".animate-slideIn");
   const form = document.getElementById("forgotForm");
   const email = document.getElementById("forgotEmail");
   const error = document.getElementById("forgotError");
@@ -299,7 +302,7 @@
     }, 300); // match animation duration
   }
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
@@ -312,8 +315,22 @@
     error.classList.add("hidden");
     email.classList.remove("border-red-500");
 
-    alert("Reset link sent to your email!");
-    closeModal();
+    const response = await fetch('http://127.0.0.1:8080/api/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email.value
+        })
+    });
+
+    if (response.ok) {
+        alert("Reset link sent to your email!");
+        closeModal();
+    } else {
+        alert("Failed to send reset link. Please check the email address.");
+    }
   });
 
 
@@ -325,6 +342,12 @@ document.querySelector('form').addEventListener('submit', async function(event) 
 
   const email = document.getElementById('signinEmail').value.trim().toLowerCase();
   const password = document.getElementById('signinPassword').value;
+  const captchaToken = grecaptcha.getResponse();
+
+  if (!captchaToken) {
+    document.getElementById('generalError').textContent = 'Please complete the CAPTCHA';
+    return;
+  }
 
   const submitButton = event.target.querySelector('button[type="submit"]');
   const originalButtonText = submitButton.innerHTML;
@@ -338,7 +361,7 @@ document.querySelector('form').addEventListener('submit', async function(event) 
         'Content-Type': 'application/json'
       },
       credentials: 'include',
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password, captchaToken })
     });
 
     if (response.ok) {
@@ -350,10 +373,12 @@ document.querySelector('form').addEventListener('submit', async function(event) 
       const data = await response.json();
       // Display general error message
       document.getElementById('generalError').textContent = data.message || 'Invalid email or password.';
+      grecaptcha.reset(); // Reset CAPTCHA on error
     }
   } catch (error) {
     document.getElementById('generalError').textContent = 'An error occurred. Please try again.';
     console.error(error);
+    grecaptcha.reset(); // Reset CAPTCHA on error
   } finally {
     submitButton.disabled = false;
     submitButton.innerHTML = originalButtonText;
@@ -365,6 +390,7 @@ document.querySelector('form').addEventListener('submit', async function(event) 
 
 
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="global.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {

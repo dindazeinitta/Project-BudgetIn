@@ -69,9 +69,7 @@
 
         <!-- Profile Section -->
         <div class="flex items-center space-x-3">
-            <div id="user-avatar" class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium">
-                ?
-            </div>
+            <img id="user-avatar" class="w-10 h-10 rounded-full object-cover" alt="User Avatar">
             <span id="user-fullname" class="text-gray-700 font-medium">Loading...</span>
         </div>
     </div>
@@ -627,41 +625,6 @@ updateChart();
     }
   }
 
-  async function loadUserData() {
-    try {
-      // Add a small delay to ensure the browser has processed the cookie
-      await new Promise(resolve => setTimeout(resolve, 500));
-      // Check if the JWT cookie is present
-      const cookies = document.cookie.split(';');
-      let jwtCookieFound = false;
-      for (let cookie of cookies) {
-        if (cookie.trim().startsWith('jwt=')) {
-          jwtCookieFound = true;
-          console.log('JWT cookie found in document.cookie');
-          break;
-        }
-      }
-      if (!jwtCookieFound) {
-        console.log('JWT cookie NOT found in document.cookie');
-      }
-      const response = await fetch('http://127.0.0.1:8080/api/auth/me', { credentials: 'include' });
-      if (!response.ok) {
-        // Jika tidak terotentikasi, arahkan ke halaman login
-        if (response.status === 401 || response.status === 403) {
-          window.location.href = 'signin.html';
-        }
-        return;
-      }
-      const userData = await response.json();
-      if (userData.success && userData.fullName) {
-        document.getElementById('userGreeting').textContent = `Hello, ${userData.fullName}!`;
-      }
-    } catch (error) {
-      console.error('Failed to load user data:', error);
-      // Biarkan sapaan default jika terjadi error
-    }
-  }
-
   async function updateDashboardTotals() {
     try {
       const res = await fetch("http://127.0.0.1:8080/api/transactions", { credentials: 'include' });
@@ -740,28 +703,56 @@ div.innerHTML = `
 
 
   // Panggil saat halaman dibuka
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Set default month for the filter
     const currentMonth = new Date().getMonth();
     document.getElementById('month-select').value = currentMonth;
-    
-    loadUserData();
-    updateDashboardTotals();
-    loadNotes();
-    loadDarkModePreference();
-  });
 
-  document.addEventListener('DOMContentLoaded', async function () {
     try {
+        // Single fetch for user data
         const res = await fetch('http://127.0.0.1:8080/api/auth/me', { credentials: 'include' });
-        if (!res.ok) return window.location.href = 'signin.html';
+
+        if (!res.ok) {
+            // If not authenticated, redirect to signin page
+            if (res.status === 401 || res.status === 403) {
+                window.location.href = 'signin.html';
+            }
+            return; // Stop execution if fetch failed
+        }
+
         const userData = await res.json();
+
         if (userData.success) {
+            // Update greeting with USERNAME
+            document.getElementById('userGreeting').textContent = `Hello, ${userData.username}!`;
+
+            // Update top-right profile info
             document.getElementById('user-fullname').textContent = userData.fullName;
-            document.getElementById('user-avatar').textContent = userData.fullName.charAt(0).toUpperCase();
+            const avatarElement = document.getElementById('user-avatar');
+            if (userData.profilePicture) {
+                avatarElement.src = 'http://127.0.0.1:8080' + userData.profilePicture;
+            } else {
+                // Fallback to initials if no picture
+                const avatarDiv = document.createElement('div');
+                avatarDiv.id = 'user-avatar';
+                avatarDiv.className = 'w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium';
+                avatarDiv.textContent = userData.fullName.charAt(0).toUpperCase();
+                avatarElement.replaceWith(avatarDiv);
+            }
+        } else {
+            // Fallback if success is false
+            window.location.href = 'signin.html';
         }
     } catch (err) {
         console.error("Error fetching user data:", err);
+        // Redirect on error
+        window.location.href = 'signin.html';
     }
+
+    // Load other dashboard data
+    updateDashboardTotals();
+    loadNotes();
+    loadDarkModePreference();
 });
 
 </script>
