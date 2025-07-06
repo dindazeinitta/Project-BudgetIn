@@ -135,7 +135,7 @@ public class AuthController {
                     userService.createPasswordResetTokenForUser(user, token);
                     emailService.sendEmail(user.getEmail(), "Reset Password",
                             "To reset your password, click the link below:\n"
-                                    + "http://127.0.0.1:5501/Frontend/reset-password.html?token=" + token);
+                                    + "http://127.0.0.1:5501/Frontend/signin.html?token=" + token);
                     return ResponseEntity.ok(new ApiResponse(true, "Password reset link sent to email"));
                 })
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)

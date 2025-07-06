@@ -149,6 +149,42 @@
       transform: translateY(-2px);
       box-shadow: 0 10px 30px rgba(78, 106, 243, 0.3);
     }
+
+           /* Gaya untuk Kotak Pesan Kesalahan (Meniru default browser / gambar) */
+        .validation-error-box {
+            background-color: #fff3cd; /* Warna kuning muda */
+            border: 1px solid #ffeeba; /* Border kuning */
+            color: #856404; /* Teks kuning gelap */
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: flex;
+            align-items: flex-start; /* Mengatur item agar rata atas jika teks panjang */
+            font-size: 0.875rem; /* Setara dengan text-sm Tailwind */
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sedikit shadow */
+            line-height: 1.4; /* Memberi sedikit spasi baris */
+        }
+
+        .validation-error-box::before {
+            content: '';
+            position: absolute;
+            top: -8px; /* Posisi di atas kotak */
+            left: 20px; /* Sesuaikan posisi segitiga */
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #fff3cd; /* Warna segitiga sama dengan background kotak */
+        }
+
+        .validation-error-box .icon {
+            margin-right: 10px;
+            font-size: 1.2rem; /* Ukuran ikon */
+            line-height: 1; /* Menjaga ikon tetap di tengah */
+            color: #c08400; /* Warna ikon agar menonjol */
+            flex-shrink: 0; /* Mencegah ikon menyusut jika teks panjang */
+        }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-[#e8edff] to-[#f0f4ff] relative overflow-hidden">
@@ -206,61 +242,85 @@
         </div>
 
         <!-- Form -->
-        <form class="space-y-6" id="registerForm">
-          <div class="slide-up" style="animation-delay: 1s; animation-fill-mode: both;">
-            <input 
-              type="text" 
-              id="fullName"
-              placeholder="Full Name" 
-              class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
-              required
-            />
-            <span id="fullNameError" class="text-red-500 text-xs mt-1"></span>
-          </div>
+                <form class="space-y-6" id="registerForm">
+                    <div id="step-form">
+                      <div id="step-indicator" class="mt-8 mb-6">
+                          <div class="flex justify-between items-center">
+                              <div class="flex-1 flex items-center">
+                                  <div id="dot-1" class="w-4 h-4 rounded-full bg-[#4e6af3] z-10"></div>
+                                  <div class="flex-1 h-0.5 border-t-2 border-dashed border-[#4e6af3] mx-1"></div>
+                              </div>
+                              <div class="flex-1 flex items-center">
+                                  <div id="dot-2" class="w-4 h-4 rounded-full bg-gray-400 z-10"></div>
+                                  <div class="flex-1 h-0.5 border-t-2 border-dashed border-gray-400 mx-1"></div>
+                              </div>
+                              <div id="dot-3" class="w-4 h-4 rounded-full bg-gray-400 z-10"></div>
+                          </div>
+                      </div>
+                        <div id="step-1" class="space-y-4">
+                            <div class="slide-up" style="animation-delay: 1s; animation-fill-mode: both;">
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    placeholder="Full Name"
+                                    class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
+                                    required
+                                />
+                                <span id="fullNameError" class="text-red-500 text-xs mt-1"></span>
+                            </div>
 
-          <div class="slide-up" style="animation-delay: 1.2s; animation-fill-mode: both;">
-            <input 
-              type="text" 
-              id="username"
-              placeholder="Username" 
-              class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
-              required
-            />
-            <span id="usernameError" class="text-red-500 text-xs mt-1"></span>
-          </div>
+                            <div class="slide-up" style="animation-delay: 1.2s; animation-fill-mode: both;">
+                                <input
+                                    type="text"
+                                    id="username"
+                                    placeholder="Username"
+                                    class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
+                                    required
+                                />
+                                <span id="usernameError" class="text-red-500 text-xs mt-1"></span>
+                            </div>
+                            <button type="button" onclick="handleNext(1)" class="w-full bg-[#4e6af3] text-white py-3 rounded-xl">Next</button>
+                        </div>
 
-          <div class="slide-up" style="animation-delay: 1.3s; animation-fill-mode: both;">
-            <input 
-              type="email" 
-              id="email"
-              placeholder="Email Address" 
-              class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
-              required
-            />
-            <span id="emailError" class="text-red-500 text-xs mt-1"></span>
-          </div>
+                        <div id="step-2" class="space-y-4 hidden">
+                            <div>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    placeholder="Email Address"
+                                    class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
+                                    required
+                                />
+                                <span id="emailError" class="text-red-500 text-xs mt-1"></span>
+                            </div>
 
-          <div class="slide-up" style="animation-delay: 1.4s; animation-fill-mode: both;">
-            <input 
-              type="password" 
-              id="password"
-              placeholder="Password" 
-              class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
-              required
-            />
-            <span id="passwordError" class="text-red-500 text-xs mt-1"></span>
-          </div>
+                            <div>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    placeholder="Password"
+                                    class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
+                                    required
+                                />
+                                <span id="passwordError" class="text-red-500 text-xs mt-1"></span>
+                                <div class="flex justify-between mt-4">
+                                    <button type="button" onclick="prevStep()" class="text-sm text-[#4e6af3]">Back</button>
+                                    <button type="button" onclick="handleNext(2)" class="bg-[#4e6af3] text-white py-2 px-4 rounded-xl">Next</button>
+                                </div>
+                            </div>
+                        </div>
 
-          <div class="slide-up" style="animation-delay: 1.6s; animation-fill-mode: both;">
-            <button 
-              type="submit" 
-              class="signup-btn w-full bg-[#4e6af3] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#3c56c0] focus:outline-none focus:ring-4 focus:ring-[#4e6af3]/30"
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
+                        <div id="step-3" class="space-y-4 hidden">
+                            <p class="text-gray-600">We’ve sent a verification link to your email. Please check your inbox.</p>
+                            <div class="flex justify-between">
+                                <button type="button" onclick="prevStep()" class="text-sm text-[#4e6af3]">Back</button>
+                                <button type="button" onclick="submitFinal()" class="bg-[#4e6af3] text-white py-2 px-4 rounded-xl">Finish</button>
+                            </div>
+                        </div>                        
+                    </div>
 
+
+                </form>
         <!-- Login Link -->
         <div class="text-center mt-3 slide-up" style="animation-delay: 1.8s; animation-fill-mode: both;">
           <p class="text-gray-500">
@@ -273,74 +333,232 @@
   </div>
 
   <script>
-  document.getElementById('registerForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+    let currentStep = 1;
 
-    // Clear previous errors
-    document.getElementById('fullNameError').textContent = '';
-    document.getElementById('usernameError').textContent = '';
-    document.getElementById('emailError').textContent = '';
-    document.getElementById('passwordError').textContent = '';
+    // Helper function untuk menampilkan pesan kesalahan dengan gaya kotak
+    function showValidationError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        if (errorElement) {
+            // Bersihkan konten dan kelas sebelumnya
+            errorElement.textContent = '';
+            errorElement.classList.remove('text-red-500', 'text-xs');
+            errorElement.classList.remove('validation-error-box'); // Pastikan dihapus agar tidak duplikat
 
-    const fullName = document.getElementById('fullName').value.trim();
-    const username = document.getElementById('username').value.trim();
-    const email = document.getElementById('email').value.trim().toLowerCase();
-    const password = document.getElementById('password').value;
+            // Tambahkan kelas untuk gaya kotak pesan kesalahan
+            errorElement.classList.add('validation-error-box');
 
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton.innerHTML;
-    submitButton.disabled = true;
-    submitButton.innerHTML = `<span class="animate-pulse">Signing Up...</span>`;
+            // Tambahkan ikon secara dinamis
+            const icon = document.createElement('span');
+            icon.className = 'icon';
+            // Pilihan Ikon:
+            // 1. Menggunakan Font Awesome (pastikan sudah di-link di HTML)
+            // icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            // 2. Menggunakan Karakter Unicode (paling mudah)
+            icon.textContent = '\u26A0'; // ⚠️ Warning sign
 
+            errorElement.appendChild(icon); // Tambahkan ikon ke elemen error
 
-    if (!fullName || !email || !password) {
-      alert('Please fill in all fields.');
-      return;
-    }
-
-    try {
-    const response = await fetch('http://127.0.0.1:8080/api/auth/register', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fullName: fullName,
-          username: username,
-          email: email,
-          password: password
-        })
-      });
-
-      const result = await response.json();
-      console.log('Registration response:', result); // Log the full response for debugging
-      if (response.ok && result.success) {
-        alert('Registration successful! Please sign in.');
-        window.location.href = 'signin.html';
-      } else {
-        // Handle errors returned by the server
-        if (result.message) {
-          document.getElementById('emailError').textContent = result.message;
-        } else if (result.errors) {
-          // If the backend returns field-specific errors
-          for (const field in result.errors) {
-            const errorElement = document.getElementById(`${field}Error`);
-            if (errorElement) {
-              errorElement.textContent = result.errors[field];
-            }
-          }
-        } else {
-          document.getElementById('emailError').textContent = 'Registration failed. Please ensure your email is unique and your password meets the requirements (at least 6 characters).';
+            // Tambahkan teks pesan
+            const messageText = document.createElement('span');
+            messageText.textContent = message;
+            errorElement.appendChild(messageText);
         }
-      }
-    } catch (error) {
-      console.error('Error during registration:', error);
-      alert('An error occurred. Please try again later.');
-    } finally {
-      submitButton.disabled = false;
-      submitButton.innerHTML = originalButtonText;
     }
-  });
+
+    // Helper function untuk membersihkan pesan kesalahan
+    function clearValidationError(elementId) {
+        const errorElement = document.getElementById(elementId);
+        if (errorElement) {
+            errorElement.textContent = ''; // Hapus teks
+            errorElement.classList.remove('validation-error-box'); // Hapus kelas kotak
+            errorElement.classList.add('text-red-500', 'text-xs'); // Kembalikan gaya default jika perlu
+        }
+    }
+
+
+    function updateDashedProgress(step) {
+        document.getElementById('dot-1').className = step >= 1 ? activeDot() : inactiveDot();
+        document.getElementById('dot-2').className = step >= 2 ? activeDot() : inactiveDot();
+        document.getElementById('dot-3').className = step >= 3 ? activeDot() : inactiveDot();
+    }
+
+    function activeDot() {
+        return "w-4 h-4 rounded-full bg-[#4e6af3] z-10";
+    }
+
+    function inactiveDot() {
+        return "w-4 h-4 rounded-full bg-gray-400 z-10";
+    }
+
+    function showStep(step) {
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`step-${i}`).classList.add('hidden');
+        }
+        document.getElementById(`step-${step}`).classList.remove('hidden');
+        updateDashedProgress(step);
+    }
+
+    function handleNext(step) {
+        // Bersihkan semua error di step ini sebelum validasi
+        clearValidationError('fullNameError');
+        clearValidationError('usernameError');
+        clearValidationError('emailError');
+        clearValidationError('passwordError');
+
+        let isValid = true; // Flag untuk melacak validitas
+
+        if (step === 1) {
+            const fullName = document.getElementById('fullName').value.trim();
+            const username = document.getElementById('username').value.trim();
+
+            if (!fullName) {
+                showValidationError('fullNameError', 'Full Name is required.');
+                isValid = false;
+            }
+            if (!username) {
+                showValidationError('usernameError', 'Username is required.');
+                isValid = false;
+            }
+        } else if (step === 2) {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const strongPasswordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+
+            if (!email) {
+                showValidationError('emailError', 'Email Address is required.');
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                // Pesan error email sesuai permintaan
+                showValidationError('emailError', "Please include an '@' in the email address. Email is missing an '@'.");
+                isValid = false;
+            }
+
+            if (!password) {
+                showValidationError('passwordError', 'Password is required.');
+                isValid = false;
+            } else if (!strongPasswordRegex.test(password)) {
+                // Pesan error password sesuai permintaan
+                showValidationError('passwordError', 'Password must be at least 6 characters long and include both letters and numbers.');
+                isValid = false;
+            }
+        }
+
+        if (!isValid) {
+            return; // Hentikan jika ada validasi yang gagal
+        }
+
+        currentStep++;
+        showStep(currentStep);
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        updateDashedProgress(currentStep);
+        showStep(currentStep);
+    });
+
+    async function submitFinal() {
+        // Bersihkan semua pesan kesalahan sebelum submit
+        clearValidationError('fullNameError');
+        clearValidationError('usernameError');
+        clearValidationError('emailError');
+        clearValidationError('passwordError');
+
+        const fullName = document.getElementById('fullName').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim().toLowerCase();
+        const password = document.getElementById('password').value;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const strongPasswordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+
+        let isValid = true;
+
+        // Re-validate fields from previous steps, just in case
+        if (!fullName) {
+            showValidationError('fullNameError', 'Full Name is required.');
+            isValid = false;
+        }
+        if (!username) {
+            showValidationError('usernameError', 'Username is required.');
+            isValid = false;
+        }
+
+        if (!email) {
+            showValidationError('emailError', 'Email Address is required.');
+            isValid = false;
+        } else if (!emailRegex.test(email)) {
+            showValidationError('emailError', "Please include an '@' in the email address. Email is missing an '@'.");
+            isValid = false;
+        }
+
+        if (!password) {
+            showValidationError('passwordError', 'Password is required.');
+            isValid = false;
+        } else if (!strongPasswordRegex.test(password)) {
+            showValidationError('passwordError', 'Password must be at least 6 characters long and include both letters and numbers.');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            return; // Hentikan jika ada validasi yang gagal
+        }
+
+        const submitButton = document.querySelector('button[onclick="submitFinal()"]'); // Pastikan selector ini benar
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = `<span class="animate-pulse">Finishing...</span>`;
+
+        try {
+            const response = await fetch('http://127.0.0.1:8080/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ fullName, username, email, password })
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                alert('Registration successful! Please sign in.');
+                window.location.href = 'signin.html';
+            } else {
+                // Tangani kesalahan dari server
+                // Prioritaskan error spesifik dari server
+                if (result.errors) {
+                    for (const field in result.errors) {
+                        // Jika server mengembalikan error untuk email atau password, gunakan gaya kotak
+                        if (field === 'email' || field === 'password') {
+                            showValidationError(`${field}Error`, result.errors[field]);
+                        } else {
+                            // Untuk error lain, bisa kembali ke gaya teks merah biasa atau sesuaikan
+                            document.getElementById(`${field}Error`).textContent = result.errors[field];
+                            document.getElementById(`${field}Error`).classList.add('text-red-500', 'text-xs');
+                        }
+                    }
+                } else if (result.message) {
+                    // Jika ada pesan umum dari server, tampilkan di emailError (misal: email sudah terdaftar)
+                    showValidationError('emailError', result.message);
+                } else {
+                    // Pesan fallback jika tidak ada detail error
+                    showValidationError('emailError', 'Registration failed. Please ensure your email is unique and your password meets the requirements (at least 6 characters).');
+                }
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert('An error occurred. Please try again later.');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+        }
+    }
   </script>
 
 <script src="global.js" defer></script>
