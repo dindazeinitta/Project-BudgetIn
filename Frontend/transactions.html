@@ -67,19 +67,24 @@
             <div class="absolute inset-0 bg-gradient-custom"></div>
             <div class="relative z-10 p-6 overflow-y-auto max-h-screen">
                 <!-- Header Section -->
-                <div class="flex items-center justify-between mb-6">
-                    <div class="flex items-center space-x-4">
-                        <h1 class="text-3xl font-bold text-gray-800">Transactions</h1>
-                    </div>
-    
-                    <!-- Profile Section -->
-                    <div class="flex flex-col items-end space-y-3">
-                        <div class="flex items-center space-x-3">
-                            <img id="user-avatar" class="w-10 h-10 rounded-full object-cover" alt="User Avatar">
-                            <span id="user-fullname" class="text-gray-700 font-medium">Loading...</span>
-                        </div>
-                    </div>
-                </div>
+<div class="flex items-center justify-between mb-6">
+    <div class="flex items-center space-x-4 mt-4"> <!-- Menambahkan mt-4 untuk memberi margin top -->
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-1">💰 Transactions</h1>
+            <p class="text-gray-500 text-base">Here you can view and manage all your income and expense transactions.</p>
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="flex flex-col items-end justify-center mt-2">
+
+        <div class="flex items-center space-x-3">
+            <img id="user-avatar" class="w-10 h-10 rounded-full object-cover" alt="User Avatar">
+            <span id="user-fullname" class="text-gray-700 font-medium">Loading...</span>
+        </div>
+    </div>
+</div>
+
 
                 
                     <!-- Add New Button -->
@@ -89,33 +94,33 @@
 
 
 
-                    <div class="flex items-center justify-between mb-6 w-full max-w-screen">
-                    <!-- Search Bar -->
-                    <div class="relative w-full max-w-md">
-                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <input 
-                            type="text" 
-                            placeholder="Search anything on Transactions"
-                            class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:border-transparent outline-none transition-all"
-                        >
-                    </div>
+                    <div class="flex items-center gap-4 w-full flex-wrap justify-between">
+  <!-- Search Bar -->
+  <div class="relative w-full sm:w-auto flex-1 max-w-md">
+    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <input 
+      type="text" 
+      placeholder="Search anything on Transactions"
+      class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4e6af3] focus:border-transparent outline-none transition-all"
+    >
+  </div>
 
-                    <!-- Add New Button -->
-                    <a id="openModal" class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2 transition-colors mr-3">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        <span>Add new</span>
-                    </a>
-                </div>
-
-
+  <!-- Add New Button -->
+  <a id="openModal" class="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2 transition-all transform hover:scale-105 cursor-pointer">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    </svg>
+    <span>Add new</span>
+  </a>
+</div>
 
 
+            
                 <!-- Transactions Table -->
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden mt-6">
+
                     <!-- Table Header -->
                     <div class="transaction-grid px-6 py-4 bg-gray-50 border-b border-gray-200 text-sm font-medium text-gray-600 uppercase tracking-wider">
                         <div>NAME</div>
@@ -391,9 +396,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div><span class="font-medium ${amountClass}">${formattedAmount}</span></div>
                 <div><div class="text-gray-900">${date}</div></div>
                 <div class="text-center">
-                    <button data-action="view" data-id="${tx.id}" class="bg-[#7c93ff] hover:bg-[#6b84ff] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        View
-                    </button>
+                    <button data-action="view" data-id="${tx.id}" class="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all transform hover:scale-105">
+  View
+</button>
+
                 </div>
             `;
             transactionContainer.appendChild(row);
