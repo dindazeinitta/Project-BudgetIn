@@ -113,10 +113,10 @@
         <div class="flex-1 min-h-screen ml-64">
             <div class="bg-white shadow-xl rounded-xl p-6 max-w-3xl mx-auto mt-10">
             <!-- Tabs -->
-            <div class="flex space-x-6 border-b pb-2 mb-6 text-sm font-medium text-gray-500 custom-dark-border-gray-700 custom-dark-text-gray-400" id="tab-buttons">
+            <div class="flex space-x-6 border-b pb-2 mb-6 text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400" id="tab-buttons">
                 <button data-tab="profile" class="tab-btn text-blue-600 border-b-2 border-blue-600">Edit Profile</button>
-                <button data-tab="preferences" class="tab-btn text-gray-600 custom-dark-text-gray-400 hover:text-blue-600">Preferences</button>
-                <button data-tab="security" class="tab-btn text-gray-600 custom-dark-text-gray-400 hover:text-blue-600">Security</button>
+                <button data-tab="preferences" class="tab-btn text-gray-600 dark:text-gray-400 hover:text-blue-600">Preferences</button>
+                <button data-tab="security" class="tab-btn text-gray-600 dark:text-gray-400 hover:text-blue-600">Security</button>
             </div>
 
             <!-- Tab Content -->
@@ -136,19 +136,19 @@
 
                     <!-- Nama dan Email -->
                     <div>
-                    <h4 id="profileName" class="text-lg font-semibold text-gray-800 custom-dark-text-gray-200">Loading...</h4>
-                    <p id="profileEmail" class="text-sm text-gray-500 custom-dark-text-gray-400">Loading...</p>
+                    <h4 id="profileName" class="text-lg font-semibold text-gray-800 dark:text-gray-200">Loading...</h4>
+                    <p id="profileEmail" class="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
                     </div>
                     </div>
 
                     <!-- Form Edit -->
                     <form id="profileForm" class="space-y-4 w-full lg:w-2/3 lg:pt-2">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Full Name</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
 <input type="text" id="fullNameInput" name="fullName" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-400 dark:text-gray-200 dark:bg-gray-700" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Email Address</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
 <input type="email" id="emailInput" name="email" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-400 dark:text-gray-200 dark:bg-gray-700" required>
                     </div>
 
@@ -165,12 +165,12 @@
                 <div class="tab-pane hidden" id="preferences">
                     <form class="space-y-6 w-full px-4">
                         <div>
-                        <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Default Currency</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Default Currency</label>
                             <div class="relative">
-<select class="w-full border border-gray-300 custom-dark-border-gray-600 rounded-lg px-4 py-2 pr-10 appearance-none custom-dark-text-gray-200 custom-dark-bg-gray-700">
+<select class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-10 appearance-none dark:text-gray-200 dark:bg-gray-700">
                                     <option>Rp - Indonesian Rupiah</option>
                                 </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500 custom-dark-text-gray-400">
+                                <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500 dark:text-gray-400">
                                     <!-- Ikon panah bawaan SVG -->
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -180,7 +180,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Language</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Language</label>
                             <div class="relative">
                             <select class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-10 appearance-none dark:text-gray-200 dark:bg-gray-700">
                                 <option>English</option>
@@ -194,18 +194,18 @@
                             </div>
                         </div>
                         <div>
-                        <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Dark Mode</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dark Mode</label>
                             <div class="flex items-center space-x-3">
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer">
                                     <div class="w-11 h-6 bg-gray-200 peer-checked:bg-blue-500 rounded-full transition"></div>
                                     <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></div>
                                 </label>
-                                <span class="text-sm text-gray-700 custom-dark-text-gray-300">Enable dark mode</span>
+                                <span class="text-sm text-gray-700 dark:text-gray-300">Enable dark mode</span>
                             </div>
                         </div>
                         <!-- <div class="mt-6 flex justify-end">
-<button type="submit" class="bg-blue-600 text-white custom-dark-bg-blue-700 custom-dark-text-gray-200 text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700 custom-dark-hover-bg-blue-800">
+<button type="submit" class="bg-blue-600 text-white dark:bg-blue-700 dark:text-gray-200 text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700 dark:hover:bg-blue-800">
                                 Save
                             </button>
                         </div> -->
@@ -215,27 +215,27 @@
                 <!-- Security -->
                     <div class="tab-pane hidden" id="security">
                         <div class="mb-6">
-                            <h4 class="font-medium mb-2 text-gray-800 custom-dark-text-gray-300">Two-factor Authentication</h4>
+                            <h4 class="font-medium mb-2 text-gray-800 dark:text-gray-300">Two-factor Authentication</h4>
                             <div class="flex items-center space-x-3">
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="twoFactorToggle" class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-200 peer-checked:bg-blue-500 rounded-full transition"></div>
                                 <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"></div>
                             </label>
-                            <span class="text-sm text-gray-700 custom-dark-text-gray-300">Enable or disable two factor <span class="font-medium">authentication</span></span>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">Enable or disable two factor <span class="font-medium">authentication</span></span>
                             </div>
                         </div>
                         <form id="securityForm" class="space-y-4 w-full">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">Current Password</label>
-                                <input type="password" id="currentPassword" name="currentPassword" class="w-full border border-gray-300 custom-dark-border-gray-600 rounded-lg px-4 py-2 custom-dark-text-gray-200 custom-dark-bg-gray-700" placeholder="Enter current password" required disabled>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Password</label>
+                                <input type="password" id="currentPassword" name="currentPassword" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 dark:text-gray-200 dark:bg-gray-700" placeholder="Enter current password" required disabled>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 custom-dark-text-gray-300 mb-1">New Password</label>
-                                <input type="password" id="newPassword" name="newPassword" class="w-full border border-gray-300 custom-dark-border-gray-600 rounded-lg px-4 py-2 custom-dark-text-gray-200 custom-dark-bg-gray-700" placeholder="Enter new password" required disabled>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 dark:text-gray-200 dark:bg-gray-700" placeholder="Enter new password" required disabled>
                             </div>
                             <div class="mt-6 flex justify-end">
-                                <button type="submit" id="saveSecurityBtn" class="bg-blue-600 text-white custom-dark-bg-blue-700 custom-dark-text-gray-200 text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700 custom-dark-hover-bg-blue-800" disabled>
+                                <button type="submit" id="saveSecurityBtn" class="bg-blue-600 text-white dark:bg-blue-700 dark:text-gray-200 text-sm px-6 py-2 rounded-lg shadow hover:bg-blue-700 dark:hover:bg-blue-800" disabled>
                                     Save
                                 </button>
                             </div>
@@ -326,6 +326,11 @@
 
                 const imageFile = document.getElementById('imageUpload').files[0];
                 if (imageFile) {
+                    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
+                    if (imageFile.size > maxSizeInBytes) {
+                        alert('Sorry, the profile picture size exceeds the 5MB limit. Please choose a smaller file.');
+                        return; // Stop form submission
+                    }
                     formData.append('profilePicture', imageFile);
                 }
 
@@ -337,8 +342,8 @@
                     });
                     const result = await response.json();
                     
-                    alert(result.message);
                     if (result.success) {
+                        alert('Profile updated successfully!');
                         // Update UI directly with the new data from the response
                         document.getElementById('profileName').textContent = result.fullName;
                         document.getElementById('profileEmail').textContent = result.email;
@@ -350,6 +355,8 @@
                         }
                         // Force a page reload to ensure the new JWT cookie is recognized
                         location.reload();
+                    } else {
+                        alert(result.message);
                     }
                 } catch (error) {
                     console.error('Error:', error);
@@ -388,55 +395,8 @@
                     const isEnabled = this.checked;
                     toggleDarkMode(isEnabled);
                     saveDarkModePreference(isEnabled);
-                    // Force UI update to ensure dark mode class is applied/removed
-                    document.documentElement.classList.toggle('dark', isEnabled);
-                    // Also toggle custom dark mode classes for elements
-                    toggleCustomDarkMode(isEnabled);
                 });
             }
-
-            // Function to toggle custom dark mode classes
-            function toggleCustomDarkMode(isEnabled) {
-                const elements = document.querySelectorAll('[class*="custom-dark-"]');
-                elements.forEach(element => {
-                    const classList = element.classList;
-                    classList.forEach(cls => {
-                        if (cls.startsWith('custom-dark-')) {
-                            const originalClass = cls.replace('custom-dark-', '');
-                            if (isEnabled) {
-                                // Add the actual Tailwind class when dark mode is enabled
-                                classList.add(originalClass);
-                                // Remove hover variants if they exist to avoid conflicts
-                                if (originalClass.startsWith('hover-')) {
-                                    classList.remove(originalClass.replace('hover-', ''));
-                                }
-                            } else {
-                                // Remove the Tailwind class when dark mode is disabled
-                                classList.remove(originalClass);
-                                // Restore original light theme colors for text and background if applicable
-                                if (originalClass.includes('text-')) {
-                                    // Check for existing light mode text class to preserve original styling
-                                    if (classList.contains('text-gray-600')) {
-                                        // Already has correct light mode color
-                                    } else if (classList.contains('text-gray-500')) {
-                                        // Already has correct light mode color
-                                    } else {
-                                        classList.add('text-gray-700'); // Default light mode text color
-                                    }
-                                } else if (originalClass.includes('bg-') && (originalClass.includes('gray-7') || originalClass.includes('gray-8'))) {
-                                    classList.add('bg-white'); // Restore default background for light mode
-                                }
-                            }
-                        }
-                    });
-                });
-            }
-
-            // Ensure custom dark mode classes are applied or removed on page load
-            document.addEventListener('DOMContentLoaded', () => {
-                const isDarkMode = localStorage.getItem('darkMode') === 'true';
-                toggleCustomDarkMode(isDarkMode);
-            });
 
             // Initial load
             loadUserData();

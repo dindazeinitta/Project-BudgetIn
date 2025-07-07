@@ -311,7 +311,17 @@
                         </div>
 
                         <div id="step-3" class="space-y-4 hidden">
-                            <p class="text-gray-600">We’ve sent a verification link to your email. Please check your inbox.</p>
+                            <p class="text-gray-600">We’ve sent an OTP code to your email. Please check your inbox and enter the code below.</p>
+                            <div>
+                                <input
+                                    type="text"
+                                    id="otp"
+                                    placeholder="Enter OTP Code"
+                                    class="form-input w-full px-4 py-4 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4e6af3]/20 focus:border-[#4e6af3]"
+                                    required
+                                />
+                                <span id="otpError" class="text-red-500 text-xs mt-1"></span>
+                            </div>
                             <div class="flex justify-between">
                                 <button type="button" onclick="prevStep()" class="text-sm text-[#4e6af3]">Back</button>
                                 <button type="button" onclick="submitFinal()" class="bg-[#4e6af3] text-white py-2 px-4 rounded-xl">Finish</button>
@@ -398,7 +408,7 @@
         updateDashedProgress(step);
     }
 
-    function handleNext(step) {
+    async function handleNext(step) {
         // Bersihkan semua error di step ini sebelum validasi
         clearValidationError('fullNameError');
         clearValidationError('usernameError');
@@ -442,6 +452,29 @@
                 showValidationError('passwordError', 'Password must be at least 6 characters long and include both letters and numbers.');
                 isValid = false;
             }
+
+            if (isValid) {
+                // Request OTP from backend
+                try {
+                    const response = await fetch('http://127.0.0.1:8080/api/auth/request-otp', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email })
+                    });
+
+                    if (!response.ok) {
+                        const result = await response.json();
+                        showValidationError('emailError', result.message || 'Failed to send OTP. Please try again.');
+                        isValid = false;
+                    }
+                } catch (error) {
+                    console.error('Error requesting OTP:', error);
+                    showValidationError('emailError', 'An error occurred while sending OTP. Please try again.');
+                    isValid = false;
+                }
+            }
         }
 
         if (!isValid) {
@@ -470,11 +503,13 @@
         clearValidationError('usernameError');
         clearValidationError('emailError');
         clearValidationError('passwordError');
+        clearValidationError('otpError');
 
         const fullName = document.getElementById('fullName').value.trim();
         const username = document.getElementById('username').value.trim();
         const email = document.getElementById('email').value.trim().toLowerCase();
         const password = document.getElementById('password').value;
+        const otp = document.getElementById('otp').value.trim();
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const strongPasswordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
@@ -507,6 +542,11 @@
             isValid = false;
         }
 
+        if (!otp) {
+            showValidationError('otpError', 'OTP code is required.');
+            isValid = false;
+        }
+
         if (!isValid) {
             return; // Hentikan jika ada validasi yang gagal
         }
@@ -522,7 +562,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ fullName, username, email, password })
+                body: JSON.stringify({ fullName, username, email, password, otp })
             });
 
             const result = await response.json();
@@ -534,8 +574,8 @@
                 // Prioritaskan error spesifik dari server
                 if (result.errors) {
                     for (const field in result.errors) {
-                        // Jika server mengembalikan error untuk email atau password, gunakan gaya kotak
-                        if (field === 'email' || field === 'password') {
+                        // Jika server mengembalikan error untuk email, password, atau otp, gunakan gaya kotak
+                        if (field === 'email' || field === 'password' || field === 'otp') {
                             showValidationError(`${field}Error`, result.errors[field]);
                         } else {
                             // Untuk error lain, bisa kembali ke gaya teks merah biasa atau sesuaikan

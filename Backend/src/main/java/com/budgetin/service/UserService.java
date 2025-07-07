@@ -13,4 +13,5 @@ public interface UserService {
     void createPasswordResetTokenForUser(User user, String token);
     Optional<User> validatePasswordResetToken(String token);
     void changeUserPassword(User user, String password);
+    String generateAndSendOtp(String email);
 }

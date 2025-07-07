@@ -22,10 +22,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     @Override
@@ -34,12 +36,22 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(registrationDto.email())) {
             throw new IllegalStateException("Email already in use");
         }
+        // Validate OTP (placeholder logic for now)
+        if (!validateOtp(registrationDto.email(), registrationDto.otp())) {
+            throw new IllegalStateException("Invalid OTP");
+        }
         User user = new User();
         user.setUsername(registrationDto.username());
         user.setFullName(registrationDto.fullName());
         user.setEmail(registrationDto.email());
         user.setPassword(passwordEncoder.encode(registrationDto.password()));
         userRepository.save(user);
+    }
+
+    private boolean validateOtp(String email, String otp) {
+        // Placeholder for OTP validation
+        // In a real implementation, check against stored OTP
+        return true; // Temporarily always return true for demonstration
     }
 
     @Override
@@ -131,5 +143,39 @@ public class UserServiceImpl implements UserService {
         user.setResetToken(null);
         user.setResetTokenExpiry(null);
         userRepository.save(user);
+    }
+
+    @Override
+    public String generateAndSendOtp(String email) {
+        try {
+            // Generate a 6-digit OTP
+            String otp = String.format("%06d", new java.util.Random().nextInt(999999));
+            
+            // Store OTP temporarily (could use a map or database table)
+            // For simplicity, we'll store it in a temporary user record or a separate table
+            // Here, we'll assume a method to store OTP with expiration
+            storeOtp(email, otp);
+            
+            // Send OTP via email
+            emailService.sendEmail(email, "Your OTP for Registration", 
+                "Your OTP code for BudgetIn registration is: " + otp + "\nThis code is valid for 10 minutes.");
+            
+            return otp;
+        } catch (Exception e) {
+            System.err.println("Error sending OTP to " + email + ": " + e.getMessage());
+            String errorMessage = e.getMessage();
+            if (errorMessage.contains("Authentication")) {
+                throw new RuntimeException("Failed to send OTP: Email service authentication failed. Please check SMTP credentials.", e);
+            } else {
+                throw new RuntimeException("Failed to send OTP: " + errorMessage, e);
+            }
+        }
+    }
+
+    private void storeOtp(String email, String otp) {
+        // This could be implemented with a separate table or a cache
+        // For now, we'll simulate storing it
+        // In a real implementation, you might want to use Redis or a database table
+        // with expiration time (e.g., 10 minutes)
     }
 }

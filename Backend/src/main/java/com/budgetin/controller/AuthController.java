@@ -61,12 +61,18 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegistrationDto registrationDto) {
-        // @Valid akan memicu RestExceptionHandler jika validasi gagal.
-        // userService akan melempar IllegalStateException jika email sudah ada, yang juga ditangani oleh handler.
-        userService.register(registrationDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            new ApiResponse(true, "Registration successful")
-        );
+        try {
+            // @Valid akan memicu RestExceptionHandler jika validasi gagal.
+            // userService akan melempar IllegalStateException jika email sudah ada, yang juga ditangani oleh handler.
+            userService.register(registrationDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ApiResponse(true, "Registration successful")
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new ApiResponse(false, "Registration failed: " + e.getMessage())
+            );
+        }
     }
 
     @PostMapping("/login")
@@ -135,7 +141,7 @@ public class AuthController {
                     userService.createPasswordResetTokenForUser(user, token);
                     emailService.sendEmail(user.getEmail(), "Reset Password",
                             "To reset your password, click the link below:\n"
-                                    + "http://127.0.0.1:5501/Frontend/signin.html?token=" + token);
+                                    + "http://127.0.0.1:5501/Frontend/forgotpassword.html?token=" + token);
                     return ResponseEntity.ok(new ApiResponse(true, "Password reset link sent to email"));
                 })
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -154,5 +160,18 @@ public class AuthController {
                 })
                 .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new ApiResponse(false, "Invalid or expired token")));
+    }
+
+    @PostMapping("/request-otp")
+    public ResponseEntity<?> requestOtp(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        try {
+            // Temporarily bypass email uniqueness check due to database reset
+            String otp = userService.generateAndSendOtp(email);
+            return ResponseEntity.ok(new ApiResponse(true, "OTP sent to email"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse(false, "Failed to send OTP: " + e.getMessage()));
+        }
     }
 }

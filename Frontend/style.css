@@ -7,6 +7,10 @@
             background: linear-gradient(135deg, #e8edff 0%, #ffffff 100%);
         }
 
+        .dark .bg-gradient-custom {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        }
+
         /* Adjusted margin for the main content */
         .main-content {
             margin-left: 16px; /* Adjust as needed */
@@ -61,168 +65,6 @@
         .tab-btn {
         transition: all 0.2s ease-in-out;
         }
-        /* Dark Mode Styles */
-        html.dark, html.dark body {
-            background-color: #121212;
-            color: #e2e8f0;
-        }
-        html.dark .bg-gradient-custom {
-            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-        }
-        html.dark .transaction-row:hover {
-            background-color: #2d3748;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        html.dark .amount-positive {
-            color: #38a169;
-        }
-        html.dark .amount-negative {
-            color: #e53e3e;
-        }
-        html.dark .profile-avatar {
-            background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%);
-        }
-        html.dark .profile-initial-avatar {
-            background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%);
-        }
-        html.dark .tab-btn {
-            color: #a0aec0;
-        }
-        html.dark .tab-btn:hover {
-            color: #e2e8f0;
-            background-color: #2d3748;
-        }
-        /* Sidebar in Dark Mode */
-        html.dark .bg-white {
-            background-color: #1f2937;
-            color: #e2e8f0;
-        }
-        html.dark .text-gray-600 {
-            color: #9ca3af;
-        }
-        html.dark [class*="hover:text-[#4e6af3"]:hover {
-            color: #60a5fa;
-        }
-        html.dark .border-gray-200 {
-            border-color: #374151;
-        }
-        /* Transaction Grid in Dark Mode */
-        html.dark .transaction-grid {
-            background-color: #1f2937;
-            color: #e2e8f0;
-        }
-        html.dark .bg-gray-50 {
-            background-color: #2d3748;
-        }
-        html.dark .text-gray-600 {
-            color: #9ca3af;
-        }
-        html.dark [class*="hover:bg-gray-50"]:hover {
-            background-color: #374151;
-        }
-        /* Analytics and Other UI Elements in Dark Mode */
-        html.dark .bg-gradient-to-r.from-indigo-500.to-blue-600 {
-            background: linear-gradient(to right, #3b82f6, #2563eb);
-        }
-        html.dark .bg-gradient-to-br.from-indigo-500.to-purple-600 {
-            background: linear-gradient(to bottom right, #3b82f6, #8b5cf6);
-        }
-        html.dark .text-gray-800 {
-            color: #e2e8f0;
-        }
-        html.dark .text-gray-700 {
-            color: #cbd5e1;
-        }
-        html.dark .text-gray-500 {
-            color: #9ca3af;
-        }
-        html.dark .bg-white[class*="rounded-2xl"] {
-            background-color: #1f2937;
-        }
-        html.dark .bg-green-100 {
-            background-color: #2d473d;
-        }
-        html.dark .text-green-600 {
-            color: #4ade80;
-        }
-        html.dark .border-gray-100 {
-            border-color: #374151;
-        }
-        html.dark .bg-gray-100 {
-            background-color: #2d3748;
-        }
-        html.dark .bg-gradient-to-r.from-green-100.to-green-50 {
-            background: linear-gradient(to right, #2d473d, #1f2e2a);
-        }
-        html.dark .border-green-200 {
-            border-color: #388e3c;
-        }
-        html.dark .text-green-700 {
-            color: #66bb6a;
-        }
-        html.dark .bg-gradient-to-r.from-red-100.to-red-50 {
-            background: linear-gradient(to right, #4a1e1e, #3a1616);
-        }
-        html.dark .border-red-200 {
-            border-color: #d32f2f;
-        }
-        html.dark .text-red-700 {
-            color: #ef5350;
-        }
-        html.dark .bg-gradient-to-r.from-purple-100.to-purple-50 {
-            background: linear-gradient(to right, #3a2d4a, #2d213a);
-        }
-        html.dark .border-purple-200 {
-            border-color: #9c27b0;
-        }
-        html.dark .text-purple-700 {
-            color: #ba68c8;
-        }
-        html.dark .bg-gradient-to-r.from-blue-100.to-blue-50 {
-            background: linear-gradient(to right, #2d3a4a, #1f2e3a);
-        }
-        html.dark .border-blue-200 {
-            border-color: #1976d2;
-        }
-        html.dark .text-blue-700 {
-            color: #42a5f5;
-        }
-        html.dark .bg-gray-200 {
-            background-color: #2d3748;
-        }
-        /* Transaction Details in Dark Mode */
-        html.dark .transaction-list-container {
-            background-color: #1f2937;
-        }
-        html.dark .transaction-row {
-            background-color: #1f2937;
-            border-bottom-color: #374151;
-        }
-        html.dark .bg-blue-500 {
-            background-color: #2563eb;
-        }
-        html.dark .text-gray-900 {
-            color: #e2e8f0;
-        }
-        /* Modal and Overlay in Dark Mode */
-        html.dark .bg-black\/40 {
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-        html.dark .bg-white {
-            background-color: #1f2937;
-        }
-        html.dark .border-blue-200 {
-            border-color: #3b82f6;
-        }
-        html.dark .bg-gray-200 {
-            background-color: #2d3748;
-        }
-        html.dark .bg-red-600 {
-            background-color: #dc2626;
-        }
-        html.dark .text-red-600 {
-            color: #ef4444;
-        }
         /* GLOBAL DARK STYLES */
 .dark body {
   background-color: #1a202c; /* gray-900 */
@@ -235,6 +77,24 @@
 
 .dark .text-gray-800 {
   color: #e2e8f0 !important;
+}
+
+/* TRANSACTION PAGE SPECIFIC */
+.dark .bg-gray-50 {
+  background-color: #2d3748 !important; /* gray-700 */
+  border-bottom-color: #4a5568 !important; /* gray-600 */
+}
+
+.dark .transaction-row:hover {
+  background-color: #2d3748 !important; /* gray-700 */
+}
+
+.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]) {
+    border-color: #4a5568 !important; /* gray-600 */
+}
+
+.dark .transaction-row .text-gray-900 {
+    color: #f7fafc !important; /* gray-100 */
 }
 
 .dark .text-gray-700,
@@ -325,4 +185,3 @@
 .dark .text-gray-800 {
   color: #e2e8f0 !important;
 }
-

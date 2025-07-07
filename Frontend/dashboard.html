@@ -123,10 +123,10 @@
   <div class="flex items-center space-x-3">
     <!-- Filter Buttons -->
     <div class="flex bg-gray-100 rounded-lg p-1">
-      <button id="filter-weekly" class="filter-btn text-sm px-4 py-2 rounded-md bg-white text-gray-700 shadow-sm font-medium transition-all hover:shadow-md">
+      <button id="filter-weekly" class="filter-btn text-sm px-4 py-2 rounded-md font-medium transition-all">
         Weekly
       </button>
-      <button id="filter-monthly" class="filter-btn text-sm px-4 py-2 rounded-md bg-indigo-500 text-white shadow-sm font-medium transition-all hover:shadow-md">
+      <button id="filter-monthly" class="filter-btn text-sm px-4 py-2 rounded-md font-medium transition-all">
         Monthly
       </button>
     </div>
@@ -449,10 +449,10 @@ maxWeeksInMonth = Math.ceil(daysInMonth / 7);
 
     if (currentView === 'monthly') {
         weeklyControls.classList.add('hidden');
-        btnMonthly.classList.add('bg-blue-100', 'text-blue-600', 'border-blue-400');
-        btnMonthly.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
-        btnWeekly.classList.remove('bg-blue-100', 'text-blue-600', 'border-blue-400');
-        btnWeekly.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+        btnMonthly.classList.add('bg-indigo-500', 'text-white', 'shadow-sm');
+        btnMonthly.classList.remove('bg-gray-100', 'text-gray-700');
+        btnWeekly.classList.add('bg-gray-100', 'text-gray-700');
+        btnWeekly.classList.remove('bg-indigo-500', 'text-white', 'shadow-sm');
 
         const daysInMonth = new Date(currentYear, selectedMonth + 1, 0).getDate();
         const labels = Array.from({ length: daysInMonth }, (_, i) => (i + 1).toString());
@@ -466,10 +466,10 @@ maxWeeksInMonth = Math.ceil(daysInMonth / 7);
         createChart(labels, data);
     } else {
         weeklyControls.classList.remove('hidden');
-        btnWeekly.classList.add('bg-blue-100', 'text-blue-600', 'border-blue-400');
-        btnWeekly.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
-        btnMonthly.classList.remove('bg-blue-100', 'text-blue-600', 'border-blue-400');
-        btnMonthly.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+        btnWeekly.classList.add('bg-indigo-500', 'text-white', 'shadow-sm');
+        btnWeekly.classList.remove('bg-gray-100', 'text-gray-700');
+        btnMonthly.classList.add('bg-gray-100', 'text-gray-700');
+        btnMonthly.classList.remove('bg-indigo-500', 'text-white', 'shadow-sm');
 
         const firstDayOfMonth = new Date(currentYear, selectedMonth, 1);
         const weekStart = (currentWeek - 1) * 7 + 1;
